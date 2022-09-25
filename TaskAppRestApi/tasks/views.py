@@ -118,6 +118,16 @@ def single_author(request, pk):
         authors_serializer = AuthorSerializer(author)
         return JsonResponse(authors_serializer.data)
 
+    elif request.method == 'PUT':
+            author_data = JSONParser().parse(request)
+            author_serializer = AuthorSerializer(
+                author)
+            if author_serializer.is_valid():
+                author_serializer.save()
+                return JsonResponse(author_serializer.data)
+            return JsonResponse(author_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
     # Example: [http://localhost:8000/authors/3], no body
     elif request.method == 'DELETE':
         author.delete()
@@ -151,13 +161,12 @@ def tutorial_list(request):
         tutorials_serializer = TutorialSerializer(tutorials, many=True)
         return JsonResponse(tutorials_serializer.data, safe=False)
         # 'safe=False' for objects serialization
-    elif request.method == 'POST':
-        tutorial_data = JSONParser().parse(request)
-        tutorial_serializer = TutorialSerializer(data=tutorial_data)
-        if tutorial_serializer.is_valid():
-            tutorial_serializer.save()
-            return JsonResponse(tutorial_serializer.data, status=status.HTTP_201_CREATED)
-        return JsonResponse(tutorial_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    elif request.method == 'POauthor = JSONParser().parse(request)
+        author_serializer = TutorialSerializeauthor)
+        if author_serializer.is_valid():
+            author_serializer.save()
+            return JsonResponse(author_serializer.data, status=status.HTTP_201_CREATED)
+        return JsonResponse(author_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     elif request.method == 'DELETE':
         count = Tutorial.objects.all().delete()
         return JsonResponse({'message': '{} Tutorials were deleted successfully!'.format(count[0])}, status=status.HTTP_204_NO_CONTENT)
@@ -170,16 +179,15 @@ def tutorial_detail(request, pk):
         tutorial = Tutorial.objects.get(pk=pk)
 
         if request.method == 'GET':
-            tutorial_serializer = TutorialSerializer(tutorial)
-            return JsonResponse(tutorial_serializer.data)
-        elif request.method == 'PUT':
-            tutorial_data = JSONParser().parse(request)
-            tutorial_serializer = TutorialSerializer(
-                tutorial, data=tutorial_data)
-            if tutorial_serializer.is_valid():
-                tutorial_serializer.save()
-                return JsonResponse(tutorial_serializer.data)
-            return JsonResponse(tutorial_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            author_serializer = TutorialSerializer(tutorial)
+            return JsonResponse(author_serializer.data)
+        elif request.method == 'PUauthor = JSONParser().parse(request)
+            author_serializer = TutorialSerializer(
+                tutorialauthor)
+            if author_serializer.is_valid():
+                author_serializer.save()
+                return JsonResponse(author_serializer.data)
+            return JsonResponse(author_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         elif request.method == 'DELETE':
             tutorial.delete()
             return JsonResponse({'message': 'Tutorial was deleted successfully!'}, status=status.HTTP_204_NO_CONTENT)
