@@ -19,25 +19,25 @@ class RemoteAccess {
   }
 
   Future<dynamic> post(String branch, dynamic object) async {
-    var uri = Uri.parse(api+branch);
+    var uri = Uri.parse(api + branch);
     var payload = json.encode(object);
     var response = await client.post(uri, body: payload);
-    if (response.statusCode == 201){
+    if (response.statusCode == 201) {
       return response.body;
     }
   }
 
   Future<dynamic> put(String branch, dynamic object) async {
-    var uri = Uri.parse(api+branch);
+    var uri = Uri.parse(api + branch);
     var payload = json.encode(object);
     var response = await client.put(uri, body: payload);
-    if (response.statusCode == 200){
+    if (response.statusCode == 200) {
       return response.body;
     }
   }
 
   Future<List<Books>?> getBooks(String branch) async {
-    var uri = Uri.parse(api+branch);
+    var uri = Uri.parse(api + branch);
     var response = await client.get(uri);
     if (response.statusCode == 200) {
       var json = response.body;
@@ -46,7 +46,7 @@ class RemoteAccess {
   }
 
   Future<List<Authors>?> getAuthors(String branch) async {
-    var uri = Uri.parse(api+branch);
+    var uri = Uri.parse(api + branch);
     var response = await client.get(uri);
     if (response.statusCode == 200) {
       var json = response.body;
@@ -55,7 +55,7 @@ class RemoteAccess {
   }
 
   Future<List<Authors>?> delete(String branch) async {
-    var uri = Uri.parse(api+branch);
+    var uri = Uri.parse(api + branch);
     var response = await client.delete(uri);
     if (response.statusCode == 200) {
       var json = response.body;

@@ -1,13 +1,7 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:gamified_task_tracker/task.dart';
-import 'package:gamified_task_tracker/books.dart';
 import 'package:http/http.dart' as http;
-import 'package:http/http.dart';
 
-import 'RemoteAccess.dart';
-import 'authors.dart';
+import 'pages/tasks_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,110 +10,94 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: "MyApi",
-      home: DataFromAPI(),
+    return MaterialApp(
+      title: 'Login',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: MyHomePage(),
     );
   }
 }
 
-class DataFromAPI extends StatefulWidget {
-  const DataFromAPI({super.key});
-
+class MyHomePage extends StatefulWidget {
   @override
-  _DataFromAPIState createState() => _DataFromAPIState();
+  _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _DataFromAPIState extends State<DataFromAPI> {
-  //List<Tasks>? tasks;
-  List<Books>? books;
-  List<Authors>? authors;
-  var isLoaded = false;
-
-  void _postAuthor() async {
-    //var book = Books(name: "Harry Jenkin's Book about stuff and things", author: 2);
-    var author = Authors(name: "Dr. Seuss");
-    var response =
-        await RemoteAccess().post("/authors", author).catchError((err) {});
-    if (response == null) {
-      return;
-    }
-    debugPrint("Successful");
-  }
-
-  void _putAuthor() async {
-    var id = 8;
-    var author = Authors(id: id, name: "Stephen King");
-    var response =
-        await RemoteAccess().put("/authors/$id", author).catchError((err) {});
-    if (response == null) {
-      return;
-    }
-    debugPrint("Successful");
-  }
-
-  void _removeAuthor() async {
-    var id = 7;
-    var response = await RemoteAccess()
-        .delete("/authors?name=Dr. Seuss")
-        .catchError((err) {});
-    if (response == null) {
-      return;
-    }
-    debugPrint("Successful");
-  }
-
-  void _retrieveAuthors() async {
-    authors = await RemoteAccess().getAuthors("/authors");
-    if (authors != null) {
-      isLoaded = true;
-    }
-  }
-
-  void _retrieveBooks() async {
-    books = await RemoteAccess().getBooks("/books");
-    if (books != null) {
-      isLoaded = true;
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _retrieveBooks();
-    _retrieveAuthors();
-  }
+class _MyHomePageState extends State<MyHomePage> {
+  var emailController = TextEditingController();
+  var passController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Tasks'),
-          actions: <Widget>[
-            IconButton(
-                onPressed: _postAuthor, icon: const Icon(Icons.add_card)),
-            IconButton(
-                onPressed: _putAuthor,
-                icon: const Icon(Icons.create_new_folder)),
-            IconButton(
-                onPressed: _removeAuthor, icon: const Icon(Icons.delete)),
+      body: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: SafeArea(
+            child: Center(
+                child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextFormField(
+              controller: emailController,
+              decoration: InputDecoration(
+                  labelText: "Email",
+                  border: OutlineInputBorder(),
+                  suffixIcon: Icon(Icons.email)),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            TextFormField(
+              controller: passController,
+              obscureText: true,
+              decoration: InputDecoration(
+                  labelText: "Password",
+                  border: OutlineInputBorder(),
+                  suffixIcon: Icon(Icons.password)),
+            ),
+            SizedBox(
+              height: 45,
+            ),
+            OutlinedButton.icon(
+                onPressed: () {
+                  login(passController, emailController, context);
+                },
+                icon: Icon(
+                  Icons.login,
+                  size: 18,
+                ),
+                label: Text("Login")),
           ],
-        ),
-        body: Visibility(
-          visible: isLoaded,
-          child: ListView.builder(
-            itemCount: authors?.length,
-            itemBuilder: (context, index) {
-              return ListTile(title: Text(authors![index].name));
-            },
-          ),
-        ));
+        ))),
+      ),
+    );
   }
 }
 
-class User {
-  final String name, email, userName;
-  User(this.name, this.email, this.userName);
+//function calls login post api
+Future<void> login(passController, emailController, context) async {
+  /* if (passController.text.isNotEmpty && emailController.text.isNotEmpty) {
+    var response = await http.post(Uri.parse("http://10.0.2.2:8000"),
+        body: ({
+          'email': emailController.text,
+          'password': passController.text
+        }));
+    if (response.statusCode == 200) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => DataFromAPI()));
+    } else {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("Invalid Credentials")));
+    }
+  } else {
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text("One or more fields are emtpy")));
+  } */
+  Navigator.push(
+      context, MaterialPageRoute(builder: (context) => DataFromAPI()));
 }
