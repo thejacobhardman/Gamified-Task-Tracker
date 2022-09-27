@@ -111,8 +111,6 @@ class CreateTaskPage extends StatelessWidget {
               )
           ),
           backgroundColor: primaryColor,
-          elevation: 0,
-
         ),
         body: SingleChildScrollView(
           scrollDirection: Axis.vertical,
@@ -156,25 +154,20 @@ class CreateTaskPage extends StatelessWidget {
                   ])
               ),
               OutlinedButton(
-                style: ButtonStyle(
-                  foregroundColor: MaterialStateProperty.all<Color>(textColor),
-                  overlayColor: MaterialStateProperty.resolveWith<Color?>(
-                    (Set<MaterialState> states) {
-                      if (states.contains(MaterialState.hovered))
-                        return textColor.withOpacity(0.04);
-                      if (states.contains(MaterialState.focused) ||
-                          states.contains(MaterialState.pressed))
-                        return textColor.withOpacity(0.12);
-                      return null; // Defer to the widget's default.
-                    },
-                  ),
-                  shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0),
-                    side: BorderSide(color: Colors.white, width: 2.0)
-                    )),
+                style: OutlinedButton.styleFrom(
+                  side: BorderSide(
+                    color: textColor, 
+                    width: 3
+                    ),
+                  backgroundColor: Color.fromARGB(255, 217, 175, 224),
+                  shadowColor: Colors.black,
                 ),
                 onPressed: () { },
-                child: Text('Add'),
+                child: Text(
+                  'Add',
+                  style: TextStyle(
+                    color: textColor,
+                  )),
               )
             ]
           )
