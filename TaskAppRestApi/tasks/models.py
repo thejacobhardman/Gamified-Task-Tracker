@@ -17,7 +17,6 @@ class User(models.Model):
     password = models.CharField(max_length=70, blank=False)
     first_name = models.CharField(max_length=70, blank=False)
     last_name = models.CharField(max_length=70, blank=False)
-    team = models.CharField(max_length=70, blank=False)
     email = models.EmailField()
     team = models.ForeignKey(Team)
     points = models.IntegerField()
@@ -25,14 +24,7 @@ class User(models.Model):
 
 class Team(models.Model):
     team_name = models.CharField(max_length=70, blank=False, default='')
-    total_points = models.IntegerField()
-
-
-class LeaderboardEntry(models.Model):
-    team = models.ForeignKey(Team)
-
-id = models.AutoField(auto_created=True, unique=True,
-                      primary_key=True, serialize=False)
+    total_code = models.CharField(max_length=6, blank=False)
 '''
 
 
