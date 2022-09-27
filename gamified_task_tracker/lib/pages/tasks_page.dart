@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:gamified_task_tracker/task.dart';
+//import 'package:gamified_task_tracker/task.dart'; unused rn
 import 'package:gamified_task_tracker/books.dart';
 import 'package:http/http.dart' as http;
-import 'package:http/http.dart';
+//import 'package:http/http.dart'; unused, might need later
 
 import '../RemoteAccess.dart';
 import '../authors.dart';
+import 'Task_detail_page.dart';
 
 class DataFromAPI extends StatefulWidget {
   const DataFromAPI({super.key});
@@ -43,7 +44,7 @@ class _DataFromAPIState extends State<DataFromAPI> {
   }
 
   void _removeAuthor() async {
-    var id = 7;
+    //var id = 7; id test for specific deletion
     var response = await RemoteAccess()
         .delete("/authors?name=Dr. Seuss")
         .catchError((err) {});
@@ -94,7 +95,14 @@ class _DataFromAPIState extends State<DataFromAPI> {
           child: ListView.builder(
             itemCount: authors?.length,
             itemBuilder: (context, index) {
-              return ListTile(title: Text(authors![index].name));
+              return ListTile(
+                  title: Text(authors![index].name),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => TaskDetailPage(authors![index]))
+                    );
+              });
             },
           ),
         ));
