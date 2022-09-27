@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 const Color backgroundColor = Colors.indigo;
 const Color textColor = Colors.white;
-const double edgeInsets = 40.0;
+const double edgeInsets = 30.0;
 
 class FieldRow extends StatelessWidget {
 
