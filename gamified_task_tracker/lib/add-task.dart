@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
-const Color backgroundColor = Colors.indigo;
-const Color textColor = Colors.white;
-const double edgeInsets = 30.0;
+const Color backgroundColor = Colors.white;
+const Color textColor = Colors.black;
+const Color textColorAgainstPrimary = Colors.white;
+const Color primaryColor = Colors.purple;
+
+const double edgeInsets = 40.0;
 
 class FieldRow extends StatelessWidget {
 
@@ -62,7 +65,7 @@ class TaskTextField extends StatelessWidget {
           decoration: InputDecoration(
             hintText: hint,
             hintStyle: TextStyle(
-              color: Colors.blueGrey
+              color: Colors.grey,
             ),
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(
@@ -97,17 +100,17 @@ class CreateTaskPage extends StatelessWidget {
           title: const Text(
               "Add Task",
               style: TextStyle(
-                color: textColor,
+                color: textColorAgainstPrimary,
               )
           ),
           centerTitle: true,
           leading: GestureDetector(
               child: const Icon(
                 Icons.arrow_back,
-                color: textColor,
+                color: textColorAgainstPrimary,
               )
           ),
-          backgroundColor: Colors.transparent,
+          backgroundColor: primaryColor,
           elevation: 0,
 
         ),
