@@ -19,13 +19,14 @@ class _DataFromAPIState extends State<DataFromAPI> {
   //List<Tasks>? tasks;
   List<Books>? books;
   List<Authors>? authors;
+  RemoteAccess access = RemoteAccess();
   var isLoaded = false;
 
   void _postAuthor() async {
     //var book = Books(name: "Harry Jenkin's Book about stuff and things", author: 2);
-    var author = Authors(name: "Dr. Seuss");
+    var author = Authors(name: "Jameson Franklin");
     var response =
-        await RemoteAccess().post("/authors", author).catchError((err) {});
+        await access.post("/authors", author).catchError((err) {});
     if (response == null) {
       return;
     }
@@ -36,7 +37,7 @@ class _DataFromAPIState extends State<DataFromAPI> {
     var id = 8;
     var author = Authors(id: id, name: "Stephen King");
     var response =
-        await RemoteAccess().put("/authors/$id", author).catchError((err) {});
+        await access.put("/authors/$id", author).catchError((err) {});
     if (response == null) {
       return;
     }
@@ -45,8 +46,8 @@ class _DataFromAPIState extends State<DataFromAPI> {
 
   void _removeAuthor() async {
     //var id = 7; id test for specific deletion
-    var response = await RemoteAccess()
-        .delete("/authors?name=Dr. Seuss")
+    var response = await access
+        .delete("/authors?name=Jameson Franklin")
         .catchError((err) {});
     if (response == null) {
       return;
@@ -54,25 +55,27 @@ class _DataFromAPIState extends State<DataFromAPI> {
     debugPrint("Successful");
   }
 
-  void _retrieveAuthors() async {
-    authors = await RemoteAccess().getAuthors("/authors");
+  Future _retrieveAuthors() async {
+    authors = await access.getAuthors("/authors");
     if (authors != null) {
       isLoaded = true;
     }
+    return authors;
   }
 
-  void _retrieveBooks() async {
-    books = await RemoteAccess().getBooks("/books");
+  Future _retrieveBooks() async {
+    books = await access.getBooks("/books");
     if (books != null) {
       isLoaded = true;
     }
+    return books;
   }
 
   @override
   void initState() {
+    //_retrieveBooks();
+    _retrieveAuthors().then((model) => {setState(() => model = authors)});
     super.initState();
-    _retrieveBooks();
-    _retrieveAuthors();
   }
 
   @override
@@ -90,22 +93,33 @@ class _DataFromAPIState extends State<DataFromAPI> {
                 onPressed: _removeAuthor, icon: const Icon(Icons.delete)),
           ],
         ),
-        body: Visibility(
-          visible: isLoaded,
-          child: ListView.builder(
-            itemCount: authors?.length,
-            itemBuilder: (context, index) {
-              return ListTile(
-                  title: Text(authors![index].name),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => TaskDetailPage(authors![index]))
-                    );
-              });
-            },
-          ),
-        ));
+        body: isLoaded
+            ? RefreshIndicator(
+                child: Visibility(
+                  visible: isLoaded,
+                  child: ListView.builder(
+                    itemCount: authors?.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                          title: Text(authors![index].name),
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        TaskDetailPage(authors![index])));
+                          });
+                    },
+                  ),
+                ),
+                onRefresh: () async {
+                  //_retrieveBooks();
+                  _retrieveAuthors()
+                      .then((model) => {setState(() => model = authors)});
+                })
+            : Center(
+                child: CircularProgressIndicator(),
+              ));
   }
 }
 
