@@ -6,16 +6,17 @@ from django.db import models
 
 class Team(models.Model):
     team_name = models.CharField(max_length=70, blank=False, default='')
-    team_code = models.CharField(max_length=6, blank=False)
+    team_code = models.CharField(max_length=6, blank=False, unique=True)
 
 
 class User(models.Model):
-    user_name = models.CharField(max_length=70, blank=False)
+    user_name = models.CharField(max_length=70, blank=False, unique=True)
     password = models.CharField(max_length=70, blank=False)
     first_name = models.CharField(max_length=70, blank=False)
     last_name = models.CharField(max_length=70, blank=False)
-    email = models.EmailField()
-    team = models.ForeignKey(Team, on_delete=models.PROTECT)
+    email = models.EmailField(unique=True)
+    team = models.ForeignKey(
+        Team, blank=True, null=True, on_delete=models.PROTECT)
     points = models.IntegerField()
 
 
