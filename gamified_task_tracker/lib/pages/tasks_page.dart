@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import '../RemoteAccess.dart';
 import '../authors.dart';
 import 'Task_detail_page.dart';
+import 'create_a_task_page.dart';
 
 class DataFromAPI extends StatefulWidget {
   const DataFromAPI({super.key});
@@ -85,7 +86,11 @@ class _DataFromAPIState extends State<DataFromAPI> {
           title: const Text('Tasks'),
           actions: <Widget>[
             IconButton(
-                onPressed: _postAuthor, icon: const Icon(Icons.add_card)),
+                onPressed: () => Navigator.push(context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                          const CreateATaskPage())),
+                icon: const Icon(Icons.add_card)),
             IconButton(
                 onPressed: _putAuthor,
                 icon: const Icon(Icons.create_new_folder)),
