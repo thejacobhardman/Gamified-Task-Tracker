@@ -3,13 +3,14 @@ from django.db import models
 
 # Create your models here.
 
-'''
+
 class Task(models.Model):
     task_name = models.CharField(max_length=70, blank=False, default='')
     description = models.CharField(max_length=200, blank=False, default='')
     completed = models.BooleanField(default=False)
     due_date = models.DateField()
     author_key = models.ForeignKey(User, on_delete=model.CASCADE)
+    points = models.IntegerField()
 
 
 class User(models.Model):
@@ -24,10 +25,10 @@ class User(models.Model):
 
 class Team(models.Model):
     team_name = models.CharField(max_length=70, blank=False, default='')
-    total_code = models.CharField(max_length=6, blank=False)
+    team_code = models.CharField(max_length=6, blank=False)
+
+
 '''
-
-
 class Author(models.Model):
     name = models.CharField(max_length=70, blank=False)
 
@@ -35,3 +36,4 @@ class Author(models.Model):
 class Book(models.Model):
     name = models.CharField(max_length=70, blank=False)
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
+'''
