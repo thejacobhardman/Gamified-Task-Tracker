@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
-const Color backgroundColor = Colors.indigo;
-const Color textColor = Colors.white;
-const double edgeInsets = 30.0;
+const Color backgroundColor = Colors.white;
+const Color textColor = Colors.black;
+const Color textColorAgainstPrimary = Colors.white;
+const Color primaryColor = Colors.purple;
+
+const double edgeInsets = 40.0;
 
 class FieldRow extends StatelessWidget {
 
@@ -62,7 +65,7 @@ class TaskTextField extends StatelessWidget {
           decoration: InputDecoration(
             hintText: hint,
             hintStyle: TextStyle(
-              color: Colors.blueGrey
+              color: Colors.grey,
             ),
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(
@@ -97,19 +100,17 @@ class CreateTaskPage extends StatelessWidget {
           title: const Text(
               "Add Task",
               style: TextStyle(
-                color: textColor,
+                color: textColorAgainstPrimary,
               )
           ),
           centerTitle: true,
           leading: GestureDetector(
               child: const Icon(
                 Icons.arrow_back,
-                color: textColor,
+                color: textColorAgainstPrimary,
               )
           ),
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-
+          backgroundColor: primaryColor,
         ),
         body: SingleChildScrollView(
           scrollDirection: Axis.vertical,
@@ -153,25 +154,20 @@ class CreateTaskPage extends StatelessWidget {
                   ])
               ),
               OutlinedButton(
-                style: ButtonStyle(
-                  foregroundColor: MaterialStateProperty.all<Color>(textColor),
-                  overlayColor: MaterialStateProperty.resolveWith<Color?>(
-                    (Set<MaterialState> states) {
-                      if (states.contains(MaterialState.hovered))
-                        return textColor.withOpacity(0.04);
-                      if (states.contains(MaterialState.focused) ||
-                          states.contains(MaterialState.pressed))
-                        return textColor.withOpacity(0.12);
-                      return null; // Defer to the widget's default.
-                    },
-                  ),
-                  shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0),
-                    side: BorderSide(color: Colors.white, width: 2.0)
-                    )),
+                style: OutlinedButton.styleFrom(
+                  side: BorderSide(
+                    color: textColor, 
+                    width: 3
+                    ),
+                  backgroundColor: Color.fromARGB(255, 217, 175, 224),
+                  shadowColor: Colors.black,
                 ),
                 onPressed: () { },
-                child: Text('Add'),
+                child: Text(
+                  'Add',
+                  style: TextStyle(
+                    color: textColor,
+                  )),
               )
             ]
           )
