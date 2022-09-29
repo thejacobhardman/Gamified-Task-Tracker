@@ -4,13 +4,9 @@ from django.db import models
 # Create your models here.
 
 
-class Task(models.Model):
-    task_name = models.CharField(max_length=70, blank=False, default='')
-    description = models.CharField(max_length=200, blank=False, default='')
-    completed = models.BooleanField(default=False)
-    due_date = models.DateField()
-    author_key = models.ForeignKey(User, on_delete=model.CASCADE)
-    points = models.IntegerField()
+class Team(models.Model):
+    team_name = models.CharField(max_length=70, blank=False, default='')
+    team_code = models.CharField(max_length=6, blank=False)
 
 
 class User(models.Model):
@@ -19,13 +15,17 @@ class User(models.Model):
     first_name = models.CharField(max_length=70, blank=False)
     last_name = models.CharField(max_length=70, blank=False)
     email = models.EmailField()
-    team = models.ForeignKey(Team)
+    team = models.ForeignKey(Team, on_delete=models.PROTECT)
     points = models.IntegerField()
 
 
-class Team(models.Model):
-    team_name = models.CharField(max_length=70, blank=False, default='')
-    team_code = models.CharField(max_length=6, blank=False)
+class Task(models.Model):
+    task_name = models.CharField(max_length=70, blank=False, default='')
+    description = models.CharField(max_length=200, blank=False, default='')
+    completed = models.BooleanField(default=False)
+    due_date = models.DateField()
+    author_key = models.ForeignKey(User, on_delete=models.CASCADE)
+    points = models.IntegerField()
 
 
 '''

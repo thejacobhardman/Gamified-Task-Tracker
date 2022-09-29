@@ -15,16 +15,17 @@ def userauth(request):
     # Example: [http://localhost:8000/authors], no body
     # Example: [http://localhost:8000/authors?name=Harry Jenkins], no body
     if request.method == 'GET':
-        user = User.objects.all()
+        fields = ('user_name', 'password')
+        user = User.objects.all().only('user_name', 'password')
         name = request.GET.get('user_name', None)
         if name is not None:
             user = user.filter(user_name=name)
-        users_serializer = UserAuthSerializer(user, many=True)
+        users_serializer = SimpleUserSerializer(user, many=True, fields=fields)
         return JsonResponse(users_serializer.data, safe=False)
 
 
 @api_view(['GET', 'POST', 'DELETE'])
-def user(request):
+def users(request):
 
     # Example: [http://localhost:8000/authors], no body
     # Example: [http://localhost:8000/authors?name=Harry Jenkins], no body
@@ -33,22 +34,22 @@ def user(request):
         name = request.GET.get('user_name', None)
         if name is not None:
             users = users.filter(user_name=name)
-        users_serializer = UserSerializer(users, many=True)
+        users_serializer = SimpleUserSerializer(users, many=True)
         return JsonResponse(users_serializer.data, safe=False)
 
-    # Example: [http://localhost:8000/authors], body has JSON author data
+    # Example: [http://localhost:8000/users], body has JSON author data
     elif request.method == 'POST':
-        author_data = JSONParser().parse(request)
-        author_serializer = AuthorSerializer(data=author_data)
-        if author_serializer.is_valid():
-            author_serializer.save()
-            return JsonResponse(author_serializer.data, status=status.HTTP_201_CREATED)
-        return JsonResponse(author_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        user_data = JSONParser().parse(request)
+        user_serializer = SimpleUserSerializer(data=user_data)
+        if user_serializer.is_valid():
+            user_serializer.save()
+            return JsonResponse(user_serializer.data, status=status.HTTP_201_CREATED)
+        return JsonResponse(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     # Example: [http://localhost:8000/authors], no body, KILLS EVERYTHING
     # Example: [http://localhost:8000/authors?name=Harry Jenkins], no body
     elif request.method == 'DELETE':
-        authors = Author.objects.all()
+        authors = User.objects.all()
         author_name = request.GET.get('name', None)
         if author_name is not None:
             authors = authors.filter(name=author_name)
@@ -56,6 +57,18 @@ def user(request):
         return JsonResponse({'message': '{} Authors were deleted successfully!'.format(count[0])}, status=status.HTTP_204_NO_CONTENT)
 
 
+@api_view(['POST'])
+def teams(request):
+    if request.method == 'POST':
+        team_data = JSONParser().parse(request)
+        team_serializer = TeamSerializer(data=team_data)
+        if team_serializer.is_valid():
+            team_serializer.save()
+            return JsonResponse(team_serializer.data, status=status.HTTP_201_CREATED)
+        return JsonResponse(team_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+'''
 @api_view(['GET', 'POST', 'DELETE'])
 def book(request):
 
@@ -147,7 +160,7 @@ def single_author(request, pk):
         return JsonResponse({'message': 'Author was deleted successfully.'}, status=status.HTTP_204_NO_CONTENT)
 
 
-'''
+
 @api_view(['GET', 'POST', 'DELETE'])
 def tutorial_list(request):
     # GET list of tutorials, POST a new tutorial, DELETE all tutorials
