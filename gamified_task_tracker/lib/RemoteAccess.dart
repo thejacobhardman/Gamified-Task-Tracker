@@ -8,7 +8,7 @@ import 'package:http/http.dart';
 
 class RemoteAccess {
   Client client = http.Client();
-  String api = "http://ec2-54-213-164-187.us-west-2.compute.amazonaws.com";
+  String api = "http://10.0.2.2:8000";
   Future<List<Tasks>?> getTasks() async {
     var uri = Uri.parse('https://jsonplaceholder.typicode.com/todos');
     var response = await client.get(uri);

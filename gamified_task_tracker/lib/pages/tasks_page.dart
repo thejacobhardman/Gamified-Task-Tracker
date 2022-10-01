@@ -9,8 +9,11 @@ import '../authors.dart';
 import 'Task_detail_page.dart';
 import 'create_a_task_page.dart';
 
+import 'package:firebase_auth/firebase_auth.dart';
+import '../auth.dart';
+
 class DataFromAPI extends StatefulWidget {
-  const DataFromAPI({super.key});
+  DataFromAPI({Key? key}) : super(key: key);
 
   @override
   _DataFromAPIState createState() => _DataFromAPIState();
@@ -26,8 +29,7 @@ class _DataFromAPIState extends State<DataFromAPI> {
   void _postAuthor() async {
     //var book = Books(name: "Harry Jenkin's Book about stuff and things", author: 2);
     var author = Authors(name: "Jameson Franklin");
-    var response =
-        await access.post("/authors", author).catchError((err) {});
+    var response = await access.post("/authors", author).catchError((err) {});
     if (response == null) {
       return;
     }
@@ -72,6 +74,10 @@ class _DataFromAPIState extends State<DataFromAPI> {
     return books;
   }
 
+  Future<void> signOut() async {
+    await Auth().signOut();
+  }
+
   @override
   void initState() {
     //_retrieveBooks();
@@ -86,16 +92,19 @@ class _DataFromAPIState extends State<DataFromAPI> {
           title: const Text('Tasks'),
           actions: <Widget>[
             IconButton(
-                onPressed: () => Navigator.push(context,
+                onPressed: () => Navigator.push(
+                    context,
                     MaterialPageRoute(
-                        builder: (context) =>
-                          const CreateATaskPage())),
+                        builder: (context) => const CreateATaskPage())),
                 icon: const Icon(Icons.add_card)),
             IconButton(
                 onPressed: _putAuthor,
                 icon: const Icon(Icons.create_new_folder)),
             IconButton(
                 onPressed: _removeAuthor, icon: const Icon(Icons.delete)),
+            IconButton(
+                onPressed: _removeAuthor, icon: const Icon(Icons.delete)),
+            IconButton(onPressed: signOut, icon: const Text('Sign Out')),
           ],
         ),
         body: isLoaded
@@ -128,7 +137,10 @@ class _DataFromAPIState extends State<DataFromAPI> {
   }
 }
 
+/* This class cannot exist under tasks_page.dart with login pushing to tasks_page.dart
+   A new .dart file will be needed for this class
 class User {
   final String name, email, userName;
   User(this.name, this.email, this.userName);
 }
+*/
