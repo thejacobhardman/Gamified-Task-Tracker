@@ -9,7 +9,7 @@ from tasks.serializers import *
 from rest_framework.decorators import api_view
 
 
-@api_view(['GET'])
+""" @api_view(['GET'])
 def userauth(request):
 
     # Example: [http://localhost:8000/authors], no body
@@ -21,23 +21,23 @@ def userauth(request):
         if name is not None:
             user = user.filter(user_name=name)
         users_serializer = SimpleUserSerializer(user, many=True, fields=fields)
-        return JsonResponse(users_serializer.data, safe=False)
+        return JsonResponse(users_serializer.data, safe=False) """
 
 
-@api_view(['GET', 'POST', 'DELETE'])
+@api_view(['GET', 'POST', 'PUT', 'DELETE'])
 def users(request):
 
-    # Example: [http://localhost:8000/authors], no body
-    # Example: [http://localhost:8000/authors?name=Harry Jenkins], no body
+    # Example: [http://localhost:8000/user?username=Harry Jenkins], no body
     if request.method == 'GET':
         users = User.objects.all()
-        name = request.GET.get('user_name', None)
+        name = request.GET.get('username', None)
         if name is not None:
             users = users.filter(user_name=name)
-        users_serializer = SimpleUserSerializer(users, many=True)
-        return JsonResponse(users_serializer.data, safe=False)
+            users_serializer = SimpleUserSerializer(users, many=True)
+            return JsonResponse(users_serializer.data, safe=False)
+        return JsonResponse({'message': 'No username paramater passed in URL.'}, status=status.HTTP_400_BAD_REQUEST)
 
-    # Example: [http://localhost:8000/users], body has JSON author data
+    # Example: [http://localhost:8000/user], body has JSON user data
     elif request.method == 'POST':
         user_data = JSONParser().parse(request)
         user_serializer = SimpleUserSerializer(data=user_data)
@@ -46,19 +46,38 @@ def users(request):
             return JsonResponse(user_serializer.data, status=status.HTTP_201_CREATED)
         return JsonResponse(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    # Example: [http://localhost:8000/authors], no body, KILLS EVERYTHING
-    # Example: [http://localhost:8000/authors?name=Harry Jenkins], no body
+    # Example: [http://localhost:8000/user?username=Harry Jenkins], no body
+    if request.method == 'PUT':
+        fields = ('user_name', 'first_name', 'last_name',
+                  'points', 'email', 'team', 'points')
+        try:
+            username = request.GET.get('username', None)
+            user = User.objects.get(user_name=username)
+        except User.DoesNotExist:
+            return JsonResponse({'message': 'The user does not exist'}, status=status.HTTP_404_NOT_FOUND)
+        user_data = JSONParser().parse(request)
+        user_serializer = SimpleUserSerializer(
+            user, data=user_data, fields=fields, partial=True)
+        if user_serializer.is_valid():
+            user_serializer.save()
+            return JsonResponse(user_serializer.data)
+        return JsonResponse(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    # Example: [http://localhost:8000/user?username=Harry Jenkins], no body
     elif request.method == 'DELETE':
-        authors = User.objects.all()
-        author_name = request.GET.get('name', None)
-        if author_name is not None:
-            authors = authors.filter(name=author_name)
-        count = authors.delete()
-        return JsonResponse({'message': '{} Authors were deleted successfully!'.format(count[0])}, status=status.HTTP_204_NO_CONTENT)
+        users = User.objects.all()
+        name = request.GET.get('username', None)
+        if name is not None:
+            users = users.filter(user_name=name)
+            count = users.delete()
+            return JsonResponse({'message': '{} Users were deleted successfully.'.format(count[0])}, status=status.HTTP_204_NO_CONTENT)
+        return JsonResponse({'message': 'No username paramater passed in URL.'}, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['POST'])
+@api_view(['POST', 'GET'])
 def teams(request):
+
+    # Example: [http://localhost:8000/teams], body has JSON team data
     if request.method == 'POST':
         team_data = JSONParser().parse(request)
         team_serializer = TeamSerializer(data=team_data)
@@ -66,6 +85,28 @@ def teams(request):
             team_serializer.save()
             return JsonResponse(team_serializer.data, status=status.HTTP_201_CREATED)
         return JsonResponse(team_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    # Example: [http://localhost:8000/teams], no body
+    if request.method == 'GET':
+        teams = Team.objects.all()
+        teams_serializer = TeamSerializer(teams, many=True)
+        return JsonResponse(teams_serializer.data, safe=False)
+
+
+@api_view(['GET'])
+def team_users(request):
+
+    # Example: [http://localhost:8000/teamusers?teamid=1], no body
+    if request.method == 'GET':
+        fields = ('user_name', 'first_name', 'last_name', 'points')
+        users = User.objects.all()
+        team_id = request.GET.get('teamid', None)
+        if team_id is not None:
+            users = users.filter(team=team_id)
+            users_serializer = SimpleUserSerializer(
+                users, many=True, fields=fields)
+            return JsonResponse(users_serializer.data, safe=False)
+        return JsonResponse({'message': 'No teamname paramater passed in URL.'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 '''
