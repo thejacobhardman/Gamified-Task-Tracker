@@ -1,12 +1,6 @@
 import 'package:flutter/material.dart';
-import 'ttform.dart';
-
-const Color backgroundColor = Colors.white;
-const Color textColor = Colors.black;
-const Color textColorAgainstPrimary = Colors.white;
-const Color primaryColor = Colors.purple;
-
-const double edgeInsets = 40.0;
+import 'style.dart';
+import 'widgets/ttform.dart';
 
 class CreateTaskPage extends StatelessWidget {
   const CreateTaskPage({super.key});
@@ -53,23 +47,17 @@ class CreateTaskForm extends StatefulWidget {
 
 class CreateTaskFormState extends State<CreateTaskForm> {
 
-  final _formKey = GlobalKey<FormState>();  
-
   bool showTimingFields = false;
 
   @override
   Widget build(BuildContext context) {
-
-    return Form(  
-      key: _formKey,  
-      child: Column(  
-        crossAxisAlignment: CrossAxisAlignment.start,  
+    return TTForm(
         children: <Widget>[  
           TTTextField(labelText: "Task Name"),
           TTTextField(labelText: "Description", maxLines: 5),
           TTTextField(labelText: "Points"),
           Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.all(itemSpacing),
             child: Row(
               mainAxisSize: MainAxisSize.max,
               children: [
@@ -93,23 +81,24 @@ class CreateTaskFormState extends State<CreateTaskForm> {
             Expanded(child:TTTextField(labelText: "Minutes")),
           ],) : Container(),
           Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: TextButton(
+            padding: const EdgeInsets.all(itemSpacing),
+            child: Center(
+              child: TextButton(
               onPressed: null,  // form submission logic goes here
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(primaryColor),
                 elevation: MaterialStateProperty.all(5.0),
               ),
               child: const Text(
-                'Submit',
+                'Add',
                 style: TextStyle(
                   color: textColorAgainstPrimary
                 )
               ),
             ),
+            )
           ),
         ],  
-      ),  
     );  
   }
 
