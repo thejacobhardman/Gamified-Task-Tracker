@@ -12,12 +12,14 @@ class Team(models.Model):
 class User(models.Model):
     user_name = models.CharField(max_length=70, blank=False, unique=True)
     password = models.CharField(max_length=70, blank=False)
-    first_name = models.CharField(max_length=70, blank=False)
-    last_name = models.CharField(max_length=70, blank=False)
-    email = models.EmailField(unique=True)
+    first_name = models.CharField(
+        max_length=70, blank=True, null=True, default=None)
+    last_name = models.CharField(
+        max_length=70, blank=True, null=True, default=None)
+    email = models.EmailField(unique=True, blank=True, null=True, default=None)
     team = models.ForeignKey(
-        Team, blank=True, null=True, on_delete=models.PROTECT)
-    points = models.IntegerField()
+        Team, blank=True, null=True, default=None, on_delete=models.PROTECT)
+    points = models.IntegerField(blank=True, null=True, default=None)
 
 
 class Task(models.Model):
