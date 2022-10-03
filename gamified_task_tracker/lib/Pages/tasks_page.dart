@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 //import 'package:gamified_task_tracker/task.dart'; unused rn
-import 'package:gamified_task_tracker/books.dart';
 import 'package:http/http.dart' as http;
 //import 'package:http/http.dart'; unused, might need later
 
+import '../Models/books.dart';
 import '../RemoteAccess.dart';
-import '../authors.dart';
+import '../Models/authors.dart';
 import 'Task_detail_page.dart';
 import 'create_a_task_page.dart';
 

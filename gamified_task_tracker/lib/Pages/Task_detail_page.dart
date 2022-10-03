@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../authors.dart';
+import '../Models/authors.dart';
 
 class TaskDetailPage extends StatelessWidget {
   final Authors author;

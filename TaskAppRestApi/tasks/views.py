@@ -30,9 +30,9 @@ def users(request):
     # Example: [http://localhost:8000/user?username=Harry Jenkins], no body
     if request.method == 'GET':
         users = User.objects.all()
-        name = request.GET.get('username', None)
-        if name is not None:
-            users = users.filter(user_name=name)
+        email = request.GET.get('email', None)
+        if email is not None:
+            users = users.filter(email=email)
             users_serializer = SimpleUserSerializer(users, many=True)
             return JsonResponse(users_serializer.data, safe=False)
         return JsonResponse({'message': 'No username paramater passed in URL.'}, status=status.HTTP_400_BAD_REQUEST)

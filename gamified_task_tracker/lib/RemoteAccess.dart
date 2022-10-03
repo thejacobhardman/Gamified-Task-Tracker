@@ -1,10 +1,13 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 
-import 'package:gamified_task_tracker/authors.dart';
-import 'package:gamified_task_tracker/books.dart';
-import 'package:gamified_task_tracker/task.dart';
+import 'package:gamified_task_tracker/Models/authors.dart';
+import 'package:gamified_task_tracker/Models/task.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
+
+import 'Models/books.dart';
+import 'Models/users.dart';
 
 class RemoteAccess {
   Client client = http.Client();
@@ -51,6 +54,19 @@ class RemoteAccess {
     if (response.statusCode == 200) {
       var json = response.body;
       return authorsFromJson(json);
+    }
+  }
+
+  Future<List<Users>?> getUsers(String? email) async {
+    var uri = Uri.parse("$api/user?email=$email");
+    var response = await client.get(uri);
+    if (response.statusCode == 200) {
+      debugPrint("Successful");
+      var json = response.body;
+      return usersFromJson(json);
+    } else {
+      debugPrint("Not Successful");
+      return null;
     }
   }
 

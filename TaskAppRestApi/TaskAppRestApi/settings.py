@@ -20,12 +20,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '<djangosecretkey>'
+SECRET_KEY = 'django-insecure-tc5=$25kxf)%^%xc@558gym4aazd&_cnst!l!+c1$&@@@g03lt'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['10.0.2.2']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -83,7 +83,7 @@ DATABASES = {
         'ENGINE': 'djongo',
         'NAME': 'TaskAppDB',
         'CLIENT': {
-            'host': 'mongodb+srv://<mongocredentials>@taskappcluster.mvz2etz.mongodb.net/?retryWrites=true&w=majority'
+            'host': 'mongodb+srv://dbuser_xx83nfj21y:Q6dpRXkY7I1BKg21@taskappcluster.mvz2etz.mongodb.net/?retryWrites=true&w=majority'
         }
     }
 }
