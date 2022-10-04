@@ -21,7 +21,6 @@ class DataFromAPI extends StatefulWidget {
 
 class _DataFromAPIState extends State<DataFromAPI> {
   //List<Tasks>? tasks;
-  List<Books>? books;
   List<Authors>? authors;
   RemoteAccess access = RemoteAccess();
   var isLoaded = false;
@@ -58,30 +57,12 @@ class _DataFromAPIState extends State<DataFromAPI> {
     debugPrint("Successful");
   }
 
-  Future _retrieveAuthors() async {
-    authors = await access.getAuthors("/authors");
-    if (authors != null) {
-      isLoaded = true;
-    }
-    return authors;
-  }
-
-  Future _retrieveBooks() async {
-    books = await access.getBooks("/books");
-    if (books != null) {
-      isLoaded = true;
-    }
-    return books;
-  }
-
   Future<void> signOut() async {
     await Auth().signOut();
   }
 
   @override
   void initState() {
-    //_retrieveBooks();
-    _retrieveAuthors().then((model) => {setState(() => model = authors)});
     super.initState();
   }
 
@@ -127,20 +108,9 @@ class _DataFromAPIState extends State<DataFromAPI> {
                   ),
                 ),
                 onRefresh: () async {
-                  //_retrieveBooks();
-                  _retrieveAuthors()
-                      .then((model) => {setState(() => model = authors)});
                 })
             : Center(
                 child: CircularProgressIndicator(),
               ));
   }
 }
-
-/* This class cannot exist under tasks_page.dart with login pushing to tasks_page.dart
-   A new .dart file will be needed for this class
-class User {
-  final String name, email, userName;
-  User(this.name, this.email, this.userName);
-}
-*/

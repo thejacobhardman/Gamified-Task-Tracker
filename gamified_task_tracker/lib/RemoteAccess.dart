@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 
 import 'Models/books.dart';
+import 'Models/teams.dart';
 import 'Models/users.dart';
 
 class RemoteAccess {
@@ -42,24 +43,6 @@ class RemoteAccess {
     }
   }
 
-  Future<List<Books>?> getBooks(String branch) async {
-    var uri = Uri.parse(api + branch);
-    var response = await client.get(uri);
-    if (response.statusCode == 200) {
-      var json = response.body;
-      return booksFromJson(json);
-    }
-  }
-
-  Future<List<Authors>?> getAuthors(String branch) async {
-    var uri = Uri.parse(api + branch);
-    var response = await client.get(uri);
-    if (response.statusCode == 200) {
-      var json = response.body;
-      return authorsFromJson(json);
-    }
-  }
-
   Future<List<Users>?> getUsers(String? email) async {
     var uri = Uri.parse("$api/user?email=$email");
     var response = await client.get(uri);
@@ -80,6 +63,19 @@ class RemoteAccess {
       debugPrint("Successful");
       var json = response.body;
       return teamUsersFromJson(json);
+    } else {
+      debugPrint("Not Successful");
+      return null;
+    }
+  }
+
+  Future<List<Teams>?> getTeams(String? branch) async {
+    var uri = Uri.parse("$api$branch");
+    var response = await client.get(uri);
+    if (response.statusCode == 200) {
+      debugPrint("Successful");
+      var json = response.body;
+      return teamsFromJson(json);
     } else {
       debugPrint("Not Successful");
       return null;

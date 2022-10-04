@@ -15,7 +15,7 @@ class _LoginPageState extends State<LoginPage> {
   String? errorMessage = '';
   bool isLogin = true;
   RemoteAccess access = RemoteAccess();
-  Auth _auth = Auth();
+  final Auth _auth = Auth();
 
   final TextEditingController _controllerEmail = TextEditingController();
   final TextEditingController _controllerPassword = TextEditingController();
@@ -41,11 +41,12 @@ class _LoginPageState extends State<LoginPage> {
     try {
       print(_controllerEmail.text);
       await _auth.signInWithEmailAndPassword(
-        email: "test@testemail.test",
-        password: "testPassword",
+        email: _controllerEmail.text,
+        password: _controllerPassword.text,
       );
     } on FirebaseAuthException catch (e) {
       setState(() {
+        print(e.code);
         errorMessage = e.message;
       });
     }

@@ -7,6 +7,7 @@ import 'package:gamified_task_tracker/pages/tasks_page.dart';
 import '../Models/users.dart';
 import '../RemoteAccess.dart';
 import '../auth.dart';
+import 'join_a_team_page.dart';
 import 'leaderboard_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -77,6 +78,14 @@ class _HopePageState extends State<HomePage> {
         child: const Text('Open Tasks'));
   }
 
+  Widget _joinTeam(BuildContext context) {
+    return ElevatedButton(
+        onPressed: () =>
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => JoinTeamPage(userData![0]))),
+        child: const Text('Join a Team'));
+  }
+
   _testUserChange() {
     return ElevatedButton(onPressed: retrieveUser,
         child: const Text("test"));
@@ -113,7 +122,7 @@ class _HopePageState extends State<HomePage> {
                 _userUid(),
                 _signOutButton(),
                 _openTasks(context),
-                _testUserChange(),
+                _joinTeam(context),
                 _viewLeaderboard(),
                 //_joinTeam(),
                 //_makeTeam(),
