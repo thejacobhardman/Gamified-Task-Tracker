@@ -48,7 +48,8 @@ def users(request):
 
     # Example: [http://localhost:8000/user?username=Harry Jenkins], no body
     if request.method == 'PUT':
-        fields = ('user_name', 'first_name', 'last_name', 'email', 'team', 'points')
+        fields = ('user_name', 'first_name',
+                  'last_name', 'email', 'team', 'points')
         try:
             username = request.GET.get('username', None)
             user = User.objects.get(user_name=username)
@@ -175,6 +176,27 @@ def tasks(request):
             else:
                 return JsonResponse({'message': 'Task does not exist.'}, status=status.HTTP_404_NOT_FOUND)
         return JsonResponse({'message': 'No task_name paramater passed in URL.'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+def allusers(request):
+    users = User.objects.all()
+    users_serializer = SimpleUserSerializer(users, many=True)
+    return JsonResponse(users_serializer.data, safe=False)
+
+
+@api_view(['GET'])
+def allteams(request):
+    teams = User.objects.all()
+    teams_serializer = TeamSerializer(users, many=True)
+    return JsonResponse(teams_serializer.data, safe=False)
+
+
+@api_view(['GET'])
+def alltasks(request):
+    tasks = Task.objects.all()
+    tasks_serializer = TaskSerializer(users, many=True)
+    return JsonResponse(tasks_serializer.data, safe=False)
 
 
 '''
