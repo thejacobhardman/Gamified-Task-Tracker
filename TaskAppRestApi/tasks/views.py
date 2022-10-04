@@ -78,7 +78,7 @@ def teams(request):
 
     # Example: [http://localhost:8000/team?team_code=ABC123], no body
     if request.method == 'GET':
-        fullTeam = Team.object.all()
+        fullTeam = Team.objects.all()
         teamCode = request.GET.get('team_code', None)
 
         if teamCode is not None:

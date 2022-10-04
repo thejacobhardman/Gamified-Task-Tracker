@@ -11,14 +11,17 @@ String teamsToJson(List<Teams> data) => json.encode(List<dynamic>.from(data.map(
 
 class Teams {
   Teams({
+    this.id,
     this.teamName,
     required this.teamCode,
   });
 
+  int? id;
   String? teamName;
   String teamCode;
 
   factory Teams.fromJson(Map<String, dynamic> json) => Teams(
+    id: json["id"],
     teamName: json["team_name"],
     teamCode: json["team_code"],
   );

@@ -41,6 +41,9 @@ class RemoteAccess {
     if (response.statusCode == 200) {
       return response.body;
     }
+    if (response.statusCode == 404) {
+      print(response.statusCode);
+    }
   }
 
   Future<List<Users>?> getUsers(String? email) async {
@@ -51,7 +54,7 @@ class RemoteAccess {
       var json = response.body;
       return usersFromJson(json);
     } else {
-      debugPrint("Not Successful");
+      debugPrint("User Not Successful");
       return null;
     }
   }
@@ -64,20 +67,20 @@ class RemoteAccess {
       var json = response.body;
       return teamUsersFromJson(json);
     } else {
-      debugPrint("Not Successful");
+      debugPrint("Team User Not Successful");
       return null;
     }
   }
 
   Future<List<Teams>?> getTeams(String? branch) async {
-    var uri = Uri.parse("$api$branch");
+    var uri = Uri.parse("$api/team?team_code=$branch");
     var response = await client.get(uri);
     if (response.statusCode == 200) {
       debugPrint("Successful");
       var json = response.body;
       return teamsFromJson(json);
     } else {
-      debugPrint("Not Successful");
+      debugPrint("Team Not Successful");
       return null;
     }
   }

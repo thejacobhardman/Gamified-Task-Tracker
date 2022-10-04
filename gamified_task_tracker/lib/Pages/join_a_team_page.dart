@@ -27,7 +27,6 @@ class _JoinTeamPageState extends State<JoinTeamPage> {
   @override
   void initState() {
     super.initState();
-    _retrieveTeams().then((model) => {setState(() => model = teamList)});
   }
 
   Widget _entryField(
@@ -44,35 +43,37 @@ class _JoinTeamPageState extends State<JoinTeamPage> {
 
 
   Future _retrieveTeams() async {
-    teamList = await access.getTeams("/teams");
+    teamList = await access.getTeams("/team");
     if (teamList != null) {
+    } else {
+      print('nullTeam');
     }
     return teamList;
   }
 
   Future _checkTeam() async {
-    for (int x = 0; x < teamList!.length; x++) {
-      if (_controllerTeamCODE.text == teamList![x]?.teamCode) {
-        _changeTeam(_controllerTeamCODE.text);
-      } else {
-        showErrorSnackBar();
-      }
+    teamList = await access.getTeams(_controllerTeamCODE.text);
+    if (teamList != null && _controllerTeamCODE.text == teamList![0]?.teamCode) {
+      _changeTeam(teamList![0]?.id);
+    } else {
+      showErrorSnackBar();
     }
   }
 
-  Future _changeTeam(String teamid) async {
-    var id = widget.user.id;
-    int teamID = int.parse(teamid);
+  Future _changeTeam(int? teamid) async {
+    print(teamid);
+    var name = widget.user.userName;
     var teamChange = Users(
-        userName: widget.user.userName,
+        userName: name,
         firstName: widget.user.firstName,
         lastName: widget.user.lastName,
         email: widget.user.email,
-        points: widget.user.points,
-        team: teamID);
+        points: 100,
+        team: teamid);
     var response =
-    await access.put("/user/$id", teamChange).catchError((err) {});
+    await access.put("/user?username=$name", teamChange).catchError((err) {});
     if (response == null) {
+      print("null");
       return;
     }
     debugPrint("Successful");
