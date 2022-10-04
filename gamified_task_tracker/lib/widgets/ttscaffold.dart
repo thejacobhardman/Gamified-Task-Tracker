@@ -7,14 +7,17 @@ class TTScaffold extends StatelessWidget {
 
   final String title;
   Widget body;
+  bool hasAppBar;
+  Color bgColor;
+  bool scrollable;
 
-  TTScaffold({super.key, required this.title, required this.body});
+  TTScaffold({super.key, required this.title, required this.body, this.hasAppBar = true, this.bgColor = backgroundColor, this.scrollable = true});
   
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: backgroundColor,
-        appBar: AppBar(
+        backgroundColor: bgColor,
+        appBar: hasAppBar ? AppBar(
           title: Text(
               title,
               style: TextStyle(
@@ -29,15 +32,18 @@ class TTScaffold extends StatelessWidget {
               )
           ),
           backgroundColor: primaryColor,
-        ),
-        body: SingleChildScrollView(
+        ) : null,
+        body: scrollable ? SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child:
             Container(
           padding: const EdgeInsets.all(edgeInsets),
           child: body
           )
-        )
+        ) : Container(
+          padding: const EdgeInsets.all(edgeInsets),
+          child: body
+          )
       );
   }  
 }  

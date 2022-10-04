@@ -1,0 +1,28 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "gamified_task_tracker",
+            "cwd": "gamified_task_tracker",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "gamified_task_tracker (profile mode)",
+            "cwd": "gamified_task_tracker",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "gamified_task_tracker (release mode)",
+            "cwd": "gamified_task_tracker",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}
