@@ -7,6 +7,7 @@ import 'package:gamified_task_tracker/pages/tasks_page.dart';
 import '../Models/users.dart';
 import '../RemoteAccess.dart';
 import '../auth.dart';
+import 'leaderboard_page.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
@@ -56,13 +57,12 @@ class _HopePageState extends State<HomePage> {
     return userData;
   }
 
-
   Future openTasks() async {
     return DataFromAPI();
   }
 
   Widget _title() {
-    return Text('Task Tracker:'+firstname);
+    return Text('Task Tracker: '+firstname);
   }
 
   Widget _userUid() {
@@ -114,8 +114,18 @@ class _HopePageState extends State<HomePage> {
                 _signOutButton(),
                 _openTasks(context),
                 _testUserChange(),
+                _viewLeaderboard(),
+                //_joinTeam(),
+                //_makeTeam(),
               ],
             )));
   }
 
+  _viewLeaderboard() {
+    return ElevatedButton(
+        onPressed: () =>
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => LeaderboardPage(userData![0]))),
+        child: const Text('Leaderboard'));
+  }
 }

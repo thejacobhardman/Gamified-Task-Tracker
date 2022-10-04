@@ -13,21 +13,21 @@ class Users {
   Users({
     this.id,
     required this.userName,
-    this.password,
+    required this.password,
     this.firstName,
     this.lastName,
     required this.email,
-    this.points,
+    required this.points,
     this.team,
   });
 
   int? id;
   String userName;
-  String? password;
+  String password;
   String? firstName;
   String? lastName;
   String email;
-  int? points;
+  int points;
   int? team;
 
   factory Users.fromJson(Map<String, dynamic> json) => Users(

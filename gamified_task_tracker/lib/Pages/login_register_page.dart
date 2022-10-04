@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:gamified_task_tracker/Models/users.dart';
+import 'package:gamified_task_tracker/RemoteAccess.dart';
 import '../auth.dart';
 
 class LoginPage extends StatefulWidget {
@@ -12,15 +14,35 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   String? errorMessage = '';
   bool isLogin = true;
+  RemoteAccess access = RemoteAccess();
+  Auth _auth = Auth();
 
   final TextEditingController _controllerEmail = TextEditingController();
   final TextEditingController _controllerPassword = TextEditingController();
+  final TextEditingController _controllerUsername = TextEditingController();
+
+  void _createUser() async {
+    var user = Users(
+      userName: _controllerUsername.text,
+      firstName: null,
+      lastName: null,
+      password: _controllerPassword.text,
+      email: _controllerEmail.text,
+      team: null,
+      points: 0);
+    var response = await access.post("/user", user).catchError((err) {});
+    if (response == null) {
+      return;
+    }
+    debugPrint("Successful");
+  }
 
   Future<void> signInWithEmailAndPassword() async {
     try {
-      await Auth().signInWithEmailAndPassword(
-        email: _controllerEmail.text,
-        password: _controllerPassword.text,
+      print(_controllerEmail.text);
+      await _auth.signInWithEmailAndPassword(
+        email: "test@testemail.test",
+        password: "testPassword",
       );
     } on FirebaseAuthException catch (e) {
       setState(() {
@@ -31,10 +53,11 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> createUserWithEmailAndPassword() async {
     try {
-      await Auth().createUserWithEmailAndPassword(
+      await _auth.createUserWithEmailAndPassword(
         email: _controllerEmail.text,
         password: _controllerPassword.text,
       );
+      _createUser();
     } on FirebaseAuthException catch (e) {
       setState(() {
         errorMessage = e.message;
@@ -94,6 +117,7 @@ class _LoginPageState extends State<LoginPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
+                _entryField('username', _controllerUsername),
                 _entryField('email', _controllerEmail),
                 _entryField('password', _controllerPassword),
                 _errorMessage(),
