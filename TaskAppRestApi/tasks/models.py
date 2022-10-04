@@ -1,4 +1,5 @@
 from django.db import models
+import uuid
 # from djongo import models
 
 # Create your models here.
@@ -6,7 +7,8 @@ from django.db import models
 
 class Team(models.Model):
     team_name = models.CharField(max_length=70, blank=False, default='')
-    team_code = models.CharField(max_length=6, blank=False, unique=True)
+    team_code = models.CharField(
+        blank=False, unique=True, max_length=6, editable=False, default=str(uuid.uuid4().hex[:6].upper()))
 
 
 class User(models.Model):

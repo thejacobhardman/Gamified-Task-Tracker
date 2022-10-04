@@ -77,7 +77,26 @@ def users(request):
 @api_view(['POST', 'GET'])
 def teams(request):
 
-    # Example: [http://localhost:8000/teams], body has JSON team data
+    # Example: [http://localhost:8000/team?team_code=ABC123], no body
+    if request.method == 'GET':
+        fullTeam = Team.object.all()
+        teamCode = request.GET.get('team_code', None)
+
+        if teamCode is not None:
+            fullTeam = fullTeam.filter(team_code=teamCode)
+        team_serializer = TeamSerializer(fullTeam, many=True)
+        return JsonResponse(team_serializer.data, safe=False)
+
+    # Example: [http://localhost:8000/team], body has JSON user data
+    if request.method == 'PUT':
+        team_data = JSONParser().parse(request)
+        team_serializer = TeamSerializer(data=team_data)
+        if team_serializer.is_valid():
+            team_serializer.save()
+            return JsonResponse(team_serializer.data)
+        return JsonResponse(team_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    # Example: [http://localhost:8000/team], body has JSON user data
     if request.method == 'POST':
         team_data = JSONParser().parse(request)
         team_serializer = TeamSerializer(data=team_data)
@@ -86,11 +105,18 @@ def teams(request):
             return JsonResponse(team_serializer.data, status=status.HTTP_201_CREATED)
         return JsonResponse(team_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    # Example: [http://localhost:8000/teams], no body
-    if request.method == 'GET':
+    # Example: [http://localhost:8000/team?team_code=ABC123], no body
+    elif request.method == 'DELETE':
         teams = Team.objects.all()
-        teams_serializer = TeamSerializer(teams, many=True)
-        return JsonResponse(teams_serializer.data, safe=False)
+        teamCode = request.GET.get('team_code', None)
+        if teamCode is not None:
+            teams = teams.filter(team_code=teamCode)
+            count = teams.delete()
+            if count > 0:
+                return JsonResponse({'message': 'Team was deleted successfully.'}, status=status.HTTP_204_NO_CONTENT)
+            else:
+                return JsonResponse({'message': 'Team does not exist.'}, status=status.HTTP_404_NOT_FOUND)
+        return JsonResponse({'message': 'No team_name paramater passed in URL.'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET'])
@@ -107,6 +133,49 @@ def team_users(request):
                 users, many=True, fields=fields)
             return JsonResponse(users_serializer.data, safe=False)
         return JsonResponse({'message': 'No teamname paramater passed in URL.'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST', 'PUT', 'GET', 'DELETE'])
+def tasks(request):
+
+    # Example: [http://localhost:8000/task?task_id=3], no body
+    if request.method == 'GET':
+        taskID = request.GET.get('task_id', None)
+
+        if taskID is not None:
+            task = Task.objects.get(pk=taskID)
+        task_serializer = TaskSerializer(task, many=True)
+        return JsonResponse(task_serializer.data, safe=False)
+
+    # Example: [http://localhost:8000/task], body has JSON user dat
+    if request.method == 'PUT':
+        task_data = JSONParser().parse(request)
+        task_serializer = TaskSerializer(data=task_data)
+        if task_serializer.is_valid():
+            task_serializer.save()
+            return JsonResponse(task_serializer.data)
+        return JsonResponse(task_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    # Example: [http://localhost:8000/task], body has JSON user data
+    if request.method == 'POST':
+        task_data = JSONParser().parse(request)
+        task_serializer = TaskSerializer(data=task_data)
+        if task_serializer.is_valid():
+            task_serializer.save()
+            return JsonResponse(task_serializer.data, status=status.HTTP_201_CREATED)
+        return JsonResponse(task_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    # Example: [http://localhost:8000/task?task_id=3], no body
+    elif request.method == 'DELETE':
+        taskID = request.GET.get('task_id', None)
+        if taskID is not None:
+            task = Task.object.get(pk=taskID)
+            count = task.delete()
+            if count > 0:
+                return JsonResponse({'message': 'Task was deleted successfully.'}, status=status.HTTP_204_NO_CONTENT)
+            else:
+                return JsonResponse({'message': 'Task does not exist.'}, status=status.HTTP_404_NOT_FOUND)
+        return JsonResponse({'message': 'No task_name paramater passed in URL.'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 '''
