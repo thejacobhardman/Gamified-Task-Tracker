@@ -7,6 +7,8 @@ import 'package:gamified_task_tracker/pages/tasks_page.dart';
 import '../Models/users.dart';
 import '../RemoteAccess.dart';
 import '../auth.dart';
+import 'join_a_team_page.dart';
+import 'leaderboard_page.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
@@ -56,13 +58,12 @@ class _HopePageState extends State<HomePage> {
     return userData;
   }
 
-
   Future openTasks() async {
     return DataFromAPI();
   }
 
   Widget _title() {
-    return Text('Task Tracker:'+firstname);
+    return Text('Task Tracker: '+firstname);
   }
 
   Widget _userUid() {
@@ -75,6 +76,14 @@ class _HopePageState extends State<HomePage> {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => DataFromAPI())),
         child: const Text('Open Tasks'));
+  }
+
+  Widget _joinTeam(BuildContext context) {
+    return ElevatedButton(
+        onPressed: () =>
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => JoinTeamPage(userData![0]))),
+        child: const Text('Join a Team'));
   }
 
   _testUserChange() {
@@ -113,9 +122,19 @@ class _HopePageState extends State<HomePage> {
                 _userUid(),
                 _signOutButton(),
                 _openTasks(context),
-                _testUserChange(),
+                _joinTeam(context),
+                _viewLeaderboard(),
+                //_joinTeam(),
+                //_makeTeam(),
               ],
             )));
   }
 
+  _viewLeaderboard() {
+    return ElevatedButton(
+        onPressed: () =>
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => LeaderboardPage(userData![0]))),
+        child: const Text('Leaderboard'));
+  }
 }

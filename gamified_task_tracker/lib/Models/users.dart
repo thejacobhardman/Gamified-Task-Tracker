@@ -12,21 +12,21 @@ String usersToJson(List<Users> data) => json.encode(List<dynamic>.from(data.map(
 class Users {
   Users({
     this.id,
-    required this.userName,
+    this.userName,
     this.password,
     this.firstName,
     this.lastName,
-    required this.email,
+    this.email,
     this.points,
     this.team,
   });
 
   int? id;
-  String userName;
+  String? userName;
   String? password;
   String? firstName;
   String? lastName;
-  String email;
+  String? email;
   int? points;
   int? team;
 
