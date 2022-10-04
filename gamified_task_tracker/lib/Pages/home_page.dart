@@ -1,121 +1,82 @@
-
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:gamified_task_tracker/pages/tasks_page.dart';
+import 'package:gamified_task_tracker/Model/menu_item.dart';
+import 'package:gamified_task_tracker/Pages/team_tasks_page.dart';
 
-import '../Models/users.dart';
-import '../RemoteAccess.dart';
+import '../Data/menu_item.dart';
 import '../auth.dart';
+import 'create_team.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
 
-  @override
-  _HopePageState createState() => _HopePageState();
-}
-
-class _HopePageState extends State<HomePage> {
-  late final User? user;
-  List <Users>? userData;
-  RemoteAccess access = RemoteAccess();
-  String firstname = "";
-  String lastname = "";
+  final User? user = Auth().currentUser;
+  final CollectionReference _team =
+      FirebaseFirestore.instance.collection('teams');
 
   Future<void> signOut() async {
     await Auth().signOut();
-  }
-
-  void _putUserTest() async {
-    String name = "demoman2";
-    var user = Users(
-        id: 2,
-        userName: "demoman2",
-        email: "test@testemail.test",
-        password: "SUPERPASSWORD",
-        firstName: "Demo",
-        lastName: "Man2",
-        points: 750,
-        team: 1);
-    var response =
-    await access.put("/user?username=$name", user).catchError((err) {});
-    if (response == null) {
-      debugPrint("Not Successful");
-      return;
-    }
-    debugPrint("Successful");
-  }
-
-  Future retrieveUser() async {
-    user = Auth().currentUser;
-    print("working");
-    userData = await access.getUsers(user?.email);
-    firstname = userData![0].firstName!;
-    lastname = userData![0].lastName!;
-    print(firstname);
-    return userData;
-  }
-
-
-  Future openTasks() async {
-    return DataFromAPI();
-  }
-
-  Widget _title() {
-    return Text('Task Tracker:'+firstname);
   }
 
   Widget _userUid() {
     return Text(user?.email ?? 'User email');
   }
 
-  Widget _openTasks(BuildContext context) {
-    return ElevatedButton(
-        onPressed: () =>
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => DataFromAPI())),
-        child: const Text('Open Tasks'));
-  }
-
-  _testUserChange() {
-    return ElevatedButton(onPressed: retrieveUser,
-        child: const Text("test"));
-  }
-
-
-  Widget _signOutButton() {
-    return ElevatedButton(
-      onPressed: signOut,
-      child: const Text('Sign Out'),
-    );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    retrieveUser().then((model) => {setState(() => model = userData)});
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: _title(),
+          title: _userUid(),
+          actions: [
+            PopupMenuButton<MenuItemT>(
+                onSelected: (item) => onSelected(context, item),
+                itemBuilder: (context) => [
+                      ...MenuItems.itemsMain.map(buildItem).toList(),
+                    ]),
+          ],
         ),
-        body: Container(
-            height: double.infinity,
-            width: double.infinity,
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                _userUid(),
-                _signOutButton(),
-                _openTasks(context),
-                _testUserChange(),
-              ],
-            )));
+        floatingActionButton: FloatingActionButton(
+            child: Icon(Icons.add),
+            onPressed: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => CreateTeam()));
+            }),
+        body: StreamBuilder(
+            stream: _team.snapshots(),
+            builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+              if (streamSnapshot.hasData) {
+                return ListView.builder(
+                    itemCount: streamSnapshot.data!.docs.length,
+                    itemBuilder: (context, index) {
+                      final DocumentSnapshot documentSnapshot =
+                          streamSnapshot.data!.docs[index];
+                      return Card(
+                          margin: const EdgeInsets.all(10),
+                          child: ListTile(
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => TeamTasks()));
+                              },
+                              title: Text(documentSnapshot['name']),
+                              subtitle: Text(documentSnapshot['id'])));
+                    });
+              }
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }));
   }
 
+  PopupMenuItem<MenuItemT> buildItem(MenuItemT item) => PopupMenuItem(
+        value: item,
+        child: Text(item.text),
+      );
+
+  onSelected(BuildContext context, MenuItemT item) {
+    switch (item) {
+      case MenuItems.itemSignOut:
+        signOut();
+    }
+  }
 }
