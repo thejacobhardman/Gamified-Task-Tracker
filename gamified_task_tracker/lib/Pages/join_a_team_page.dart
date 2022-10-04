@@ -68,7 +68,7 @@ class _JoinTeamPageState extends State<JoinTeamPage> {
         firstName: widget.user.firstName,
         lastName: widget.user.lastName,
         email: widget.user.email,
-        points: 100,
+        points: widget.user.points,
         team: teamid);
     var response =
     await access.put("/user?username=$name", teamChange).catchError((err) {});
