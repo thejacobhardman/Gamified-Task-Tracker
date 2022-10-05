@@ -124,7 +124,7 @@ def team_users(request):
 
     # Example: [http://localhost:8000/teamusers?teamid=1], no body
     if request.method == 'GET':
-        fields = ('user_name', 'first_name', 'last_name', 'points')
+        fields = ('user_name', 'first_name', 'last_name', 'points', 'admin')
         users = User.objects.all()
         team_id = request.GET.get('teamid', None)
         if team_id is not None:
@@ -176,6 +176,19 @@ def tasks(request):
             else:
                 return JsonResponse({'message': 'Task does not exist.'}, status=status.HTTP_404_NOT_FOUND)
         return JsonResponse({'message': 'No task_name paramater passed in URL.'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+def team_tasks(request):
+
+    # Example: [http://localhost:8000/team_tasks?team_id=2], no body
+    if request.method == 'GET':
+        team_id = request.GET.get('team_id', None)
+
+        if team_id is not None:
+            tasks = Task.objects.get(team=team_id)
+        task_serializer = TaskSerializer(tasks, many=True)
+        return JsonResponse(task_serializer.data, safe=False)
 
 
 @api_view(['GET'])

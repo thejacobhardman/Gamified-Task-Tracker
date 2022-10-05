@@ -22,14 +22,17 @@ class User(models.Model):
     team = models.ForeignKey(
         Team, blank=True, null=True, default=None, on_delete=models.PROTECT)
     points = models.IntegerField(blank=True, null=True, default=None)
+    admin = models.BooleanField(default=False)
 
 
 class Task(models.Model):
     task_name = models.CharField(max_length=70, blank=False, default='')
     description = models.CharField(max_length=200, blank=False, default='')
     completed = models.BooleanField(default=False)
+    valid = models.BooleanField(default=False)
     due_date = models.DateField()
     author_key = models.ForeignKey(User, on_delete=models.CASCADE)
+    team = models.ForeignKey(Team, blank=False, on_delete=models.CASCADE)
     points = models.IntegerField()
 
 

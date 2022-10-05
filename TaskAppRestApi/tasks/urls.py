@@ -4,6 +4,7 @@ from tasks import views
 urlpatterns = [
     re_path(r'^user$', views.users),
     re_path(r'^teamusers$', views.team_users),
+    re_path(r'^teamtasks$', views.team_tasks),
     re_path(r'^team$', views.teams),
     re_path(r'^task$', views.tasks),
     re_path(r'^users$', views.allusers),
