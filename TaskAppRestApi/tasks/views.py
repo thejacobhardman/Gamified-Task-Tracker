@@ -201,14 +201,14 @@ def allusers(request):
 @api_view(['GET'])
 def allteams(request):
     teams = Team.objects.all()
-    teams_serializer = TeamSerializer(users, many=True)
+    teams_serializer = TeamSerializer(teams, many=True)
     return JsonResponse(teams_serializer.data, safe=False)
 
 
 @api_view(['GET'])
 def alltasks(request):
     tasks = Task.objects.all()
-    tasks_serializer = TaskSerializer(users, many=True)
+    tasks_serializer = TaskSerializer(tasks, many=True)
     return JsonResponse(tasks_serializer.data, safe=False)
 
 
