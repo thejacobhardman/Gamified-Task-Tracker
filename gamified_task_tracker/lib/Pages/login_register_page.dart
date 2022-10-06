@@ -80,6 +80,21 @@ class _LoginPageState extends State<LoginPage> {
         ));
   }
 
+  Widget _usernameField(
+      String title,
+      TextEditingController controller,
+      ) {
+    return Visibility(
+        visible: !isLogin,
+        child: TextField(
+        controller: controller,
+        decoration: InputDecoration(
+          labelText: title,
+        )));
+
+
+  }
+
   Widget _errorMessage() {
     return Text(errorMessage == '' ? '' : 'Hmm ? $errorMessage');
   }
@@ -117,7 +132,7 @@ class _LoginPageState extends State<LoginPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                _entryField('username', _controllerUsername),
+                _usernameField('username', _controllerUsername),
                 _entryField('email', _controllerEmail),
                 _entryField('password', _controllerPassword),
                 _errorMessage(),
