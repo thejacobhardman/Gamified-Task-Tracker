@@ -74,7 +74,7 @@ def users(request):
         return JsonResponse({'message': 'No username paramater passed in URL.'}, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['POST', 'GET'])
+@api_view(['POST', 'GET', 'PUT', 'DELETE'])
 def teams(request):
 
     # Example: [http://localhost:8000/team?team_code=ABC123], no body
@@ -132,7 +132,7 @@ def team_users(request):
             users_serializer = SimpleUserSerializer(
                 users, many=True, fields=fields)
             return JsonResponse(users_serializer.data, safe=False)
-        return JsonResponse({'message': 'No teamname paramater passed in URL.'}, status=status.HTTP_400_BAD_REQUEST)
+        return JsonResponse({'message': 'No teamid paramater passed in URL.'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST', 'PUT', 'GET', 'DELETE'])
@@ -175,7 +175,7 @@ def tasks(request):
                 return JsonResponse({'message': 'Task was deleted successfully.'}, status=status.HTTP_204_NO_CONTENT)
             else:
                 return JsonResponse({'message': 'Task does not exist.'}, status=status.HTTP_404_NOT_FOUND)
-        return JsonResponse({'message': 'No task_name paramater passed in URL.'}, status=status.HTTP_400_BAD_REQUEST)
+        return JsonResponse({'message': 'No task_id paramater passed in URL.'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET'])
