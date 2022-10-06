@@ -29,6 +29,7 @@ class Task(models.Model):
     task_name = models.CharField(max_length=70, blank=False, default='')
     description = models.CharField(max_length=200, blank=False, default='')
     completed = models.BooleanField(default=False)
+    completedby = models.CharField(max_length=70, default='')
     valid = models.BooleanField(default=False)
     due_date = models.DateField()
     author_key = models.ForeignKey(User, on_delete=models.CASCADE)
