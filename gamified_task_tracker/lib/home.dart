@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'style.dart';
 import 'widgets/ttscaffold.dart';
+import 'login-page.dart';
+import 'create-account.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -51,11 +53,14 @@ class HomePageBodyState extends State<HomePageBody> {
                 width: 200,
                 height: 50,
                 child: TextButton(
-                  onPressed: null,  // form submission logic goes here
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(backgroundColor),
-                    elevation: MaterialStateProperty.all(5.0),
-                  ),
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => LoginPage())),  // form submission logic goes here
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(backgroundColor),
+                      elevation: MaterialStateProperty.all(5.0),
+                    ),
                   child: const Text(
                     'Log In',
                     style: TextStyle(
@@ -73,11 +78,14 @@ class HomePageBodyState extends State<HomePageBody> {
                 width: 200,
                 height: 50,
                 child: TextButton(
-                  onPressed: null,  // form submission logic goes here
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(backgroundColor),
-                    elevation: MaterialStateProperty.all(5.0),
-                  ),
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => CreateAccountPage())),  // form submission logic goes here
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(backgroundColor),
+                  elevation: MaterialStateProperty.all(5.0),
+                ),
                   child: const Text(
                     'Sign Up',
                     style: TextStyle(
