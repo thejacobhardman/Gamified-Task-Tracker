@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'style.dart';
-import 'widgets/ttform.dart';
 import 'widgets/ttscaffold.dart';
 
 class HomePage extends StatelessWidget {
@@ -30,18 +29,21 @@ class HomePageBodyState extends State<HomePageBody> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Padding(
+      padding: const EdgeInsets.only(top: 80, bottom: 80),
+      child: Column(
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-          Padding(
-            padding: const EdgeInsets.all(itemSpacing),
+          const Padding(
+            padding: EdgeInsets.all(itemSpacing),
             child: Center(
-              child: const Text('Name of App Here',
+              child: Text('Name of App Here',
               style: TextStyle(color: Colors.white, fontSize: 30)),
             )
           ),
+          Padding(padding: EdgeInsets.all(5)),
           Padding(
             padding: const EdgeInsets.all(itemSpacing),
             child: Center(
@@ -86,7 +88,8 @@ class HomePageBodyState extends State<HomePageBody> {
                 )
             )
           ),
-    ],);
+    ],)
+    );
   }
 
 }
