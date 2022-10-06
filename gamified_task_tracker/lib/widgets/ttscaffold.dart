@@ -25,9 +25,7 @@ class TTScaffold extends StatelessWidget {
               )
           ),
           centerTitle: true,
-          leading: GestureDetector(
-              child: BackButton(color: backgroundColor)
-          ),
+          leading: BackButton(color: backgroundColor),
           backgroundColor: primaryColor,
         ) : null,
         body: scrollable ? SingleChildScrollView(
