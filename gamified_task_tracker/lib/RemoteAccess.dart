@@ -15,7 +15,6 @@ class RemoteAccess {
   Client client = http.Client();
   String api = "http://10.0.2.2:8000";
 
-
   Future<List<Tasks>?> getTasks() async {
     var uri = Uri.parse('https://jsonplaceholder.typicode.com/todos');
     var response = await client.get(uri);
@@ -31,6 +30,8 @@ class RemoteAccess {
     var response = await client.post(uri, body: payload);
     if (response.statusCode == 201) {
       return response.body;
+    } else {
+      print("Error happened with POST");
     }
   }
 
@@ -49,6 +50,7 @@ class RemoteAccess {
   Future<List<Users>?> getUsers(String? email) async {
     var uri = Uri.parse("$api/user?email=$email");
     var response = await client.get(uri);
+    print(json.decode(response.body));
     if (response.statusCode == 200) {
       debugPrint("Successful");
       var json = response.body;
@@ -91,6 +93,19 @@ class RemoteAccess {
     if (response.statusCode == 200) {
       var json = response.body;
       return authorsFromJson(json);
+    }
+  }
+
+  Future getAllTeams() async {
+    var uri = Uri.parse("$api/team?");
+    var response = await client.get(uri);
+    if (response.statusCode == 200) {
+      debugPrint("Successful");
+      print(json.decode(response.body));
+      return json.decode(response.body);
+    } else {
+      debugPrint("Team Not Successful");
+      return null;
     }
   }
 }
