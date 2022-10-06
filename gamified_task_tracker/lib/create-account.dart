@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gamified_task_tracker/widgets/ttscaffold.dart';
 import 'style.dart';
 import 'widgets/ttform.dart';
 
@@ -9,8 +10,9 @@ class CreateAccountPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Welcome to Flutter',
-      home: Scaffold(
-        backgroundColor: backgroundColor,
+      home: TTScaffold(
+        bgColor: backgroundColor,
+        title: '',
         body: Center(
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 150.0, horizontal: 15.0),
@@ -27,7 +29,10 @@ class CreateAccountPage extends StatelessWidget {
                 backgroundColor: primaryColor,
                 textStyle: const TextStyle(fontSize: 20, color: textColorAgainstPrimary),
             ),
-            onPressed: null,
+            onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => CreateAccountPage())),
             child: const Text('Create Account')),
 
             
