@@ -181,7 +181,7 @@ def tasks(request):
 @api_view(['GET'])
 def team_tasks(request):
 
-    # Example: [http://localhost:8000/team_tasks?team_id=2], no body
+    # Example: [http://localhost:8000/teamtasks?team_id=2], no body
     if request.method == 'GET':
         team_id = request.GET.get('team_id', None)
 
@@ -200,7 +200,7 @@ def allusers(request):
 
 @api_view(['GET'])
 def allteams(request):
-    teams = User.objects.all()
+    teams = Team.objects.all()
     teams_serializer = TeamSerializer(users, many=True)
     return JsonResponse(teams_serializer.data, safe=False)
 
