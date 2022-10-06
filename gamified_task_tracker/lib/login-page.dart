@@ -9,9 +9,8 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Welcome to Flutter',
-      home: TTScaffold(
+    return TTScaffold(
+     
         bgColor: backgroundColor,
         title: '',
         body: Center(
@@ -54,7 +53,7 @@ class LoginPage extends StatelessWidget {
   
           
         ),
-      ),
-    );
+      );
+   
   }
 }
