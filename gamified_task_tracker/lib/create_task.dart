@@ -1,39 +1,17 @@
 import 'package:flutter/material.dart';
 import 'style.dart';
 import 'widgets/ttform.dart';
+import 'widgets/ttscaffold.dart';
 
 class CreateTaskPage extends StatelessWidget {
   const CreateTaskPage({super.key});
   
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: backgroundColor,
-        appBar: AppBar(
-          title: const Text(
-              "Add Task",
-              style: TextStyle(
-                color: textColorAgainstPrimary,
-              )
-          ),
-          centerTitle: true,
-          leading: GestureDetector(
-              child: const Icon(
-                Icons.arrow_back,
-                color: textColorAgainstPrimary,
-              )
-          ),
-          backgroundColor: primaryColor,
-        ),
-        body: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child:
-            Container(
-          padding: const EdgeInsets.all(edgeInsets),
-          child: const CreateTaskForm()
-          )
-        )
-      );
+    return TTScaffold(
+      title: "Create Task",
+      body: const CreateTaskForm()
+    );
   }  
 }  
 
