@@ -22,13 +22,13 @@ class _LoginPageState extends State<LoginPage> {
 
   void _createUser() async {
     var user = Users(
-      userName: _controllerUsername.text,
-      firstName: null,
-      lastName: null,
-      password: _controllerPassword.text,
-      email: _controllerEmail.text,
-      team: null,
-      points: 0);
+        userName: _controllerUsername.text,
+        firstName: "TestFirstName",
+        lastName: "TestLastName",
+        password: _controllerPassword.text,
+        email: _controllerEmail.text.toLowerCase(),
+        team: null,
+        points: 0);
     var response = await access.post("/user", user).catchError((err) {});
     if (response == null) {
       return;

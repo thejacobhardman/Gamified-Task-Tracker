@@ -5,29 +5,31 @@
 import 'package:meta/meta.dart';
 import 'dart:convert';
 
-List<Teams> teamsFromJson(String str) => List<Teams>.from(json.decode(str).map((x) => Teams.fromJson(x)));
+List<Teams> teamsFromJson(String str) =>
+    List<Teams>.from(json.decode(str).map((x) => Teams.fromJson(x)));
 
-String teamsToJson(List<Teams> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String teamsToJson(List<Teams> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class Teams {
   Teams({
     this.id,
-    this.teamName,
-    required this.teamCode,
+    required this.teamName,
+    this.teamCode,
   });
 
   int? id;
   String? teamName;
-  String teamCode;
+  String? teamCode;
 
   factory Teams.fromJson(Map<String, dynamic> json) => Teams(
-    id: json["id"],
-    teamName: json["team_name"],
-    teamCode: json["team_code"],
-  );
+        id: json["id"],
+        teamName: json["team_name"],
+        teamCode: json["team_code"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "team_name": teamName,
-    "team_code": teamCode,
-  };
+        "team_name": teamName,
+        "team_code": teamCode,
+      };
 }
