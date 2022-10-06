@@ -34,11 +34,6 @@ class CreateAccountPage extends StatelessWidget {
                     MaterialPageRoute(
                         builder: (context) => CreateAccountPage())),
             child: const Text('Create Account')),
-
-            
-
-              
-
             ],
           ),
           )

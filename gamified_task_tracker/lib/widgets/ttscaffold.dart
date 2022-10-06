@@ -26,10 +26,7 @@ class TTScaffold extends StatelessWidget {
           ),
           centerTitle: true,
           leading: GestureDetector(
-              child: const Icon(
-                Icons.arrow_back,
-                color: textColorAgainstPrimary,
-              )
+              child: BackButton(color: backgroundColor)
           ),
           backgroundColor: primaryColor,
         ) : null,
