@@ -24,18 +24,16 @@ class LoginPage extends StatelessWidget {
              TextButton(
                 style: TextButton.styleFrom(
                 backgroundColor: primaryColor,
-                textStyle: const TextStyle(fontSize: 20, color: textColorAgainstPrimary),
+                
             ),
             onPressed: null,
-            child: const Text('Create Account')),
+            child: const Text('Login', style: TextStyle(color: textColorAgainstPrimary) )),
         
            TextButton(
                 style: TextButton.styleFrom(
-                backgroundColor: primaryColor,
-                textStyle: const TextStyle(fontSize: 20, color: textColorAgainstPrimary),
             ),
             onPressed: null,
-            child: const Text('Create Account')),
+           child: const Text('Create Account', style: TextStyle(color: primaryColor) )),
 
             
 
