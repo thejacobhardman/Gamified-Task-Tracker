@@ -52,7 +52,7 @@ class ViewTasksPage extends StatelessWidget {
         backgroundColor: primaryColor,
       ),
       // List builder
-      body: ListView.builder(
+      body: ListView.separated(
         itemCount: tasks.length,
         itemBuilder: (context, index) {
           return ListTile(
@@ -67,6 +67,7 @@ class ViewTasksPage extends StatelessWidget {
             },
           );
         },
+        separatorBuilder: (BuildContext context, int index) => const Divider(),
       ),
     );
   }
