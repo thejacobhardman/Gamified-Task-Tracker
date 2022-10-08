@@ -1,38 +1,62 @@
 // To parse this JSON data, do
 //
-//     final tasks = tasksFromJson(jsonString);
+//     final task = taskFromJson(jsonString);
 
 import 'package:meta/meta.dart';
 import 'dart:convert';
 
-List<Tasks> tasksFromJson(String str) => List<Tasks>.from(json.decode(str).map((x) => Tasks.fromJson(x)));
+List<Task> taskFromJson(String str) => List<Task>.from(json.decode(str).map((x) => Task.fromJson(x)));
 
-String tasksToJson(List<Tasks> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String taskToJson(List<Task> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class Tasks {
-  Tasks({
-    required this.userId,
-    required this.id,
-    required this.title,
-    required this.completed,
+class Task {
+  Task({
+    this.id,
+    required this.taskName,
+    required this.description,
+    this.completed,
+    this.completedby,
+    required this.valid,
+    required this.dueDate,
+    this.authorKey,
+    this.team,
+    required this.points,
   });
 
-  int userId;
-  int id;
-  String title;
-  bool completed;
+  int? id;
+  String taskName;
+  String description;
+  bool? completed;
+  String? completedby;
+  bool valid;
+  String dueDate;
+  int? authorKey;
+  int? team;
+  int points;
 
-  factory Tasks.fromJson(Map<String, dynamic> json) => Tasks(
-    userId: json["userId"],
+  factory Task.fromJson(Map<String, dynamic> json) => Task(
     id: json["id"],
-    title: json["title"],
+    taskName: json["task_name"],
+    description: json["description"],
     completed: json["completed"],
+    completedby: json["completedby"],
+    valid: json["valid"],
+    dueDate: json["due_date"],
+    authorKey: json["author_key"],
+    team: json["team"],
+    points: json["points"],
   );
 
   Map<String, dynamic> toJson() => {
-    "userId": userId,
     "id": id,
-    "title": title,
+    "task_name": taskName,
+    "description": description,
     "completed": completed,
+    "completedby": completedby,
+    "valid": valid,
+    "due_date": dueDate,
+    "author_key": authorKey,
+    "team": team,
+    "points": points,
   };
 }

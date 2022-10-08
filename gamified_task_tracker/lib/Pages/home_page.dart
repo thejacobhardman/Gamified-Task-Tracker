@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:gamified_task_tracker/Pages/create_a_task_page.dart';
+import 'package:gamified_task_tracker/Pages/view_user_page.dart';
 import 'package:gamified_task_tracker/pages/tasks_page.dart';
 
 import '../Models/teams.dart';
@@ -23,6 +25,7 @@ class _HopePageState extends State<HomePage> {
   RemoteAccess access = RemoteAccess();
   String firstname = "";
   String lastname = "";
+  bool userNull = true;
 
   Future<void> signOut() async {
     await Auth().signOut();
@@ -31,6 +34,8 @@ class _HopePageState extends State<HomePage> {
   Future createTeam() async {
     String name = "";
   }
+
+
 
   _putUserTest() async {
     String name = "demoman2";
@@ -44,7 +49,7 @@ class _HopePageState extends State<HomePage> {
         points: 750,
         team: 1);
     var response =
-        await access.put("/user?username=$name", user).catchError((err) {});
+    await access.put("/user?username=$name", user).catchError((err) {});
     if (response == null) {
       debugPrint("Not Successful");
       return;
@@ -54,12 +59,18 @@ class _HopePageState extends State<HomePage> {
 
   Future retrieveUser() async {
     user = Auth().currentUser;
-    print("working");
     userData = await access.getUsers(user?.email);
-    firstname = userData![0].firstName;
-    lastname = userData![0].lastName;
-    print(firstname);
+    //firstname = userData![0].firstName;
+    //lastname = userData![0].lastName;
     return userData;
+  }
+
+  Widget _createTask(BuildContext context) {
+    return ElevatedButton(
+        onPressed: () =>
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => CreateATaskPage(userData![0]))),
+        child: const Text('Make New Task'));
   }
 
   Future openTasks() async {
@@ -80,15 +91,17 @@ class _HopePageState extends State<HomePage> {
 
   Widget _createTeam(BuildContext context) {
     return ElevatedButton(
-        onPressed: () => Navigator.push(
-            context, MaterialPageRoute(builder: (context) => CreateTeam())),
+        onPressed: () =>
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => CreateTeam())),
         child: const Text('Create a Team'));
   }
 
   Widget _getTeamTasks(BuildContext context) {
     return ElevatedButton(
-        onPressed: () => Navigator.push(
-            context, MaterialPageRoute(builder: (context) => CreateTeam())),
+        onPressed: () =>
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => CreateTeam())),
         child: const Text('Get Team Tasks'));
   }
 
@@ -102,18 +115,23 @@ class _HopePageState extends State<HomePage> {
 
   Widget _openTasks(BuildContext context) {
     return ElevatedButton(
-        onPressed: () => Navigator.push(
-            context, MaterialPageRoute(builder: (context) => DataFromAPI())),
+        onPressed: () =>
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => DataFromAPI())),
         child: const Text('Open Tasks'));
   }
 
   Widget _joinTeam(BuildContext context) {
-    return ElevatedButton(
-        onPressed: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => JoinTeamPage(userData![0]))),
-        child: const Text('Join a Team'));
+    return Visibility(
+        visible: userNull,
+        child: ElevatedButton(
+            onPressed: () =>
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => JoinTeamPage(userData![0]))),
+            child: const Text('Join a Team')));
   }
 
   _testUserChange() {
@@ -131,6 +149,9 @@ class _HopePageState extends State<HomePage> {
   void initState() {
     super.initState();
     retrieveUser().then((model) => {setState(() => model = userData)});
+    if (userData != null) {
+      userNull = false;
+    }
   }
 
   @override
@@ -153,19 +174,35 @@ class _HopePageState extends State<HomePage> {
                 _joinTeam(context),
                 _createTeam(context),
                 _viewLeaderboard(),
-                _testButton()
-                //_joinTeam(),
+                _testButton(),
+                _viewUserProfile(),
+                _createTask(context)
                 //_makeTeam(),
               ],
             )));
   }
 
   _viewLeaderboard() {
-    return ElevatedButton(
-        onPressed: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => LeaderboardPage(userData![0]))),
-        child: const Text('Leaderboard'));
+    return Visibility(
+        visible: userNull,
+        child: ElevatedButton(
+            onPressed: () =>
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => LeaderboardPage(userData![0]))),
+            child: const Text('Leaderboard')));
+  }
+
+  _viewUserProfile() {
+    return Visibility(
+        visible: userNull,
+        child: ElevatedButton(
+            onPressed: () =>
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => UserPage(userData![0]))),
+            child: const Text('User profile')));
   }
 }

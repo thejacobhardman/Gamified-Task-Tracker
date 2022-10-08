@@ -42,7 +42,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Tasks'),
+          title: const Text('Points Leaderboard'),
           actions: <Widget>[
             IconButton(
                 onPressed: () => Navigator.pop(context),

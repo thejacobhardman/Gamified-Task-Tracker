@@ -2,8 +2,11 @@ import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../Models/users.dart';
+
 class CreateATaskPage extends StatefulWidget {
-  const CreateATaskPage({Key? key}) : super(key: key);
+  const CreateATaskPage(this.user, {super.key});
+  final Users user;
 
   @override
   _CreateATaskPageState createState() => _CreateATaskPageState();

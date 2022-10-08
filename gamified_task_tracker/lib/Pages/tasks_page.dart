@@ -72,12 +72,12 @@ class _DataFromAPIState extends State<DataFromAPI> {
         appBar: AppBar(
           title: const Text('Tasks'),
           actions: <Widget>[
-            IconButton(
-                onPressed: () => Navigator.push(
+            //IconButton(
+                /*onPressed: () => Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const CreateATaskPage())),
-                icon: const Icon(Icons.add_card)),
+                        builder: (context) => const CreateATaskPage(context))),*/
+                //icon: const Icon(Icons.add_card)),
             IconButton(
                 onPressed: _putAuthor,
                 icon: const Icon(Icons.create_new_folder)),
