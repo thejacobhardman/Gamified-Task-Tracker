@@ -34,6 +34,7 @@ dependencies:
   http:
   firebase_core: ^1.20.0
   firebase_auth: ^3.5.0
+  numberpicker: ^2.1.1
 
 dev_dependencies:
   flutter_test:

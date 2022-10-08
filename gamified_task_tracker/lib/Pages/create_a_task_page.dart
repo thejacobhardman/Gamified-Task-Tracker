@@ -2,6 +2,8 @@ import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:gamified_task_tracker/RemoteAccess.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
+import 'package:numberpicker/numberpicker.dart';
 
 import '../Models/task.dart';
 import '../Models/users.dart';
@@ -19,6 +21,9 @@ class _CreateATaskPageState extends State<CreateATaskPage> {
   TextEditingController? textController2;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   RemoteAccess access = RemoteAccess();
+  DateTime selectedDate = DateTime.now();
+  final DateFormat formatter = DateFormat('yyyy-MM-dd');
+  int _currentIntValue = 0;
 
   @override
   void initState() {
@@ -54,103 +59,30 @@ class _CreateATaskPageState extends State<CreateATaskPage> {
           child: Column(
             mainAxisSize: MainAxisSize.max,
             children: [
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
-                child: TextFormField(
-                  controller: textController1,
-                  onChanged: (_) => EasyDebounce.debounce(
-                    'textController1',
-                    Duration(milliseconds: 2000),
-                        () => setState(() {}),
-                  ),
-                  autofocus: true,
-                  obscureText: false,
-                  decoration: InputDecoration(
-                    hintText: 'Enter Task Name Here...',
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color(0xFFE0E3E7),
-                        width: 1,
-                      ),
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(4.0),
-                        topRight: Radius.circular(4.0),
-                      ),
-                    ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color(0xFFE0E3E7),
-                        width: 1,
-                      ),
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(4.0),
-                        topRight: Radius.circular(4.0),
-                      ),
-                    ),
-                  ),
-                  style: GoogleFonts.getFont(
-                    'Poppins',
-                    color: Color(0xFF101213),
-                    fontWeight: FontWeight.w200,
-                    fontSize: 14,
-                  ),
-                  textAlign: TextAlign.center,
+              TextFormField(
+                controller: textController1,
+                decoration: InputDecoration(
+                  hintText: "Task Name"
                 ),
               ),
-              Expanded(
-                child: Align(
-                  alignment: AlignmentDirectional(0, 0),
-                  child: TextFormField(
-                    controller: textController2,
-                    onChanged: (_) => EasyDebounce.debounce(
-                      'textController2',
-                      Duration(milliseconds: 2000),
-                          () => setState(() {}),
-                    ),
-                    autofocus: true,
-                    obscureText: false,
-                    decoration: InputDecoration(
-                      hintText: 'Enter Task Details Here...',
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Color(0x00000000),
-                          width: 1,
-                        ),
-                        borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(4.0),
-                          topRight: Radius.circular(4.0),
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Color(0x00000000),
-                          width: 1,
-                        ),
-                        borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(4.0),
-                          topRight: Radius.circular(4.0),
-                        ),
-                      ),
-                      filled: true,
-                      contentPadding:
-                      EdgeInsetsDirectional.fromSTEB(0, 0, 0, 400),
-                    ),
-                    style: GoogleFonts.getFont(
-                      'Poppins',
-                      color: Color(0xFF101213),
-                      fontWeight: FontWeight.w100,
-                      fontSize: 14,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
+              TextFormField(
+                controller: textController2,
+                decoration: InputDecoration(
+                  hintText: "Task Details"
                 ),
               ),
-              Align(
-                alignment: AlignmentDirectional(0, 0),
-                child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 20)
-                ),
+              SizedBox(height: 16),
+              Text('Points', style: Theme.of(context).textTheme.headline6),
+              NumberPicker(
+                value: _currentIntValue,
+                minValue: 0,
+                maxValue: 1000,
+                step: 10,
+                haptics: true,
+                onChanged: (value) => setState(() => _currentIntValue = value),
               ),
+              ElevatedButton(onPressed: pickDate,
+                  child: const Text("Due Date")),
               ElevatedButton(onPressed: _postTask,
                   child: const Text("Post Test Task"))
             ],
@@ -162,15 +94,15 @@ class _CreateATaskPageState extends State<CreateATaskPage> {
 
   Future _postTask() async {
     var newTask = Task(
-      taskName: 'taskRick',
-      description: 'Look Morty, I turned myself into a task! I\'M TASK RIIICK',
+      taskName: textController1?.text ?? "",
+      description: textController2?.text ?? "",
       completed: false,
       completedby: null,
       valid: false,
-      dueDate: "10/06/2022",
+      dueDate: formatter.format(selectedDate),
       authorKey: widget.user.id,
       team: widget.user.team,
-      points: 69,
+      points: _currentIntValue,
     );
     var response =
     await access.post("/task", newTask).catchError((err) {});
@@ -180,4 +112,22 @@ class _CreateATaskPageState extends State<CreateATaskPage> {
     }
     debugPrint("Successful");
   }
+
+  void pickDate() async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2025),
+    );
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+      });
+      String formatted = formatter.format(selectedDate);
+      print(formatted);
+    }
+
+  }
+
 }
