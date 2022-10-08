@@ -1,7 +1,9 @@
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
+import 'package:gamified_task_tracker/RemoteAccess.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../Models/task.dart';
 import '../Models/users.dart';
 
 class CreateATaskPage extends StatefulWidget {
@@ -16,6 +18,7 @@ class _CreateATaskPageState extends State<CreateATaskPage> {
   TextEditingController? textController1;
   TextEditingController? textController2;
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  RemoteAccess access = RemoteAccess();
 
   @override
   void initState() {
@@ -148,10 +151,33 @@ class _CreateATaskPageState extends State<CreateATaskPage> {
                   padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 20)
                 ),
               ),
+              ElevatedButton(onPressed: _postTask,
+                  child: const Text("Post Test Task"))
             ],
           ),
         ),
       ),
     );
+  }
+
+  Future _postTask() async {
+    var newTask = Task(
+      taskName: 'taskRick',
+      description: 'Look Morty, I turned myself into a task! I\'M TASK RIIICK',
+      completed: false,
+      completedby: null,
+      valid: false,
+      dueDate: "10/06/2022",
+      authorKey: widget.user.id,
+      team: widget.user.team,
+      points: 69,
+    );
+    var response =
+    await access.post("/task", newTask).catchError((err) {});
+    if (response == null) {
+      print("null");
+      return;
+    }
+    debugPrint("Successful");
   }
 }

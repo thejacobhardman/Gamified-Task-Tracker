@@ -76,6 +76,13 @@ class _HopePageState extends State<HomePage> {
   Future openTasks() async {
     return DataFromAPI();
   }
+  
+  void routeToLeaderBoard(BuildContext context) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => LeaderboardPage(userData![0])));
+  }
 
   Future _testFunc() async {
     var test = await access.getUsers(user?.email);
@@ -187,10 +194,7 @@ class _HopePageState extends State<HomePage> {
         visible: userNull,
         child: ElevatedButton(
             onPressed: () =>
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => LeaderboardPage(userData![0]))),
+                routeToLeaderBoard(context),
             child: const Text('Leaderboard')));
   }
 

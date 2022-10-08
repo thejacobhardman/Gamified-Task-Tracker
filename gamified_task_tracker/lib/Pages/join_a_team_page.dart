@@ -77,6 +77,7 @@ class _JoinTeamPageState extends State<JoinTeamPage> {
       return;
     }
     debugPrint("Successful");
+    widget.user.team = teamid;
   }
 
   Widget _submitButton() {
