@@ -53,12 +53,15 @@ class SimpleUserSerializer(DynamicUserSerializer):
 class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
-        fields = ('id'
+        fields = ('id',
                   'task_name',
                   'description',
                   'completed',
+                  'completedby',
+                  'valid',
                   'due_date',
                   'author_key',
+                  'team',
                   'points')
 
 

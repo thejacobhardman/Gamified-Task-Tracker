@@ -34,7 +34,7 @@ class Task(models.Model):
     due_date = models.DateField()
     author_key = models.ForeignKey(User, on_delete=models.CASCADE)
     team = models.ForeignKey(Team, blank=False, on_delete=models.CASCADE)
-    points = models.IntegerField()
+    points = models.IntegerField(default=0)
 
 
 '''
