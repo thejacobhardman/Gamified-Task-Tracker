@@ -14,13 +14,9 @@ class JoinTeamPage extends StatefulWidget {
   State<JoinTeamPage> createState() => _JoinTeamPageState();
 }
 
-
-
-
-
 class _JoinTeamPageState extends State<JoinTeamPage> {
   final TextEditingController _controllerTeamCODE = TextEditingController();
-  List <Teams?>? teamList;
+  List<Teams?>? teamList;
   RemoteAccess access = RemoteAccess();
   bool validID = false;
 
@@ -30,17 +26,15 @@ class _JoinTeamPageState extends State<JoinTeamPage> {
   }
 
   Widget _entryField(
-      String title,
-      TextEditingController controller,
-      ) {
+    String title,
+    TextEditingController controller,
+  ) {
     return TextField(
         controller: controller,
         decoration: InputDecoration(
           labelText: title,
         ));
   }
-
-
 
   Future _retrieveTeams() async {
     teamList = await access.getTeams("/team");
@@ -53,7 +47,8 @@ class _JoinTeamPageState extends State<JoinTeamPage> {
 
   Future _checkTeam() async {
     teamList = await access.getTeams(_controllerTeamCODE.text);
-    if (teamList != null && _controllerTeamCODE.text == teamList![0]?.teamCode) {
+    if (teamList != null &&
+        _controllerTeamCODE.text == teamList![0]?.teamCode) {
       _changeTeam(teamList![0]?.id);
     } else {
       showErrorSnackBar();
@@ -70,29 +65,29 @@ class _JoinTeamPageState extends State<JoinTeamPage> {
         email: widget.user.email,
         points: widget.user.points,
         team: teamid);
-    var response =
-    await access.put("/user?username=$name", teamChange).catchError((err) {});
+    var response = await access
+        .put("/user?username=$name", teamChange)
+        .catchError((err) {});
     if (response == null) {
       print("null");
       return;
     }
     debugPrint("Successful");
+    widget.user.team = teamid;
   }
 
   Widget _submitButton() {
     return ElevatedButton(
-      onPressed:
-      _checkTeam,
+      onPressed: _checkTeam,
       child: Text("Join Team"),
     );
   }
-  
+
   void showErrorSnackBar() {
-    const snackbar = SnackBar(content :
-    Text("No Team with that ID exists"));
+    const snackbar = SnackBar(content: Text("No Team with that ID exists"));
     ScaffoldMessenger.of(context).showSnackBar(snackbar);
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -111,8 +106,6 @@ class _JoinTeamPageState extends State<JoinTeamPage> {
                 //_errorMessage(),
                 _submitButton(),
               ],
-            )
-        )
-    );
+            )));
   }
 }

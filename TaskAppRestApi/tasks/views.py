@@ -184,11 +184,13 @@ def team_tasks(request):
     # Example: [http://localhost:8000/teamtasks?team_id=2], no body
     if request.method == 'GET':
         team_id = request.GET.get('team_id', None)
+        tasks = Task.objects.all()
 
         if team_id is not None:
-            tasks = Task.objects.get(team=team_id)
-        task_serializer = TaskSerializer(tasks, many=True)
-        return JsonResponse(task_serializer.data, safe=False)
+            tasks = tasks.filter(team=team_id)
+            task_serializer = TaskSerializer(tasks, many=True)
+            return JsonResponse(task_serializer.data, safe=False)
+        return JsonResponse({'message': 'No team_id paramater passed in URL.'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET'])

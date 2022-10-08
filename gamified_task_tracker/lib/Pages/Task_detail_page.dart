@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
 
-import '../Models/authors.dart';
+import '../Models/teamTasks.dart';
 
 class TaskDetailPage extends StatelessWidget {
-  final Authors author;
-  const TaskDetailPage(this.author, {super.key});
+  final TeamTasks task;
+  const TaskDetailPage(this.task, {super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(author.name),
+        title: Text(task.taskName),
       ),
       body: Center(
-        child: Text(author.id.toString()),
+        child: Text(task.id.toString()),
       ),
     );
   }
 }
-
