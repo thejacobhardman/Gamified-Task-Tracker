@@ -8,7 +8,7 @@ import uuid
 class Team(models.Model):
     team_name = models.CharField(max_length=70, blank=False, default='')
     team_code = models.CharField(
-        blank=False, unique=True, max_length=6, editable=False, default=str(uuid.uuid4().hex[:6].upper()))
+        blank=False, unique=True, max_length=6, editable=False)
 
 
 class User(models.Model):
