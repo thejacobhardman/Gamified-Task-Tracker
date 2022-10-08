@@ -15,15 +15,6 @@ class RemoteAccess {
   Client client = http.Client();
   String api = "http://10.0.2.2:8000";
 
-  Future<List<Tasks>?> getTasks() async {
-    var uri = Uri.parse('https://jsonplaceholder.typicode.com/todos');
-    var response = await client.get(uri);
-    if (response.statusCode == 200) {
-      var json = response.body;
-      return tasksFromJson(json);
-    }
-  }
-
   Future<dynamic> post(String branch, dynamic object) async {
     var uri = Uri.parse(api + branch);
     var payload = json.encode(object);
