@@ -21,9 +21,11 @@ class RemoteAccess {
     var response = await client.post(uri, body: payload);
     if (response.statusCode == 201) {
       print("successful POST");
+      print("${response.body}");
       return response.body;
     } else {
       print("Error happened with POST");
+      print("${response.body}");
     }
   }
 
