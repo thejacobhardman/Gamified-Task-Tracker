@@ -57,8 +57,11 @@ class TaskSerializer(serializers.ModelSerializer):
                   'task_name',
                   'description',
                   'completed',
+                  'completedby',
+                  'valid',
                   'due_date',
                   'author_key',
+                  'team',
                   'points')
 
 
