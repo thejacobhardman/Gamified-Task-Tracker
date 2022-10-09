@@ -23,40 +23,9 @@ class TasksPage extends StatefulWidget {
 }
 
 class _TasksPageState extends State<TasksPage> {
-  //List<Tasks>? tasks;
   List<TeamTasks>? tasksOnTeam;
   RemoteAccess access = RemoteAccess();
   var isLoaded = false;
-
-  /*void _postAuthor() async {
-    //var book = Books(name: "Harry Jenkin's Book about stuff and things", author: 2);
-    var author = Authors(name: "Jameson Franklin");
-    var response = await access.post("/authors", author).catchError((err) {});
-    if (response == null) {
-      return;
-    }
-    debugPrint("Successful");
-  }
-  void _putAuthor() async {
-    var id = 8;
-    var author = Authors(id: id, name: "Stephen King");
-    var response =
-        await access.put("/authors/$id", author).catchError((err) {});
-    if (response == null) {
-      return;
-    }
-    debugPrint("Successful");
-  }
-  void _removeAuthor() async {
-    //var id = 7; id test for specific deletion
-    var response = await access
-        .delete("/authors?name=Jameson Franklin")
-        .catchError((err) {});
-    if (response == null) {
-      return;
-    }
-    debugPrint("Successful");
-  }*/
 
   Future<void> signOut() async {
     await Auth().signOut();
@@ -89,20 +58,6 @@ class _TasksPageState extends State<TasksPage> {
                 onPressed: () => Navigator.pop(context),
                 icon: const Icon(Icons.arrow_back)),
             IconButton(onPressed: signOut, icon: const Text('Sign Out')),
-            //IconButton(
-            /*onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const CreateATaskPage(context))),
-            //icon: const Icon(Icons.add_card)),
-            IconButton(
-                onPressed: _putAuthor,
-                icon: const Icon(Icons.create_new_folder)),
-            IconButton(
-                onPressed: _removeAuthor, icon: const Icon(Icons.delete)),
-            IconButton(
-                onPressed: _removeAuthor, icon: const Icon(Icons.delete)),
-            IconButton(onPressed: signOut, icon: const Text('Sign Out')),*/
           ],
         ),
         body: isLoaded
@@ -121,7 +76,7 @@ class _TasksPageState extends State<TasksPage> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        TaskDetailPage(tasksOnTeam![index])));
+                                        TaskDetailPage(tasksOnTeam![index], widget.user)));
                           });
                     },
                   ),
