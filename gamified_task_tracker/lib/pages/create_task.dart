@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'style.dart';
-import 'widgets/ttform.dart';
-import 'widgets/ttscaffold.dart';
+import '../style.dart';
+import '../widgets/ttform.dart';
+import '../widgets/ttscaffold.dart';
 
 class CreateTaskPage extends StatelessWidget {
   const CreateTaskPage({super.key});

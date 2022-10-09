@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gamified_task_tracker/widgets/ttscaffold.dart';
-import 'style.dart';
-import 'widgets/ttform.dart';
+import '../style.dart';
+import '../widgets/ttform.dart';
+import 'view_tasks.dart';
 
 class CreateAccountPage extends StatelessWidget {
   const CreateAccountPage({super.key});
@@ -25,13 +26,24 @@ class CreateAccountPage extends StatelessWidget {
           
                TextButton(
                 style: TextButton.styleFrom(
-                backgroundColor: primaryColor,
-                textStyle: const TextStyle(fontSize: 20, color: textColorAgainstPrimary),
-            ),
-            onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => CreateAccountPage())),
+                  backgroundColor: primaryColor,
+                  textStyle: const TextStyle(fontSize: 20, color: textColorAgainstPrimary),
+                ),
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ViewTasksPage(
+                    // generate list
+                    tasks: List.generate(
+                      10,
+                      (i) => Task(
+                        'Task $i',
+                        'Task Description $i',
+                        'Points $i',
+                      ),
+                    ),
+                  ),
+                )),
             child: const Text('Create Account')),
             ],
           ),

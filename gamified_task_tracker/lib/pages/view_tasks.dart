@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'style.dart';
+import 'edit_account.dart';
+import '../style.dart';
 
 class Task {
   final String task_name;
@@ -49,6 +50,20 @@ class ViewTasksPage extends StatelessWidget {
           Icons.arrow_back,
           color: textColorAgainstPrimary,
         )),
+        actions: [
+          GestureDetector(
+            child: const Icon(
+              Icons.settings,
+              color: textColorAgainstPrimary,
+            ),
+            onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => EditAccountPage()
+                      )
+                  ),
+          )
+        ],
         backgroundColor: primaryColor,
       ),
       // List builder

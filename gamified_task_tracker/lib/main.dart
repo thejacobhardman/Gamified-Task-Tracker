@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'create_task.dart';
-import 'edit_account.dart';
-import 'create-account.dart';
-import 'home.dart';
+import 'pages/create_task.dart';
+import 'pages/edit_account.dart';
+import 'pages/create_account.dart';
+import 'pages/home.dart';
 
 void main() {
   runApp(MyApp());
