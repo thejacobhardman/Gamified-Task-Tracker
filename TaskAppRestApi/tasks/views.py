@@ -70,7 +70,10 @@ def users(request):
         if name is not None:
             users = users.filter(user_name=name)
             count = users.delete()
-            return JsonResponse({'message': '{} Users were deleted successfully.'.format(count[0])}, status=status.HTTP_204_NO_CONTENT)
+            if count[0] > 0:
+                return JsonResponse({'message': 'User was deleted successfully.'}, status=status.HTTP_204_NO_CONTENT)
+            else:
+                return JsonResponse({'message': 'User does not exist.'}, status=status.HTTP_404_NOT_FOUND)
         return JsonResponse({'message': 'No username paramater passed in URL.'}, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -117,7 +120,7 @@ def teams(request):
         if teamCode is not None:
             teams = teams.filter(team_code=teamCode)
             count = teams.delete()
-            if count > 0:
+            if count[0] > 0:
                 return JsonResponse({'message': 'Team was deleted successfully.'}, status=status.HTTP_204_NO_CONTENT)
             else:
                 return JsonResponse({'message': 'Team does not exist.'}, status=status.HTTP_404_NOT_FOUND)
@@ -167,8 +170,7 @@ def teams_by_id(request):
         if teamid is not None:
             teams = teams.filter(pk=teamid)
             count = teams.delete()
-            print(count)
-            if count > 0:
+            if count[0] > 0:
                 return JsonResponse({'message': 'Team was deleted successfully.'}, status=status.HTTP_204_NO_CONTENT)
             else:
                 return JsonResponse({'message': 'Team does not exist.'}, status=status.HTTP_404_NOT_FOUND)
@@ -232,7 +234,7 @@ def tasks(request):
         if taskID is not None:
             task = Task.object.get(pk=taskID)
             count = task.delete()
-            if count > 0:
+            if count[0] > 0:
                 return JsonResponse({'message': 'Task was deleted successfully.'}, status=status.HTTP_204_NO_CONTENT)
             else:
                 return JsonResponse({'message': 'Task does not exist.'}, status=status.HTTP_404_NOT_FOUND)
