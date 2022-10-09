@@ -11,6 +11,7 @@ import '../auth.dart';
 import 'create_a_team_page.dart';
 import 'join_a_team_page.dart';
 import 'leaderboard_page.dart';
+import 'tasks_page.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
@@ -35,8 +36,6 @@ class _HopePageState extends State<HomePage> {
     String name = "";
   }
 
-
-
   _putUserTest() async {
     String name = "demoman2";
     var user = Users(
@@ -49,7 +48,7 @@ class _HopePageState extends State<HomePage> {
         points: 750,
         team: 1);
     var response =
-    await access.put("/user?username=$name", user).catchError((err) {});
+        await access.put("/user?username=$name", user).catchError((err) {});
     if (response == null) {
       debugPrint("Not Successful");
       return;
@@ -67,21 +66,20 @@ class _HopePageState extends State<HomePage> {
 
   Widget _createTask(BuildContext context) {
     return ElevatedButton(
-        onPressed: () =>
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => CreateATaskPage(userData![0]))),
+        onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => CreateATaskPage(userData![0]))),
         child: const Text('Make New Task'));
   }
 
   Future openTasks() async {
-    return DataFromAPI();
+    return TasksPage(userData![0]);
   }
-  
+
   void routeToLeaderBoard(BuildContext context) {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => LeaderboardPage(userData![0])));
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => LeaderboardPage(userData![0])));
   }
 
   Future _testFunc() async {
@@ -98,17 +96,15 @@ class _HopePageState extends State<HomePage> {
 
   Widget _createTeam(BuildContext context) {
     return ElevatedButton(
-        onPressed: () =>
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => CreateTeam(userData![0]))),
+        onPressed: () => Navigator.push(context,
+            MaterialPageRoute(builder: (context) => CreateTeam(userData![0]))),
         child: const Text('Create a Team'));
   }
 
   Widget _getTeamTasks(BuildContext context) {
     return ElevatedButton(
-        onPressed: () =>
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => CreateTeam(userData![0]))),
+        onPressed: () => Navigator.push(context,
+            MaterialPageRoute(builder: (context) => CreateTeam(userData![0]))),
         child: const Text('Get Team Tasks'));
   }
 
@@ -122,10 +118,8 @@ class _HopePageState extends State<HomePage> {
 
   Widget _openTasks(BuildContext context) {
     return ElevatedButton(
-        onPressed: () =>
-            Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => DataFromAPI())),
+        onPressed: () => Navigator.push(context,
+            MaterialPageRoute(builder: (context) => TasksPage(userData![0]))),
         child: const Text('Open Tasks'));
   }
 
@@ -133,11 +127,10 @@ class _HopePageState extends State<HomePage> {
     return Visibility(
         visible: userNull,
         child: ElevatedButton(
-            onPressed: () =>
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => JoinTeamPage(userData![0]))),
+            onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => JoinTeamPage(userData![0]))),
             child: const Text('Join a Team')));
   }
 
@@ -193,8 +186,7 @@ class _HopePageState extends State<HomePage> {
     return Visibility(
         visible: userNull,
         child: ElevatedButton(
-            onPressed: () =>
-                routeToLeaderBoard(context),
+            onPressed: () => routeToLeaderBoard(context),
             child: const Text('Leaderboard')));
   }
 
@@ -202,11 +194,10 @@ class _HopePageState extends State<HomePage> {
     return Visibility(
         visible: userNull,
         child: ElevatedButton(
-            onPressed: () =>
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => UserPage(userData![0]))),
+            onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => UserPage(userData![0]))),
             child: const Text('User profile')));
   }
 }

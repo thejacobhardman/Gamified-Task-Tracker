@@ -61,15 +61,11 @@ class _CreateATaskPageState extends State<CreateATaskPage> {
             children: [
               TextFormField(
                 controller: textController1,
-                decoration: InputDecoration(
-                  hintText: "Task Name"
-                ),
+                decoration: InputDecoration(hintText: "Task Name"),
               ),
               TextFormField(
                 controller: textController2,
-                decoration: InputDecoration(
-                  hintText: "Task Details"
-                ),
+                decoration: InputDecoration(hintText: "Task Details"),
               ),
               SizedBox(height: 16),
               Text('Points', style: Theme.of(context).textTheme.headline6),
@@ -81,10 +77,10 @@ class _CreateATaskPageState extends State<CreateATaskPage> {
                 haptics: true,
                 onChanged: (value) => setState(() => _currentIntValue = value),
               ),
-              ElevatedButton(onPressed: pickDate,
-                  child: const Text("Due Date")),
-              ElevatedButton(onPressed: _postTask,
-                  child: const Text("Post Test Task"))
+              ElevatedButton(
+                  onPressed: pickDate, child: const Text("Due Date")),
+              ElevatedButton(
+                  onPressed: _postTask, child: const Text("Post Test Task"))
             ],
           ),
         ),
@@ -97,15 +93,14 @@ class _CreateATaskPageState extends State<CreateATaskPage> {
       taskName: textController1?.text ?? "",
       description: textController2?.text ?? "",
       completed: false,
-      completedby: null,
+      completedby: "",
       valid: false,
       dueDate: formatter.format(selectedDate),
       authorKey: widget.user.id,
       team: widget.user.team,
       points: _currentIntValue,
     );
-    var response =
-    await access.post("/task", newTask).catchError((err) {});
+    var response = await access.post("/task", newTask).catchError((err) {});
     if (response == null) {
       print("null");
       return;
@@ -127,7 +122,5 @@ class _CreateATaskPageState extends State<CreateATaskPage> {
       String formatted = formatter.format(selectedDate);
       print(formatted);
     }
-
   }
-
 }

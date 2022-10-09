@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:gamified_task_tracker/Models/authors.dart';
 import 'package:gamified_task_tracker/Models/task.dart';
 import 'package:gamified_task_tracker/Models/teamUsers.dart';
+import 'package:gamified_task_tracker/Models/teamTasks.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 
@@ -64,6 +65,19 @@ class RemoteAccess {
       return teamUsersFromJson(json);
     } else {
       debugPrint("Team User Not Successful");
+      return null;
+    }
+  }
+
+  Future<List<TeamTasks>?> getTeamTasks(int? id) async {
+    var uri = Uri.parse("$api/teamtasks?team_id=$id");
+    var response = await client.get(uri);
+    if (response.statusCode == 200) {
+      debugPrint("Successful");
+      var json = response.body;
+      return teamTasksFromJson(json);
+    } else {
+      debugPrint("Team Tasks Not Successful");
       return null;
     }
   }
