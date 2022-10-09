@@ -100,7 +100,7 @@ class _HopePageState extends State<HomePage> {
     return ElevatedButton(
         onPressed: () =>
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => CreateTeam())),
+                context, MaterialPageRoute(builder: (context) => CreateTeam(userData![0]))),
         child: const Text('Create a Team'));
   }
 
@@ -108,7 +108,7 @@ class _HopePageState extends State<HomePage> {
     return ElevatedButton(
         onPressed: () =>
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => CreateTeam())),
+                context, MaterialPageRoute(builder: (context) => CreateTeam(userData![0]))),
         child: const Text('Get Team Tasks'));
   }
 
