@@ -20,7 +20,7 @@ class User(models.Model):
         max_length=70, blank=True, null=True, default=None)
     email = models.EmailField(unique=True, blank=True, null=True, default=None)
     team = models.ForeignKey(
-        Team, blank=True, null=True, default=None, on_delete=models.CASCADE)
+        Team, blank=True, null=True, default=None, on_delete=models.SET_NULL)
     points = models.IntegerField(blank=True, null=True, default=None)
     admin = models.BooleanField(default=False, editable=True)
 
