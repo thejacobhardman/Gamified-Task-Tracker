@@ -95,6 +95,19 @@ class RemoteAccess {
     }
   }
 
+  Future<List<Teams>?> getTeamsById(int? branch) async {
+    var uri = Uri.parse("$api/teamid?team_id=$branch");
+    var response = await client.get(uri);
+    if (response.statusCode == 200) {
+      debugPrint("Successful");
+      var json = response.body;
+      return teamsFromJson(json);
+    } else {
+      debugPrint("Team Not Successful");
+      return null;
+    }
+  }
+
   Future<List<Authors>?> delete(String branch) async {
     var uri = Uri.parse(api + branch);
     var response = await client.delete(uri);
