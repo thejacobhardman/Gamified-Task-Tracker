@@ -167,6 +167,7 @@ def teams_by_id(request):
         if teamid is not None:
             teams = teams.filter(pk=teamid)
             count = teams.delete()
+            print(count)
             if count > 0:
                 return JsonResponse({'message': 'Team was deleted successfully.'}, status=status.HTTP_204_NO_CONTENT)
             else:

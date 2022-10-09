@@ -28,6 +28,7 @@ class _LoginPageState extends State<LoginPage> {
         password: _controllerPassword.text,
         email: _controllerEmail.text.toLowerCase(),
         team: null,
+        admin: false,
         points: 0);
     var response = await access.post("/user", user).catchError((err) {});
     if (response == null) {

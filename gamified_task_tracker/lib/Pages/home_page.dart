@@ -75,12 +75,13 @@ class _HopePageState extends State<HomePage> {
     var test = await access.getUsers(user?.email);
   }
 
-  Widget _testButton() {
-    return ElevatedButton(
-        onPressed: () {
-          _testFunc();
-        },
-        child: const Text('See users'));
+  Future<dynamic> _deleteTeam(context) async {
+    var response = await access.delete("/teamid?team_id=${currentUser!.team}");
+    if (response == null) {
+      print("null");
+      return;
+    }
+    debugPrint("Successful deletion");
   }
 
   Widget _createTeam(BuildContext context) {
@@ -92,6 +93,47 @@ class _HopePageState extends State<HomePage> {
                 MaterialPageRoute(
                     builder: (context) => CreateTeam(currentUser!))),
             child: const Text('Create a Team')));
+  }
+
+  Widget _deleteTeamButton(BuildContext context) {
+    return Visibility(
+        visible: userAdmin,
+        child: ElevatedButton(
+            onPressed: () => openDeleteAlert(context),
+            child: Text("Delete Team")));
+  }
+
+  openDeleteAlert(BuildContext context) {
+    Widget confirmButton = TextButton(
+      child: Text("Confirm"),
+      onPressed: () async => {
+        _deleteTeam(context),
+        Navigator.of(context).pop(),
+      },
+    );
+    Widget cancelButton = TextButton(
+      child: Text("Cancel"),
+      onPressed: () => {Navigator.of(context).pop()},
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Alert!"),
+      content:
+          Text("This will delete your team. NOTE: This action is irreversable"),
+      actions: [
+        confirmButton,
+        cancelButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   Widget _getTeamTasks(BuildContext context) {
@@ -185,7 +227,8 @@ class _HopePageState extends State<HomePage> {
                           _refresh(),
                           _viewUserProfile(),
                           _createTask(context),
-                          _adminOnlyTasks(context)
+                          _adminOnlyTasks(context),
+                          _deleteTeamButton(context),
                           //_makeTeam(),
                         ],
                       )),
@@ -195,7 +238,10 @@ class _HopePageState extends State<HomePage> {
                       .then((model) => {setState(() => model = currentUser)});
                 })
             : Center(
-                child: CircularProgressIndicator(),
+                child: Column(children: <Widget>[
+                  _signOutButton(),
+                  const RefreshProgressIndicator()
+                ]),
               ));
   }
 

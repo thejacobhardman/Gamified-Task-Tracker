@@ -108,12 +108,13 @@ class RemoteAccess {
     }
   }
 
-  Future<List<Authors>?> delete(String branch) async {
+  Future<dynamic> delete(String branch) async {
     var uri = Uri.parse(api + branch);
     var response = await client.delete(uri);
-    if (response.statusCode == 200) {
-      var json = response.body;
-      return authorsFromJson(json);
+    if (response.statusCode == 200 || response.statusCode == 204) {
+      print("successful deletion");
+      print(response.statusCode);
+      return response.body;
     }
   }
 
