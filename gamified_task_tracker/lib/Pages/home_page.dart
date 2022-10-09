@@ -11,7 +11,6 @@ import '../auth.dart';
 import 'create_a_team_page.dart';
 import 'join_a_team_page.dart';
 import 'leaderboard_page.dart';
-import 'tasks_page.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
