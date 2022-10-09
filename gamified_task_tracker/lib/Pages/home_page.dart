@@ -11,6 +11,7 @@ import '../auth.dart';
 import 'create_a_team_page.dart';
 import 'join_a_team_page.dart';
 import 'leaderboard_page.dart';
+import 'only_for_admin.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
@@ -100,6 +101,15 @@ class _HopePageState extends State<HomePage> {
         child: const Text('Get Team Tasks'));
   }
 
+  Widget _adminOnlyTasks(BuildContext context) {
+    return ElevatedButton(
+        onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => AdminOnlyTasksPage(currentUser!))),
+        child: const Text('Only For Admin'));
+  }
+
   Widget _title() {
     return Text('Task Tracker: ' + firstname);
   }
@@ -154,33 +164,39 @@ class _HopePageState extends State<HomePage> {
         appBar: AppBar(
           title: _title(),
         ),
-        body: !userNull ? RefreshIndicator(child: Visibility(
-          visible: !userNull,
-          child: Container(
-              height: double.infinity,
-              width: double.infinity,
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  _userUid(),
-                  _signOutButton(),
-                  _openTasks(context),
-                  _joinTeam(context),
-                  _createTeam(context),
-                  _viewLeaderboard(),
-                  _refresh(),
-                  _viewUserProfile(),
-                  _createTask(context)
-                  //_makeTeam(),
-                ],
-              )),
-        ), onRefresh: () async {
-          retrieveUser().then((model) => {setState(() => model = currentUser)});
-        }) : Center(
-          child: CircularProgressIndicator(),
-        ));
+        body: !userNull
+            ? RefreshIndicator(
+                child: Visibility(
+                  visible: !userNull,
+                  child: Container(
+                      height: double.infinity,
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          _userUid(),
+                          _signOutButton(),
+                          _openTasks(context),
+                          _joinTeam(context),
+                          _createTeam(context),
+                          _viewLeaderboard(),
+                          _refresh(),
+                          _viewUserProfile(),
+                          _createTask(context),
+                          _adminOnlyTasks(context)
+                          //_makeTeam(),
+                        ],
+                      )),
+                ),
+                onRefresh: () async {
+                  retrieveUser()
+                      .then((model) => {setState(() => model = currentUser)});
+                })
+            : Center(
+                child: CircularProgressIndicator(),
+              ));
   }
 
   _viewLeaderboard() {
