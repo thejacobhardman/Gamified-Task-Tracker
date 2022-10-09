@@ -76,7 +76,9 @@ class _CreateTeamState extends State<CreateTeam> {
           lastName: widget.user.lastName,
           email: widget.user.email,
           points: widget.user.points,
-          team: id);
+          team: id,
+          admin: true,
+          );
       var response = await RemoteAccess().put("/user?username=$name", teamChange);
       if (response == null) {
         print("null");
@@ -84,6 +86,7 @@ class _CreateTeamState extends State<CreateTeam> {
       }
       debugPrint("Successful update");
       widget.user.team = id;
+      widget.user.admin = true;
     }
   }
 

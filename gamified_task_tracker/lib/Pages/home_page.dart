@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gamified_task_tracker/Pages/create_a_task_page.dart';
+import 'package:gamified_task_tracker/Pages/tasks_page.dart';
 import 'package:gamified_task_tracker/Pages/view_user_page.dart';
-import 'package:gamified_task_tracker/pages/tasks_page.dart';
 
 import '../Models/teams.dart';
 import '../Models/users.dart';
@@ -20,12 +20,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HopePageState extends State<HomePage> {
-  late final User? user;
+  User? user;
   var userData;
+  Users? currentUser;
   RemoteAccess access = RemoteAccess();
   String firstname = "";
   String lastname = "";
-  bool userNull = true;
+  bool userAdmin = false;
+  bool userNull = false;
 
   Future<void> signOut() async {
     await Auth().signOut();
@@ -35,32 +37,19 @@ class _HopePageState extends State<HomePage> {
     String name = "";
   }
 
-  _putUserTest() async {
-    String name = "demoman2";
-    var user = Users(
-        id: 2,
-        userName: "demoman2",
-        email: "idk@test.test",
-        password: "SUPERPASSWORD",
-        firstName: "Demo",
-        lastName: "Man2",
-        points: 750,
-        team: 1);
-    var response =
-        await access.put("/user?username=$name", user).catchError((err) {});
-    if (response == null) {
-      debugPrint("Not Successful");
-      return;
-    }
-    debugPrint("Successful");
-  }
-
   Future retrieveUser() async {
     user = Auth().currentUser;
     userData = await access.getUsers(user?.email);
-    //firstname = userData![0].firstName;
-    //lastname = userData![0].lastName;
-    return userData;
+    if (userData!.length == 0) {
+      print("NULL user");
+      userNull = true;
+      return;
+    }
+    currentUser = userData![0];
+    if (currentUser?.admin != null) {
+      userAdmin = currentUser!.admin!;
+    }
+    return currentUser;
   }
 
   Widget _createTask(BuildContext context) {
@@ -68,17 +57,17 @@ class _HopePageState extends State<HomePage> {
         onPressed: () => Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => CreateATaskPage(userData![0]))),
+                builder: (context) => CreateATaskPage(currentUser!))),
         child: const Text('Make New Task'));
   }
 
   Future openTasks() async {
-    return TasksPage(userData![0]);
+    return TasksPage(currentUser!);
   }
 
   void routeToLeaderBoard(BuildContext context) {
     Navigator.push(context,
-        MaterialPageRoute(builder: (context) => LeaderboardPage(userData![0])));
+        MaterialPageRoute(builder: (context) => LeaderboardPage(currentUser!)));
   }
 
   Future _testFunc() async {
@@ -94,16 +83,20 @@ class _HopePageState extends State<HomePage> {
   }
 
   Widget _createTeam(BuildContext context) {
-    return ElevatedButton(
-        onPressed: () => Navigator.push(context,
-            MaterialPageRoute(builder: (context) => CreateTeam(userData![0]))),
-        child: const Text('Create a Team'));
+    return Visibility(
+        visible: !userAdmin,
+        child: ElevatedButton(
+            onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => CreateTeam(currentUser!))),
+            child: const Text('Create a Team')));
   }
 
   Widget _getTeamTasks(BuildContext context) {
     return ElevatedButton(
         onPressed: () => Navigator.push(context,
-            MaterialPageRoute(builder: (context) => CreateTeam(userData![0]))),
+            MaterialPageRoute(builder: (context) => CreateTeam(currentUser!))),
         child: const Text('Get Team Tasks'));
   }
 
@@ -118,23 +111,19 @@ class _HopePageState extends State<HomePage> {
   Widget _openTasks(BuildContext context) {
     return ElevatedButton(
         onPressed: () => Navigator.push(context,
-            MaterialPageRoute(builder: (context) => TasksPage(userData![0]))),
+            MaterialPageRoute(builder: (context) => TasksPage(currentUser!))),
         child: const Text('Open Tasks'));
   }
 
   Widget _joinTeam(BuildContext context) {
     return Visibility(
-        visible: userNull,
+        visible: !userAdmin,
         child: ElevatedButton(
             onPressed: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => JoinTeamPage(userData![0]))),
+                    builder: (context) => JoinTeamPage(currentUser!))),
             child: const Text('Join a Team')));
-  }
-
-  _testUserChange() {
-    return ElevatedButton(onPressed: retrieveUser, child: const Text("test"));
   }
 
   Widget _signOutButton() {
@@ -144,13 +133,19 @@ class _HopePageState extends State<HomePage> {
     );
   }
 
+  Widget _refresh() {
+    return ElevatedButton(
+      onPressed: () async {
+        retrieveUser().then((model) => {setState(() => model = currentUser)});
+      },
+      child: const Text('Refresh screen'),
+    );
+  }
+
   @override
   void initState() {
     super.initState();
-    retrieveUser().then((model) => {setState(() => model = userData)});
-    if (userData != null) {
-      userNull = false;
-    }
+    retrieveUser().then((model) => {setState(() => model = currentUser)});
   }
 
   @override
@@ -159,26 +154,33 @@ class _HopePageState extends State<HomePage> {
         appBar: AppBar(
           title: _title(),
         ),
-        body: Container(
-            height: double.infinity,
-            width: double.infinity,
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                _userUid(),
-                _signOutButton(),
-                _openTasks(context),
-                _joinTeam(context),
-                _createTeam(context),
-                _viewLeaderboard(),
-                _testButton(),
-                _viewUserProfile(),
-                _createTask(context)
-                //_makeTeam(),
-              ],
-            )));
+        body: !userNull ? RefreshIndicator(child: Visibility(
+          visible: !userNull,
+          child: Container(
+              height: double.infinity,
+              width: double.infinity,
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  _userUid(),
+                  _signOutButton(),
+                  _openTasks(context),
+                  _joinTeam(context),
+                  _createTeam(context),
+                  _viewLeaderboard(),
+                  _refresh(),
+                  _viewUserProfile(),
+                  _createTask(context)
+                  //_makeTeam(),
+                ],
+              )),
+        ), onRefresh: () async {
+          retrieveUser().then((model) => {setState(() => model = currentUser)});
+        }) : Center(
+          child: CircularProgressIndicator(),
+        ));
   }
 
   _viewLeaderboard() {

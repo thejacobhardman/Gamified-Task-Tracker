@@ -49,7 +49,7 @@ def users(request):
     # Example: [http://localhost:8000/user?username=Harry Jenkins], no body
     if request.method == 'PUT':
         fields = ('user_name', 'first_name',
-                  'last_name', 'email', 'team', 'points')
+                  'last_name', 'email', 'team', 'admin', 'points')
         try:
             username = request.GET.get('username', None)
             user = User.objects.get(user_name=username)

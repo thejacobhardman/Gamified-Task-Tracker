@@ -47,6 +47,7 @@ class SimpleUserSerializer(DynamicUserSerializer):
                   'last_name',
                   'email',
                   'team',
+                  'admin',
                   'points')'''
 
 

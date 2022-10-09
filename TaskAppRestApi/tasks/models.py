@@ -22,7 +22,7 @@ class User(models.Model):
     team = models.ForeignKey(
         Team, blank=True, null=True, default=None, on_delete=models.PROTECT)
     points = models.IntegerField(blank=True, null=True, default=None)
-    admin = models.BooleanField(default=False)
+    admin = models.BooleanField(default=False, editable=True)
 
 
 class Task(models.Model):
