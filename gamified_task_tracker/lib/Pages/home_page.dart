@@ -1,14 +1,20 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:gamified_task_tracker/pages/tasks_page.dart';
+import 'package:gamified_task_tracker/Pages/create_a_task_page.dart';
+import 'package:gamified_task_tracker/Pages/tasks_page.dart';
+import 'package:gamified_task_tracker/Pages/view_user_page.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../Models/teams.dart';
+
 import '../Models/users.dart';
-import '../RemoteAccess.dart';
-import '../auth.dart';
+import '../Views/RemoteAccess.dart';
+import '../Views/auth.dart';
+import '../Views/style.dart';
 import 'create_a_team_page.dart';
 import 'join_a_team_page.dart';
 import 'leaderboard_page.dart';
+import 'only_for_admin.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
@@ -18,82 +24,165 @@ class HomePage extends StatefulWidget {
 }
 
 class _HopePageState extends State<HomePage> {
-  late final User? user;
+  User? user;
   var userData;
+  Users? currentUser;
   RemoteAccess access = RemoteAccess();
   String firstname = "";
   String lastname = "";
+  bool userAdmin = false;
+  bool userNull = false;
 
   Future<void> signOut() async {
     await Auth().signOut();
   }
 
-  Future createTeam() async {
-    String name = "";
-  }
-
-  _putUserTest() async {
-    String name = "demoman2";
-    var user = Users(
-        id: 2,
-        userName: "demoman2",
-        email: "idk@test.test",
-        password: "SUPERPASSWORD",
-        firstName: "Demo",
-        lastName: "Man2",
-        points: 750,
-        team: 1);
-    var response =
-        await access.put("/user?username=$name", user).catchError((err) {});
-    if (response == null) {
-      debugPrint("Not Successful");
-      return;
-    }
-    debugPrint("Successful");
-  }
-
   Future retrieveUser() async {
     user = Auth().currentUser;
-    print("working");
     userData = await access.getUsers(user?.email);
-    firstname = userData![0].firstName;
-    lastname = userData![0].lastName;
-    print(firstname);
-    return userData;
+    if (userData!.length == 0) {
+      print("NULL user");
+      userNull = true;
+      return;
+    }
+    currentUser = userData![0];
+    if (currentUser?.admin != null) {
+      userAdmin = currentUser!.admin!;
+    }
+    return currentUser;
+  }
+
+  Widget _createTask(BuildContext context) {
+    return ElevatedButton(
+        style: TextButton.styleFrom(
+          backgroundColor: primaryColor,
+        ),
+        onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => CreateATaskPage(currentUser!))),
+        child: Text('Make New Task', style: GoogleFonts.getFont('Poppins')));
   }
 
   Future openTasks() async {
-    return DataFromAPI();
+    return TasksPage(currentUser!);
   }
 
-  Future _testFunc() async {
-    var test = await access.getUsers(user?.email);
+  void routeToLeaderBoard(BuildContext context) {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => LeaderboardPage(currentUser!)));
   }
 
-  Widget _testButton() {
-    return ElevatedButton(
-        onPressed: () {
-          _testFunc();
-        },
-        child: const Text('See users'));
+  Future<dynamic> _deleteTeam(context) async {
+    var user = Users(
+      id: currentUser?.id,
+      team: currentUser?.team,
+      userName: currentUser?.userName,
+      firstName: currentUser?.firstName,
+      lastName: currentUser?.lastName,
+      password: currentUser?.password,
+      email: currentUser?.email,
+      points: currentUser?.points,
+      admin: false,
+    );
+    var response = await access.delete("/teamid?team_id=${currentUser!.team}");
+    if (response == null) {
+      response = await access
+          .put("/user?username=${currentUser?.userName}", user)
+          .catchError((err) {});
+      return;
+    }
+    debugPrint("Successful deletion");
+    response = await access
+        .put("/user?username=${currentUser?.userName}", user)
+        .catchError((err) {});
+    if (response == null) {
+      print("null");
+      return;
+    }
+    debugPrint("Successful");
+    currentUser?.admin = false;
   }
 
   Widget _createTeam(BuildContext context) {
-    return ElevatedButton(
-        onPressed: () => Navigator.push(
-            context, MaterialPageRoute(builder: (context) => CreateTeam())),
-        child: const Text('Create a Team'));
+    return Visibility(
+        visible: !userAdmin,
+        child: ElevatedButton(
+            style: TextButton.styleFrom(
+              backgroundColor: primaryColor,
+            ),
+            onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => CreateTeam(currentUser!))),
+            child:
+                Text('Create a Team', style: GoogleFonts.getFont('Poppins'))));
+  }
+
+  Widget _deleteTeamButton(BuildContext context) {
+    return Visibility(
+        visible: userAdmin,
+        child: ElevatedButton(
+            style: TextButton.styleFrom(
+              backgroundColor: primaryColor,
+            ),
+            onPressed: () => openDeleteAlert(context),
+            child: Text("Delete Team", style: GoogleFonts.getFont('Poppins'))));
+  }
+
+  openDeleteAlert(BuildContext context) {
+    Widget confirmButton = TextButton(
+      child: Text("Confirm"),
+      onPressed: () async => {
+        _deleteTeam(context),
+        Navigator.of(context).pop(),
+      },
+    );
+    Widget cancelButton = TextButton(
+      child: Text("Cancel"),
+      onPressed: () => {Navigator.of(context).pop()},
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Alert!"),
+      content:
+          Text("This will delete your team. NOTE: This action is irreversable"),
+      actions: [
+        confirmButton,
+        cancelButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   Widget _getTeamTasks(BuildContext context) {
     return ElevatedButton(
-        onPressed: () => Navigator.push(
-            context, MaterialPageRoute(builder: (context) => CreateTeam())),
-        child: const Text('Get Team Tasks'));
+        style: TextButton.styleFrom(
+          backgroundColor: primaryColor,
+        ),
+        onPressed: () => Navigator.push(context,
+            MaterialPageRoute(builder: (context) => CreateTeam(currentUser!))),
+        child: Text('Get Team Tasks', style: GoogleFonts.getFont('Poppins')));
   }
 
-  Widget _title() {
-    return Text('Task Tracker: ' + firstname);
+  Widget _adminOnlyTasks(BuildContext context) {
+    return ElevatedButton(
+        style: TextButton.styleFrom(
+          backgroundColor: primaryColor,
+        ),
+        onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => AdminOnlyTasksPage(currentUser!))),
+        child: Text('Only For Admin', style: GoogleFonts.getFont('Poppins')));
   }
 
   Widget _userUid() {
@@ -102,70 +191,211 @@ class _HopePageState extends State<HomePage> {
 
   Widget _openTasks(BuildContext context) {
     return ElevatedButton(
-        onPressed: () => Navigator.push(
-            context, MaterialPageRoute(builder: (context) => DataFromAPI())),
-        child: const Text('Open Tasks'));
+        style: TextButton.styleFrom(
+          backgroundColor: primaryColor,
+        ),
+        onPressed: () => Navigator.push(context,
+            MaterialPageRoute(builder: (context) => TasksPage(currentUser!))),
+        child: Text('Open Tasks', style: GoogleFonts.getFont('Poppins')));
   }
 
   Widget _joinTeam(BuildContext context) {
-    return ElevatedButton(
-        onPressed: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => JoinTeamPage(userData![0]))),
-        child: const Text('Join a Team'));
-  }
-
-  _testUserChange() {
-    return ElevatedButton(onPressed: retrieveUser, child: const Text("test"));
+    return Visibility(
+        visible: !userAdmin,
+        child: ElevatedButton(
+            style: TextButton.styleFrom(
+              backgroundColor: primaryColor,
+            ),
+            onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => JoinTeamPage(currentUser!))),
+            child: Text('Join a Team', style: GoogleFonts.getFont('Poppins'))));
   }
 
   Widget _signOutButton() {
     return ElevatedButton(
+      style: TextButton.styleFrom(
+        backgroundColor: primaryColor,
+      ),
       onPressed: signOut,
-      child: const Text('Sign Out'),
+      child: Text('Sign Out', style: GoogleFonts.getFont('Poppins')),
     );
+  }
+
+  Widget _refresh() {
+    return SizedBox(
+        width: 200,
+        height: 40,
+        child: ElevatedButton(
+          onPressed: () async => {
+            retrieveUser()
+                .then((model) => {setState(() => model = currentUser)})
+          },
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text("Refresh Screen", style: GoogleFonts.getFont('Poppins')),
+              SizedBox(width: 5),
+              Icon(Icons.refresh),
+            ],
+          ),
+          style: TextButton.styleFrom(
+            backgroundColor: primaryColor,
+          ),
+        ));
   }
 
   @override
   void initState() {
     super.initState();
-    retrieveUser().then((model) => {setState(() => model = userData)});
+    retrieveUser().then((model) => {setState(() => model = currentUser)});
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: _title(),
+          title: Text(
+            "Task Tracker $firstname",
+            style: GoogleFonts.getFont(
+              'Poppins',
+              color: Colors.white,
+              fontWeight: FontWeight.w600,
+              fontSize: 30,
+            ),
+          ),
+          automaticallyImplyLeading: true,
+          elevation: 4,
+          centerTitle: true,
+          leading: GestureDetector(
+              child: const Icon(
+                Icons.arrow_back,
+                color: textColorAgainstPrimary,
+              ),
+              onTap: signOut),
+          actions: [
+            GestureDetector(
+              child: const Icon(
+                Icons.person,
+                color: textColorAgainstPrimary,
+              ),
+              onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => UserPage(currentUser!))),
+            ),
+          ],
+          backgroundColor: primaryColor,
         ),
-        body: Container(
-            height: double.infinity,
-            width: double.infinity,
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                _userUid(),
-                _signOutButton(),
-                _openTasks(context),
-                _joinTeam(context),
-                _createTeam(context),
-                _viewLeaderboard(),
-                _testButton()
-                //_joinTeam(),
-                //_makeTeam(),
-              ],
-            )));
+        body: !userNull
+            ? RefreshIndicator(
+                child: Visibility(
+                  visible: !userNull,
+                  child: Container(
+                      height: double.infinity,
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Row>[
+                          Row( 
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget> [
+                              _userUid(),
+                             _signOutButton(),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                Image.asset(
+                                    'assets/images/TaskBird.png',
+                                    width: 200,
+                                    height: 200,
+                                  ),
+                                ],
+                          ),
+
+                          Row(
+                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                               children: <Widget>[
+                                _openTasks(context),
+                                _createTask(context),
+                               ],),
+
+                          Row(
+                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                               children: <Widget>[
+                                _createTeam(context),
+                                 _joinTeam(context),
+                               ],),
+
+                          Row(
+                               mainAxisAlignment: MainAxisAlignment.center,
+                               children: <Widget>[
+                                _viewLeaderboard(),
+                               ],),
+
+                             Row(
+                               mainAxisAlignment: MainAxisAlignment.center,
+                               children: <Widget>[
+                                _adminOnlyTasks(context),
+                               ],),
+
+                            Row(
+                               mainAxisAlignment: MainAxisAlignment.end,
+                               children: <Widget>[
+                                _refresh(),
+                               ],),
+                        
+                        ],
+                       
+                      )),
+                ),
+                onRefresh: () async {
+                  retrieveUser()
+                      .then((model) => {setState(() => model = currentUser)});
+                })
+            : Center(
+                child: Column(children: <Widget>[
+                  Image.asset(
+                    'assets/images/TaskBird.png',
+                    width: 200,
+                    height: 200,
+                  ),
+                  _signOutButton(),
+                  _refresh(),
+                  const RefreshProgressIndicator()
+                ]),
+              ));
   }
 
   _viewLeaderboard() {
-    return ElevatedButton(
-        onPressed: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => LeaderboardPage(userData![0]))),
-        child: const Text('Leaderboard'));
+    return Visibility(
+        visible: true,
+        child: ElevatedButton(
+            style: TextButton.styleFrom(
+              backgroundColor: primaryColor,
+            ),
+            onPressed: () => routeToLeaderBoard(context),
+            child: Text('Leaderboard', style: GoogleFonts.getFont('Poppins'))));
+  }
+
+  _viewUserProfile() {
+    return Visibility(
+        visible: userNull,
+        child: ElevatedButton(
+            style: TextButton.styleFrom(
+              backgroundColor: primaryColor,
+            ),
+            onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => UserPage(userData![0]))),
+            child:
+                Text('User profile', style: GoogleFonts.getFont('Poppins'))));
   }
 }
