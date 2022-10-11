@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../style.dart';
+import '../Views/style.dart';
 
 // You can use this widget to set up your scaffolding automatically
 

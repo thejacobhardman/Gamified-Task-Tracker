@@ -4,8 +4,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../Models/teams.dart';
 import '../Models/users.dart';
-import '../RemoteAccess.dart';
-import '../auth.dart';
+
+import '../Views/RemoteAccess.dart';
+import '../Views/auth.dart';
+import '../Views/style.dart';
+
 
 class CreateTeam extends StatefulWidget {
   const CreateTeam(this.user, {super.key});
@@ -24,6 +27,7 @@ class _CreateTeamState extends State<CreateTeam> {
   Widget build(BuildContext context) => Scaffold(
       appBar: AppBar(
         title: Text('Create Team'),
+        backgroundColor: primaryColor,
       ),
       body: ListView(padding: EdgeInsets.all(16), children: <Widget>[
         TextField(
@@ -78,6 +82,8 @@ class _CreateTeamState extends State<CreateTeam> {
           points: widget.user.points,
           team: id,
           admin: true,
+          id: widget.user.id,
+          password: widget.user.password,
           );
       var response = await RemoteAccess().put("/user?username=$name", teamChange);
       if (response == null) {

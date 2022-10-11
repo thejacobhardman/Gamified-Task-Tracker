@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:gamified_task_tracker/Pages/create_a_task_page.dart';
 import 'package:gamified_task_tracker/Pages/tasks_page.dart';
 import 'package:gamified_task_tracker/Pages/view_user_page.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../Models/teams.dart';
+
 import '../Models/users.dart';
-import '../RemoteAccess.dart';
-import '../auth.dart';
-import '../style.dart';
+import '../Views/RemoteAccess.dart';
+import '../Views/auth.dart';
+import '../Views/style.dart';
 import 'create_a_team_page.dart';
 import 'join_a_team_page.dart';
 import 'leaderboard_page.dart';
@@ -35,10 +37,6 @@ class _HopePageState extends State<HomePage> {
     await Auth().signOut();
   }
 
-  Future createTeam() async {
-    String name = "";
-  }
-
   Future retrieveUser() async {
     user = Auth().currentUser;
     userData = await access.getUsers(user?.email);
@@ -63,7 +61,7 @@ class _HopePageState extends State<HomePage> {
             context,
             MaterialPageRoute(
                 builder: (context) => CreateATaskPage(currentUser!))),
-        child: const Text('Make New Task', style: TextStyle(color: textColorAgainstPrimary)));
+        child: Text('Make New Task', style: GoogleFonts.getFont('Poppins')));
   }
 
   Future openTasks() async {
@@ -76,12 +74,34 @@ class _HopePageState extends State<HomePage> {
   }
 
   Future<dynamic> _deleteTeam(context) async {
+    var user = Users(
+      id: currentUser?.id,
+      team: currentUser?.team,
+      userName: currentUser?.userName,
+      firstName: currentUser?.firstName,
+      lastName: currentUser?.lastName,
+      password: currentUser?.password,
+      email: currentUser?.email,
+      points: currentUser?.points,
+      admin: false,
+    );
     var response = await access.delete("/teamid?team_id=${currentUser!.team}");
+    if (response == null) {
+      response = await access
+          .put("/user?username=${currentUser?.userName}", user)
+          .catchError((err) {});
+      return;
+    }
+    debugPrint("Successful deletion");
+    response = await access
+        .put("/user?username=${currentUser?.userName}", user)
+        .catchError((err) {});
     if (response == null) {
       print("null");
       return;
     }
-    debugPrint("Successful deletion");
+    debugPrint("Successful");
+    currentUser?.admin = false;
   }
 
   Widget _createTeam(BuildContext context) {
@@ -95,7 +115,8 @@ class _HopePageState extends State<HomePage> {
                 context,
                 MaterialPageRoute(
                     builder: (context) => CreateTeam(currentUser!))),
-            child: const Text('Create a Team', style: TextStyle(color: textColorAgainstPrimary))));
+            child:
+                Text('Create a Team', style: GoogleFonts.getFont('Poppins'))));
   }
 
   Widget _deleteTeamButton(BuildContext context) {
@@ -106,7 +127,7 @@ class _HopePageState extends State<HomePage> {
               backgroundColor: primaryColor,
             ),
             onPressed: () => openDeleteAlert(context),
-            child: Text("Delete Team", style: TextStyle(color: textColorAgainstPrimary))));
+            child: Text("Delete Team", style: GoogleFonts.getFont('Poppins'))));
   }
 
   openDeleteAlert(BuildContext context) {
@@ -149,7 +170,7 @@ class _HopePageState extends State<HomePage> {
         ),
         onPressed: () => Navigator.push(context,
             MaterialPageRoute(builder: (context) => CreateTeam(currentUser!))),
-        child: const Text('Get Team Tasks', style: TextStyle(color: textColorAgainstPrimary)));
+        child: Text('Get Team Tasks', style: GoogleFonts.getFont('Poppins')));
   }
 
   Widget _adminOnlyTasks(BuildContext context) {
@@ -161,7 +182,7 @@ class _HopePageState extends State<HomePage> {
             context,
             MaterialPageRoute(
                 builder: (context) => AdminOnlyTasksPage(currentUser!))),
-        child: const Text('Only For Admin', style: TextStyle(color: textColorAgainstPrimary)));
+        child: Text('Only For Admin', style: GoogleFonts.getFont('Poppins')));
   }
 
   Widget _userUid() {
@@ -175,7 +196,7 @@ class _HopePageState extends State<HomePage> {
         ),
         onPressed: () => Navigator.push(context,
             MaterialPageRoute(builder: (context) => TasksPage(currentUser!))),
-        child: const Text('Open Tasks', style: TextStyle(color: textColorAgainstPrimary)));
+        child: Text('Open Tasks', style: GoogleFonts.getFont('Poppins')));
   }
 
   Widget _joinTeam(BuildContext context) {
@@ -189,7 +210,7 @@ class _HopePageState extends State<HomePage> {
                 context,
                 MaterialPageRoute(
                     builder: (context) => JoinTeamPage(currentUser!))),
-            child: const Text('Join a Team', style: TextStyle(color: textColorAgainstPrimary))));
+            child: Text('Join a Team', style: GoogleFonts.getFont('Poppins'))));
   }
 
   Widget _signOutButton() {
@@ -198,20 +219,32 @@ class _HopePageState extends State<HomePage> {
         backgroundColor: primaryColor,
       ),
       onPressed: signOut,
-      child: const Text('Sign Out', style: TextStyle(color: textColorAgainstPrimary)),
+      child: Text('Sign Out', style: GoogleFonts.getFont('Poppins')),
     );
   }
 
   Widget _refresh() {
-    return ElevatedButton(
-      style: TextButton.styleFrom(
-        backgroundColor: primaryColor,
-      ),
-      onPressed: () async {
-        retrieveUser().then((model) => {setState(() => model = currentUser)});
-      },
-      child: const Text('Refresh screen', style: TextStyle(color: textColorAgainstPrimary)),
-    );
+    return SizedBox(
+        width: 200,
+        height: 40,
+        child: ElevatedButton(
+          onPressed: () async => {
+            retrieveUser()
+                .then((model) => {setState(() => model = currentUser)})
+          },
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text("Refresh Screen", style: GoogleFonts.getFont('Poppins')),
+              SizedBox(width: 5),
+              Icon(Icons.refresh),
+            ],
+          ),
+          style: TextButton.styleFrom(
+            backgroundColor: primaryColor,
+          ),
+        ));
   }
 
   @override
@@ -224,33 +257,35 @@ class _HopePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Task Tracker $firstname",
-              style: TextStyle(
-                color: textColorAgainstPrimary,
-              )),
+          title: Text(
+            "Task Tracker $firstname",
+            style: GoogleFonts.getFont(
+              'Poppins',
+              color: Colors.white,
+              fontWeight: FontWeight.w600,
+              fontSize: 30,
+            ),
+          ),
+          automaticallyImplyLeading: true,
+          elevation: 4,
           centerTitle: true,
           leading: GestureDetector(
               child: const Icon(
                 Icons.arrow_back,
                 color: textColorAgainstPrimary,
               ),
-          onTap: () => Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => _signOutButton()))),
+              onTap: signOut),
           actions: [
             GestureDetector(
               child: const Icon(
-                Icons.settings,
+                Icons.person,
                 color: textColorAgainstPrimary,
               ),
               onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => UserPage(currentUser!)
-                  )
-              ),
-            )
+                      builder: (context) => UserPage(currentUser!))),
+            ),
           ],
           backgroundColor: primaryColor,
         ),
@@ -266,18 +301,22 @@ class _HopePageState extends State<HomePage> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Image.asset('assets/images/TaskBird.png'),
+                          Image.asset(
+                            'assets/images/TaskBird.png',
+                            width: 200,
+                            height: 200,
+                          ),
                           _userUid(),
                           _signOutButton(),
                           _openTasks(context),
                           _joinTeam(context),
                           _createTeam(context),
                           _viewLeaderboard(),
-                          _refresh(),
                           _viewUserProfile(),
                           _createTask(context),
                           _adminOnlyTasks(context),
                           _deleteTeamButton(context),
+                          _refresh(),
                           //_makeTeam(),
                         ],
                       )),
@@ -288,6 +327,11 @@ class _HopePageState extends State<HomePage> {
                 })
             : Center(
                 child: Column(children: <Widget>[
+                  Image.asset(
+                    'assets/images/TaskBird.png',
+                    width: 200,
+                    height: 200,
+                  ),
                   _signOutButton(),
                   _refresh(),
                   const RefreshProgressIndicator()
@@ -303,7 +347,7 @@ class _HopePageState extends State<HomePage> {
               backgroundColor: primaryColor,
             ),
             onPressed: () => routeToLeaderBoard(context),
-            child: const Text('Leaderboard', style: TextStyle(color: textColorAgainstPrimary))));
+            child: Text('Leaderboard', style: GoogleFonts.getFont('Poppins'))));
   }
 
   _viewUserProfile() {
@@ -317,6 +361,7 @@ class _HopePageState extends State<HomePage> {
                 context,
                 MaterialPageRoute(
                     builder: (context) => UserPage(userData![0]))),
-            child: const Text('User profile', style: TextStyle(color: textColorAgainstPrimary))));
+            child:
+                Text('User profile', style: GoogleFonts.getFont('Poppins'))));
   }
 }

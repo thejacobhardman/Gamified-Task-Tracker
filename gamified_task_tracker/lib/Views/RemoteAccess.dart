@@ -1,16 +1,13 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 
-import 'package:gamified_task_tracker/Models/authors.dart';
-import 'package:gamified_task_tracker/Models/task.dart';
 import 'package:gamified_task_tracker/Models/teamUsers.dart';
 import 'package:gamified_task_tracker/Models/teamTasks.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 
-import 'Models/books.dart';
-import 'Models/teams.dart';
-import 'Models/users.dart';
+import '../Models/teams.dart';
+import '../Models/users.dart';
 
 class RemoteAccess {
   Client client = http.Client();

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:gamified_task_tracker/RemoteAccess.dart';
+
 
 import '../Models/task.dart';
 import '../Models/teamTasks.dart';
 import '../Models/users.dart';
+import '../Views/RemoteAccess.dart';
+import '../Views/style.dart';
+
 
 class TaskDetailPage extends StatefulWidget {
   TaskDetailPage(this.task, this.user, {super.key});
@@ -21,7 +24,7 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
     return Scaffold(
         appBar: AppBar(
           title: Text(widget.task.taskName),
-          backgroundColor: Colors.orange,
+          backgroundColor: primaryColor,
         ),
         body: Center(
           child: Column(

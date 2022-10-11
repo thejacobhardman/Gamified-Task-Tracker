@@ -1,7 +1,8 @@
 import '../Models/users.dart';
 import 'package:flutter/material.dart';
 
-import '../RemoteAccess.dart';
+import '../Views/RemoteAccess.dart';
+import '../Views/style.dart';
 
 class UserPage extends StatefulWidget {
   const UserPage(this.user, {super.key});
@@ -42,6 +43,7 @@ class _UserPageState extends State<UserPage> {
         appBar: AppBar(
           title:
               Text('Profile Page - ${widget.user.userName!}' ?? "Profile Page"),
+          backgroundColor: primaryColor,
           actions: <Widget>[
             IconButton(
                 onPressed: () => Navigator.pop(context),

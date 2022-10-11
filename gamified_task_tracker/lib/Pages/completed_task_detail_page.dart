@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:gamified_task_tracker/Pages/only_for_admin.dart';
-import 'package:gamified_task_tracker/RemoteAccess.dart';
 
 import '../Models/task.dart';
 import '../Models/teamTasks.dart';
 import '../Models/users.dart';
+import '../Views/RemoteAccess.dart';
+import '../Views/style.dart';
 
 class CompletedTaskDetailPage extends StatefulWidget {
   CompletedTaskDetailPage(this.task, this.user, {super.key});
@@ -23,7 +24,7 @@ class _CompletedTaskDetailPage extends State<CompletedTaskDetailPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.task.taskName),
-        backgroundColor: Color.fromARGB(255, 174, 0, 255),
+        backgroundColor: primaryColor,
       ),
       body: Center(
         child: Column(

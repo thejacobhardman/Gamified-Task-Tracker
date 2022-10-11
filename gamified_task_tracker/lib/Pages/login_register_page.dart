@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:gamified_task_tracker/widgets/ttscaffold.dart';
-import '../style.dart';
+import '../Views/RemoteAccess.dart';
+import '../Views/style.dart';
 import '../widgets/ttform.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gamified_task_tracker/Models/users.dart';
-import 'package:gamified_task_tracker/RemoteAccess.dart';
-import '../auth.dart';
+import '../Views/auth.dart';
 
 class LoginPage extends StatefulWidget {
 
@@ -80,6 +80,8 @@ class _LoginPageState extends State<LoginPage> {
       hasAppBar: false,
       body: TTForm(
           children: <Widget>[
+
+            Image.asset("assets/images/logo.png"),
             
             const TTFormElement(
               verticalPaddingOnly: true,

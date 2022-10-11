@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../style.dart';
+import '../Views/style.dart';
+
 
 // Here are some pre-built widgets for use in fields across our app
 

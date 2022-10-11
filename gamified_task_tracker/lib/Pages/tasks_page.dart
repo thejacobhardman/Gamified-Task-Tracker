@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 //import 'package:http/http.dart'; unused, might need later
 
+import '../Views/RemoteAccess.dart';
+import '../Views/auth.dart';
+import '../Views/style.dart';
+
 import 'Task_detail_page.dart';
 import 'create_a_task_page.dart';
 
-import 'package:firebase_auth/firebase_auth.dart';
-import '../auth.dart';
 
-import 'package:gamified_task_tracker/RemoteAccess.dart';
 import '../Models/teamTasks.dart';
 import '../Models/users.dart';
 
@@ -61,6 +62,7 @@ class _TasksPageState extends State<TasksPage> {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Tasks'),
+          backgroundColor: primaryColor,
           actions: <Widget>[
             IconButton(
                 onPressed: () => Navigator.pop(context),

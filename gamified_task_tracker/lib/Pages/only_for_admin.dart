@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
-//import 'package:gamified_task_tracker/task.dart'; unused rn
 import 'package:http/http.dart' as http;
-//import 'package:http/http.dart'; unused, might need later
 
 import '../Models/task.dart';
 import '../Models/teams.dart';
+import '../Views/RemoteAccess.dart';
+import '../Views/auth.dart';
+import '../Views/style.dart';
 import 'Task_detail_page.dart';
 import 'completed_task_detail_page.dart';
 import 'create_a_task_page.dart';
 
-import 'package:firebase_auth/firebase_auth.dart';
-import '../auth.dart';
-
-import 'package:gamified_task_tracker/RemoteAccess.dart';
 import '../Models/teamTasks.dart';
 import '../Models/users.dart';
 
@@ -64,6 +61,7 @@ class _AdminOnlyTasksPage extends State<AdminOnlyTasksPage> {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Marked Completed'),
+          backgroundColor: primaryColor,
           actions: <Widget>[
             IconButton(
                 onPressed: () => Navigator.pop(context),

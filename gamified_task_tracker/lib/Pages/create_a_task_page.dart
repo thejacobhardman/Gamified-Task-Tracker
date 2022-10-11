@@ -1,12 +1,14 @@
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
-import 'package:gamified_task_tracker/RemoteAccess.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:numberpicker/numberpicker.dart';
 
 import '../Models/task.dart';
 import '../Models/users.dart';
+import '../Views/RemoteAccess.dart';
+import '../Views/style.dart';
 
 class CreateATaskPage extends StatefulWidget {
   const CreateATaskPage(this.user, {super.key});
@@ -37,7 +39,7 @@ class _CreateATaskPageState extends State<CreateATaskPage> {
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
-        backgroundColor: Color(0xFFEE8B60),
+        backgroundColor: primaryColor,
         automaticallyImplyLeading: true,
         title: Text(
           'Task App',
@@ -78,8 +80,14 @@ class _CreateATaskPageState extends State<CreateATaskPage> {
                 onChanged: (value) => setState(() => _currentIntValue = value),
               ),
               ElevatedButton(
+                  style: TextButton.styleFrom(
+                    backgroundColor: primaryColor,
+                  ),
                   onPressed: pickDate, child: const Text("Due Date")),
               ElevatedButton(
+                  style: TextButton.styleFrom(
+                    backgroundColor: primaryColor,
+                  ),
                   onPressed: _postTask, child: const Text("Post Test Task"))
             ],
           ),
