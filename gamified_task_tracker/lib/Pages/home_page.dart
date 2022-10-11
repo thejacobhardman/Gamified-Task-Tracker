@@ -289,6 +289,7 @@ class _HopePageState extends State<HomePage> {
             : Center(
                 child: Column(children: <Widget>[
                   _signOutButton(),
+                  _refresh(),
                   const RefreshProgressIndicator()
                 ]),
               ));
