@@ -34,6 +34,14 @@ class _TasksPageState extends State<TasksPage> {
   Future _retrieveTasksOnTeam() async {
     tasksOnTeam = await access.getTeamTasks(widget.user.team);
     if (tasksOnTeam != null) {
+      var index = 0;
+      while (index < tasksOnTeam!.length) {
+        if (tasksOnTeam![index].completed == true) {
+          tasksOnTeam!.removeAt(index);
+        } else {
+          index++;
+        }
+      }
       print("successful");
       isLoaded = true;
       /*tasksOnTeam!.sort((a, b) => b.points.compareTo(a.points));*/
@@ -75,8 +83,8 @@ class _TasksPageState extends State<TasksPage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        TaskDetailPage(tasksOnTeam![index], widget.user)));
+                                    builder: (context) => TaskDetailPage(
+                                        tasksOnTeam![index], widget.user)));
                           });
                     },
                   ),

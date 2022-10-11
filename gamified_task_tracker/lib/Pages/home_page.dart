@@ -71,10 +71,6 @@ class _HopePageState extends State<HomePage> {
         MaterialPageRoute(builder: (context) => LeaderboardPage(currentUser!)));
   }
 
-  Future _testFunc() async {
-    var test = await access.getUsers(user?.email);
-  }
-
   Future<dynamic> _deleteTeam(context) async {
     var response = await access.delete("/teamid?team_id=${currentUser!.team}");
     if (response == null) {
@@ -247,7 +243,7 @@ class _HopePageState extends State<HomePage> {
 
   _viewLeaderboard() {
     return Visibility(
-        visible: userNull,
+        visible: true,
         child: ElevatedButton(
             onPressed: () => routeToLeaderBoard(context),
             child: const Text('Leaderboard')));
