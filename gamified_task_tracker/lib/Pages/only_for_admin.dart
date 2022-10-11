@@ -29,7 +29,6 @@ class _AdminOnlyTasksPage extends State<AdminOnlyTasksPage> {
   List<TeamTasks>? tasksOnTeam;
   RemoteAccess access = RemoteAccess();
   var isLoaded = false;
-  List<TeamTasks> emptyList = [];
 
   Future<void> signOut() async {
     await Auth().signOut();
@@ -39,16 +38,16 @@ class _AdminOnlyTasksPage extends State<AdminOnlyTasksPage> {
     tasksOnTeam = await access.getTeamTasks(widget.user.team);
     if (tasksOnTeam != null) {
       var index = 0;
-      for (var t = 0; t <= tasksOnTeam!.length; t++) {
-        if (tasksOnTeam![index].completed == false) {
-          tasksOnTeam?.removeAt(index);
+      while (index < tasksOnTeam!.length) {
+        if (tasksOnTeam![index].completed == false ||
+            tasksOnTeam![index].valid == true) {
+          tasksOnTeam!.removeAt(index);
         } else {
           index++;
         }
       }
       print("successful");
       isLoaded = true;
-      /*tasksOnTeam!.sort((a, b) => b.points.compareTo(a.points));*/
     }
     return tasksOnTeam;
   }

@@ -232,7 +232,7 @@ def tasks(request):
     elif request.method == 'DELETE':
         taskID = request.GET.get('task_id', None)
         if taskID is not None:
-            task = Task.object.get(pk=taskID)
+            task = Task.objects.get(pk=taskID)
             count = task.delete()
             if count[0] > 0:
                 return JsonResponse({'message': 'Task was deleted successfully.'}, status=status.HTTP_204_NO_CONTENT)

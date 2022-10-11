@@ -297,7 +297,7 @@ class _HopePageState extends State<HomePage> {
 
   _viewLeaderboard() {
     return Visibility(
-        visible: userNull,
+        visible: true,
         child: ElevatedButton(
             style: TextButton.styleFrom(
               backgroundColor: primaryColor,
