@@ -122,7 +122,25 @@ class _CreateATaskPageState extends State<CreateATaskPage> {
       initialDate: selectedDate,
       firstDate: DateTime(2000),
       lastDate: DateTime(2025),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: ColorScheme.light(
+              primary: primaryColor, // <-- SEE HERE
+              onPrimary: textColorAgainstPrimary, // <-- SEE HERE
+              onSurface: Colors.blueAccent, // <-- SEE HERE
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                primary: primaryColor, // button text color
+              ),
+            ),
+          ),
+          child: child!,
+        );
+      },
     );
+
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
