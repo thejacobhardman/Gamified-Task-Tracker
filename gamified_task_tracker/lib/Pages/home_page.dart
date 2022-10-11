@@ -8,6 +8,7 @@ import '../Models/teams.dart';
 import '../Models/users.dart';
 import '../RemoteAccess.dart';
 import '../auth.dart';
+import '../style.dart';
 import 'create_a_team_page.dart';
 import 'join_a_team_page.dart';
 import 'leaderboard_page.dart';
@@ -55,11 +56,14 @@ class _HopePageState extends State<HomePage> {
 
   Widget _createTask(BuildContext context) {
     return ElevatedButton(
+        style: TextButton.styleFrom(
+          backgroundColor: primaryColor,
+        ),
         onPressed: () => Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => CreateATaskPage(currentUser!))),
-        child: const Text('Make New Task'));
+        child: const Text('Make New Task', style: TextStyle(color: textColorAgainstPrimary)));
   }
 
   Future openTasks() async {
@@ -69,10 +73,6 @@ class _HopePageState extends State<HomePage> {
   void routeToLeaderBoard(BuildContext context) {
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => LeaderboardPage(currentUser!)));
-  }
-
-  Future _testFunc() async {
-    var test = await access.getUsers(user?.email);
   }
 
   Future<dynamic> _deleteTeam(context) async {
@@ -88,19 +88,25 @@ class _HopePageState extends State<HomePage> {
     return Visibility(
         visible: !userAdmin,
         child: ElevatedButton(
+            style: TextButton.styleFrom(
+              backgroundColor: primaryColor,
+            ),
             onPressed: () => Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => CreateTeam(currentUser!))),
-            child: const Text('Create a Team')));
+            child: const Text('Create a Team', style: TextStyle(color: textColorAgainstPrimary))));
   }
 
   Widget _deleteTeamButton(BuildContext context) {
     return Visibility(
         visible: userAdmin,
         child: ElevatedButton(
+            style: TextButton.styleFrom(
+              backgroundColor: primaryColor,
+            ),
             onPressed: () => openDeleteAlert(context),
-            child: Text("Delete Team")));
+            child: Text("Delete Team", style: TextStyle(color: textColorAgainstPrimary))));
   }
 
   openDeleteAlert(BuildContext context) {
@@ -138,22 +144,24 @@ class _HopePageState extends State<HomePage> {
 
   Widget _getTeamTasks(BuildContext context) {
     return ElevatedButton(
+        style: TextButton.styleFrom(
+          backgroundColor: primaryColor,
+        ),
         onPressed: () => Navigator.push(context,
             MaterialPageRoute(builder: (context) => CreateTeam(currentUser!))),
-        child: const Text('Get Team Tasks'));
+        child: const Text('Get Team Tasks', style: TextStyle(color: textColorAgainstPrimary)));
   }
 
   Widget _adminOnlyTasks(BuildContext context) {
     return ElevatedButton(
+        style: TextButton.styleFrom(
+          backgroundColor: primaryColor,
+        ),
         onPressed: () => Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => AdminOnlyTasksPage(currentUser!))),
-        child: const Text('Only For Admin'));
-  }
-
-  Widget _title() {
-    return Text('Task Tracker: ' + firstname);
+        child: const Text('Only For Admin', style: TextStyle(color: textColorAgainstPrimary)));
   }
 
   Widget _userUid() {
@@ -162,35 +170,47 @@ class _HopePageState extends State<HomePage> {
 
   Widget _openTasks(BuildContext context) {
     return ElevatedButton(
+        style: TextButton.styleFrom(
+          backgroundColor: primaryColor,
+        ),
         onPressed: () => Navigator.push(context,
             MaterialPageRoute(builder: (context) => TasksPage(currentUser!))),
-        child: const Text('Open Tasks'));
+        child: const Text('Open Tasks', style: TextStyle(color: textColorAgainstPrimary)));
   }
 
   Widget _joinTeam(BuildContext context) {
     return Visibility(
         visible: !userAdmin,
         child: ElevatedButton(
+            style: TextButton.styleFrom(
+              backgroundColor: primaryColor,
+            ),
             onPressed: () => Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => JoinTeamPage(currentUser!))),
-            child: const Text('Join a Team')));
+            child: const Text('Join a Team', style: TextStyle(color: textColorAgainstPrimary))));
   }
 
   Widget _signOutButton() {
     return ElevatedButton(
+      style: TextButton.styleFrom(
+        backgroundColor: primaryColor,
+      ),
       onPressed: signOut,
-      child: const Text('Sign Out'),
+      child: const Text('Sign Out', style: TextStyle(color: textColorAgainstPrimary)),
     );
   }
 
   Widget _refresh() {
     return ElevatedButton(
+      style: TextButton.styleFrom(
+        backgroundColor: primaryColor,
+      ),
       onPressed: () async {
         retrieveUser().then((model) => {setState(() => model = currentUser)});
       },
-      child: const Text('Refresh screen'),
+      child: const Text('Refresh screen', style: TextStyle(color: textColorAgainstPrimary)),
     );
   }
 
@@ -204,7 +224,35 @@ class _HopePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: _title(),
+          title: Text("Task Tracker $firstname",
+              style: TextStyle(
+                color: textColorAgainstPrimary,
+              )),
+          centerTitle: true,
+          leading: GestureDetector(
+              child: const Icon(
+                Icons.arrow_back,
+                color: textColorAgainstPrimary,
+              ),
+          onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => _signOutButton()))),
+          actions: [
+            GestureDetector(
+              child: const Icon(
+                Icons.settings,
+                color: textColorAgainstPrimary,
+              ),
+              onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => UserPage(currentUser!)
+                  )
+              ),
+            )
+          ],
+          backgroundColor: primaryColor,
         ),
         body: !userNull
             ? RefreshIndicator(
@@ -218,6 +266,7 @@ class _HopePageState extends State<HomePage> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
+                          Image.asset('assets/images/TaskBird.png'),
                           _userUid(),
                           _signOutButton(),
                           _openTasks(context),
@@ -249,18 +298,24 @@ class _HopePageState extends State<HomePage> {
     return Visibility(
         visible: userNull,
         child: ElevatedButton(
+            style: TextButton.styleFrom(
+              backgroundColor: primaryColor,
+            ),
             onPressed: () => routeToLeaderBoard(context),
-            child: const Text('Leaderboard')));
+            child: const Text('Leaderboard', style: TextStyle(color: textColorAgainstPrimary))));
   }
 
   _viewUserProfile() {
     return Visibility(
         visible: userNull,
         child: ElevatedButton(
+            style: TextButton.styleFrom(
+              backgroundColor: primaryColor,
+            ),
             onPressed: () => Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => UserPage(userData![0]))),
-            child: const Text('User profile')));
+            child: const Text('User profile', style: TextStyle(color: textColorAgainstPrimary))));
   }
 }
