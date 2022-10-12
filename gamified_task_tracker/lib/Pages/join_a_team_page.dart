@@ -1,10 +1,11 @@
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
-import 'package:gamified_task_tracker/RemoteAccess.dart';
 
 import '../Models/teams.dart';
 import '../Models/users.dart';
+import '../Views/RemoteAccess.dart';
+import '../Views/style.dart';
 
 class JoinTeamPage extends StatefulWidget {
   const JoinTeamPage(this.user, {super.key});
@@ -69,7 +70,10 @@ class _JoinTeamPageState extends State<JoinTeamPage> {
         lastName: widget.user.lastName,
         email: widget.user.email,
         points: widget.user.points,
-        team: teamid);
+        team: teamid,
+        admin: widget.user.admin,
+        password: widget.user.password,
+        id: widget.user.id);
     var response =
     await access.put("/user?username=$name", teamChange).catchError((err) {});
     if (response == null) {
@@ -77,6 +81,7 @@ class _JoinTeamPageState extends State<JoinTeamPage> {
       return;
     }
     debugPrint("Successful");
+    widget.user.team = teamid;
   }
 
   Widget _submitButton() {
@@ -98,6 +103,7 @@ class _JoinTeamPageState extends State<JoinTeamPage> {
     return Scaffold(
         appBar: AppBar(
           title: Text("Join a New Team"),
+          backgroundColor: primaryColor,
         ),
         body: Container(
             height: double.infinity,

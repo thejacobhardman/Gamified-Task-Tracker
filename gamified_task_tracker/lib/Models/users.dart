@@ -1,6 +1,6 @@
 // To parse this JSON data, do
 //
-//     final users = usersFromJson(jsonString);
+//     final task = taskFromJson(jsonString);
 
 import 'package:meta/meta.dart';
 import 'dart:convert';
@@ -10,16 +10,17 @@ List<Users> usersFromJson(String str) => List<Users>.from(json.decode(str).map((
 String usersToJson(List<Users> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class Users {
-  Users({
-    this.id,
-    this.userName,
-    this.password,
-    this.firstName,
-    this.lastName,
-    this.email,
-    this.points,
-    this.team,
-  });
+    Users ({
+      this.id,
+      this.userName,
+      this.password,
+      this.firstName,
+      this.lastName,
+      this.email,
+      this.points,
+      this.admin,
+      this.team,
+});
 
   int? id;
   String? userName;
@@ -28,6 +29,7 @@ class Users {
   String? lastName;
   String? email;
   int? points;
+  bool? admin;
   int? team;
 
   factory Users.fromJson(Map<String, dynamic> json) => Users(
@@ -38,6 +40,7 @@ class Users {
     lastName: json["last_name"],
     email: json["email"],
     points: json["points"],
+    admin: json["admin"],
     team: json["team"],
   );
 
@@ -49,6 +52,7 @@ class Users {
     "last_name": lastName,
     "email": email,
     "points": points,
+    "admin": admin,
     "team": team,
   };
 }

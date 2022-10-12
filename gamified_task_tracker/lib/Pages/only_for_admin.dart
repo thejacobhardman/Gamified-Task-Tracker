@@ -1,29 +1,28 @@
 import 'package:flutter/material.dart';
-//import 'package:gamified_task_tracker/task.dart'; unused rn
 import 'package:http/http.dart' as http;
-//import 'package:http/http.dart'; unused, might need later
 
+import '../Models/task.dart';
+import '../Models/teams.dart';
 import '../Views/RemoteAccess.dart';
 import '../Views/auth.dart';
 import '../Views/style.dart';
-
 import 'Task_detail_page.dart';
+import 'completed_task_detail_page.dart';
 import 'create_a_task_page.dart';
-
 
 import '../Models/teamTasks.dart';
 import '../Models/users.dart';
 
-class TasksPage extends StatefulWidget {
+class AdminOnlyTasksPage extends StatefulWidget {
   /*DataFromAPI({Key? key}) : super(key: key);*/
-  TasksPage(this.user, {super.key});
+  AdminOnlyTasksPage(this.user, {super.key});
   final Users user;
 
   @override
-  State<TasksPage> createState() => _TasksPageState();
+  State<AdminOnlyTasksPage> createState() => _AdminOnlyTasksPage();
 }
 
-class _TasksPageState extends State<TasksPage> {
+class _AdminOnlyTasksPage extends State<AdminOnlyTasksPage> {
   List<TeamTasks>? tasksOnTeam;
   RemoteAccess access = RemoteAccess();
   var isLoaded = false;
@@ -37,7 +36,8 @@ class _TasksPageState extends State<TasksPage> {
     if (tasksOnTeam != null) {
       var index = 0;
       while (index < tasksOnTeam!.length) {
-        if (tasksOnTeam![index].completed == true) {
+        if (tasksOnTeam![index].completed == false ||
+            tasksOnTeam![index].valid == true) {
           tasksOnTeam!.removeAt(index);
         } else {
           index++;
@@ -45,7 +45,6 @@ class _TasksPageState extends State<TasksPage> {
       }
       print("successful");
       isLoaded = true;
-      /*tasksOnTeam!.sort((a, b) => b.points.compareTo(a.points));*/
     }
     return tasksOnTeam;
   }
@@ -61,7 +60,7 @@ class _TasksPageState extends State<TasksPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Tasks'),
+          title: const Text('Marked Completed'),
           backgroundColor: primaryColor,
           actions: <Widget>[
             IconButton(
@@ -85,8 +84,9 @@ class _TasksPageState extends State<TasksPage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => TaskDetailPage(
-                                        tasksOnTeam![index], widget.user)));
+                                    builder: (context) =>
+                                        CompletedTaskDetailPage(
+                                            tasksOnTeam![index], widget.user)));
                           });
                     },
                   ),

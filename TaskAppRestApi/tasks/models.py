@@ -8,7 +8,7 @@ import uuid
 class Team(models.Model):
     team_name = models.CharField(max_length=70, blank=False, default='')
     team_code = models.CharField(
-        blank=False, unique=True, max_length=6, editable=False, default=str(uuid.uuid4().hex[:6].upper()))
+        blank=False, unique=True, max_length=6)
 
 
 class User(models.Model):
@@ -20,16 +20,16 @@ class User(models.Model):
         max_length=70, blank=True, null=True, default=None)
     email = models.EmailField(unique=True, blank=True, null=True, default=None)
     team = models.ForeignKey(
-        Team, blank=True, null=True, default=None, on_delete=models.PROTECT)
+        Team, blank=True, null=True, default=None, on_delete=models.SET_NULL)
     points = models.IntegerField(blank=True, null=True, default=None)
-    admin = models.BooleanField(default=False)
+    admin = models.BooleanField(default=False, editable=True)
 
 
 class Task(models.Model):
     task_name = models.CharField(max_length=70, blank=False, default='')
     description = models.CharField(max_length=200, blank=False, default='')
     completed = models.BooleanField(default=False)
-    completedby = models.CharField(max_length=70, default='')
+    completedby = models.CharField(max_length=70, blank=True, default='')
     valid = models.BooleanField(default=False)
     due_date = models.DateField()
     author_key = models.ForeignKey(User, on_delete=models.CASCADE)

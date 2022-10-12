@@ -65,14 +65,29 @@ User Endpoints:
                 a JSON list of all Users registered to that Team.
 
 
-Team Endpoints:
+Team (by Team Code) Endpoints:
     - BASE_DIR/team 
         -[GET]: Request requires "team_code" URL parameter, returns Team with that code in
                 JSON payload.
         -[POST]: Request requires no URL parameters, but requires a JSON payload containing
                 valid Team fields (this includes just the "team_name" field).
                 The created Team object is returned in JSON.
-        -[PUT]: Request requires no URL parameters, but requires a JSON payload containing
+        -[PUT]: Request requires "team_code" URL parameter, and requires a JSON payload containing
+                valid Team fields (this includes just the "team_name" field).
+                The updated/modified Team object is returned in JSON.
+        -[DELETE]: Request requires "task_code" parameter, deletes the Task with that code,
+                and then returns a JSON document with a single field: "message", which contains
+                a string that states how the deletion went.
+
+
+Team (by ID) Endpoints:
+    - BASE_DIR/teamid
+        -[GET]: Request requires "team_id" URL parameter, returns that Team in
+                JSON payload.
+        -[POST]: Request requires no URL parameters, but requires a JSON payload containing
+                valid Team fields (this includes just the "team_name" field).
+                The created Team object is returned in JSON.
+        -[PUT]: Request requires "team_id" URL parameter, and requires a JSON payload containing
                 valid Team fields (this includes just the "team_name" field).
                 The updated/modified Team object is returned in JSON.
         -[DELETE]: Request requires "task_id" parameter, deletes the Task with that code,
@@ -88,7 +103,7 @@ Task Endpoints:
                 valid Task fields (these include "user_name", "first_name", "last_name",
                 "email", "team", "points", although not all fields are required).
                 The created Task object is returned in JSON.
-        -[PUT]: Request requires no URL parameters, but requires a JSON payload containing
+        -[PUT]: Request requires "task_id" URL parameter, and requires a JSON payload containing
                 valid Task fields (these include "user_name", "first_name", "last_name",
                 "email", "team", "points", although not all fields are required).
                 The updated/modified Task object is returned in JSON.

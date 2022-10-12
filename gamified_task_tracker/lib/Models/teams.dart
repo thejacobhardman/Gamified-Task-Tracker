@@ -15,12 +15,12 @@ class Teams {
   Teams({
     this.id,
     required this.teamName,
-    this.teamCode,
+    required this.teamCode,
   });
 
   int? id;
-  String? teamName;
-  String? teamCode;
+  String teamName;
+  String teamCode;
 
   factory Teams.fromJson(Map<String, dynamic> json) => Teams(
         id: json["id"],

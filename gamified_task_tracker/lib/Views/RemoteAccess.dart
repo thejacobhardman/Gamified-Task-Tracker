@@ -1,37 +1,29 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 
-import 'package:gamified_task_tracker/Models/authors.dart';
-import 'package:gamified_task_tracker/Models/task.dart';
 import 'package:gamified_task_tracker/Models/teamUsers.dart';
+import 'package:gamified_task_tracker/Models/teamTasks.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 
-import 'Models/books.dart';
-import 'Models/teams.dart';
-import 'Models/users.dart';
+import '../Models/teams.dart';
+import '../Models/users.dart';
 
 class RemoteAccess {
   Client client = http.Client();
   String api = "http://10.0.2.2:8000";
-
-  Future<List<Tasks>?> getTasks() async {
-    var uri = Uri.parse('https://jsonplaceholder.typicode.com/todos');
-    var response = await client.get(uri);
-    if (response.statusCode == 200) {
-      var json = response.body;
-      return tasksFromJson(json);
-    }
-  }
 
   Future<dynamic> post(String branch, dynamic object) async {
     var uri = Uri.parse(api + branch);
     var payload = json.encode(object);
     var response = await client.post(uri, body: payload);
     if (response.statusCode == 201) {
+      print("successful POST");
+      print("${response.body}");
       return response.body;
     } else {
       print("Error happened with POST");
+      print("${response.body}");
     }
   }
 
@@ -74,6 +66,19 @@ class RemoteAccess {
     }
   }
 
+  Future<List<TeamTasks>?> getTeamTasks(int? id) async {
+    var uri = Uri.parse("$api/teamtasks?team_id=$id");
+    var response = await client.get(uri);
+    if (response.statusCode == 200) {
+      debugPrint("Successful");
+      var json = response.body;
+      return teamTasksFromJson(json);
+    } else {
+      debugPrint("Team Tasks Not Successful");
+      return null;
+    }
+  }
+
   Future<List<Teams>?> getTeams(String? branch) async {
     var uri = Uri.parse("$api/team?team_code=$branch");
     var response = await client.get(uri);
@@ -87,12 +92,26 @@ class RemoteAccess {
     }
   }
 
-  Future<List<Authors>?> delete(String branch) async {
+  Future<List<Teams>?> getTeamsById(int? branch) async {
+    var uri = Uri.parse("$api/teamid?team_id=$branch");
+    var response = await client.get(uri);
+    if (response.statusCode == 200) {
+      debugPrint("Successful");
+      var json = response.body;
+      return teamsFromJson(json);
+    } else {
+      debugPrint("Team Not Successful");
+      return null;
+    }
+  }
+
+  Future<dynamic> delete(String branch) async {
     var uri = Uri.parse(api + branch);
     var response = await client.delete(uri);
-    if (response.statusCode == 200) {
-      var json = response.body;
-      return authorsFromJson(json);
+    if (response.statusCode == 200 || response.statusCode == 204) {
+      print("successful deletion");
+      print(response.statusCode);
+      return response.body;
     }
   }
 

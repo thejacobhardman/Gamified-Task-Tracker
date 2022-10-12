@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gamified_task_tracker/widget_tree.dart';
+import 'package:gamified_task_tracker/Views/widget_tree.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 Future<void> main() async {

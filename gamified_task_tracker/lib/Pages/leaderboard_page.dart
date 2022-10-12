@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:gamified_task_tracker/RemoteAccess.dart';
 
 import '../Models/teamUsers.dart';
 import '../Models/users.dart';
-import '../auth.dart';
+import '../Views/RemoteAccess.dart';
+import '../Views/auth.dart';
+import '../Views/style.dart';
 
 class LeaderboardPage extends StatefulWidget {
   LeaderboardPage(this.user, {super.key});
@@ -42,7 +43,8 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Tasks'),
+          title: const Text('Points Leaderboard'),
+          backgroundColor: primaryColor,
           actions: <Widget>[
             IconButton(
                 onPressed: () => Navigator.pop(context),
