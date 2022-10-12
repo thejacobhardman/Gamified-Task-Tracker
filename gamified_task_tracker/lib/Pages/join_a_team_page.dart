@@ -1,11 +1,12 @@
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import 'package:gamified_task_tracker/widgets/ttscaffold.dart';
 
 import '../Models/teams.dart';
 import '../Models/users.dart';
 import '../Views/RemoteAccess.dart';
-import '../Views/style.dart';
+import '../widgets/ttform.dart';
 
 class JoinTeamPage extends StatefulWidget {
   const JoinTeamPage(this.user, {super.key});
@@ -14,10 +15,6 @@ class JoinTeamPage extends StatefulWidget {
   @override
   State<JoinTeamPage> createState() => _JoinTeamPageState();
 }
-
-
-
-
 
 class _JoinTeamPageState extends State<JoinTeamPage> {
   final TextEditingController _controllerTeamCODE = TextEditingController();
@@ -29,19 +26,6 @@ class _JoinTeamPageState extends State<JoinTeamPage> {
   void initState() {
     super.initState();
   }
-
-  Widget _entryField(
-      String title,
-      TextEditingController controller,
-      ) {
-    return TextField(
-        controller: controller,
-        decoration: InputDecoration(
-          labelText: title,
-        ));
-  }
-
-
 
   Future _retrieveTeams() async {
     teamList = await access.getTeams("/team");
@@ -83,14 +67,6 @@ class _JoinTeamPageState extends State<JoinTeamPage> {
     debugPrint("Successful");
     widget.user.team = teamid;
   }
-
-  Widget _submitButton() {
-    return ElevatedButton(
-      onPressed:
-      _checkTeam,
-      child: Text("Join Team"),
-    );
-  }
   
   void showErrorSnackBar() {
     const snackbar = SnackBar(content :
@@ -100,25 +76,24 @@ class _JoinTeamPageState extends State<JoinTeamPage> {
   
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text("Join a New Team"),
-          backgroundColor: primaryColor,
-        ),
-        body: Container(
-            height: double.infinity,
-            width: double.infinity,
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                _entryField('Enter a team CODE', _controllerTeamCODE),
-                //_errorMessage(),
-                _submitButton(),
-              ],
-            )
+
+    return TTScaffold(
+      title: "Join a New Team", 
+      body: TTForm(
+          children: [
+
+            TTTextField(
+              labelText: 'Enter a team CODE',
+              controller: _controllerTeamCODE,
+            ),
+
+            TTButton(
+              text: 'Join Team',
+              onPressed: _checkTeam
+              ),
+
+          ]
         )
-    );
+      );
   }
 }
