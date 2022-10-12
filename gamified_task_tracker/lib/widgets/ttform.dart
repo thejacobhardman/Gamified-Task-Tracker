@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../Views/style.dart';
-
+import 'package:google_fonts/google_fonts.dart';
 
 // Here are some pre-built widgets for use in fields across our app
 
@@ -97,6 +97,47 @@ class TTTextFieldState extends State<TTTextField> {
   }
 }
 
+/// Checkbox with a label
+class TTCheckbox extends StatefulWidget {
+
+  final bool value;
+  final bool visible;
+  final void Function(bool?) onChanged;
+  final String text;
+
+  const TTCheckbox({
+    super.key, 
+    this.text = "", 
+    this.visible = true, 
+    required this.onChanged,
+    required this.value,
+    });
+
+  @override
+  TTCheckboxState createState() => TTCheckboxState();
+}
+
+class TTCheckboxState extends State<TTCheckbox> {
+
+  @override
+  Widget build(BuildContext context) {
+    return TTFormElement(
+      visible: widget.visible,
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          TTText(widget.text),
+          Checkbox(
+            checkColor: Colors.white,
+            value: widget.value,
+            onChanged: widget.onChanged,
+            ),
+          ],
+        ),
+      );
+  }
+}
+
 /// Button to be used as a child of a TTForm instance
 class TTButton extends StatefulWidget {
 
@@ -131,14 +172,49 @@ class TTButtonState extends State<TTButton> {
           elevation: 8,
           ),
         onPressed: widget.onPressed,
-        child: Text(
+        child: TTText(
           widget.text, 
-          style: TextStyle(
-            color: widget.textColor,
-            ),
+          color: widget.textColor,
           ),
         ),
       );
+  }
+}
+
+/// Creates basic text element
+class TTText extends StatefulWidget {
+
+  final String text;
+  final Color color;
+  final double size;
+  final TextAlign align;
+
+  const TTText(
+    this.text,
+    {super.key,
+    this.color = textColor, 
+    this.size = 16,
+    this.align = TextAlign.center
+    });
+
+  @override
+  TTTextState createState() => TTTextState();
+}
+
+class TTTextState extends State<TTText> {
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      widget.text,
+      textAlign: widget.align,
+      style: GoogleFonts.getFont(
+        'Poppins',
+        color: widget.color,
+        fontWeight: FontWeight.w400,
+        fontSize: widget.size
+      ),
+    );
   }
 }
 
