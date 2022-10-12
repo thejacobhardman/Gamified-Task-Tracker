@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../Views/style.dart';
-
+import 'package:google_fonts/google_fonts.dart';
 
 // Here are some pre-built widgets for use in fields across our app
 
@@ -126,7 +126,7 @@ class TTCheckboxState extends State<TTCheckbox> {
       child: Row(
         mainAxisSize: MainAxisSize.max,
         children: [
-          Text(widget.text),
+          TTText(widget.text),
           Checkbox(
             checkColor: Colors.white,
             value: widget.value,
@@ -172,14 +172,49 @@ class TTButtonState extends State<TTButton> {
           elevation: 8,
           ),
         onPressed: widget.onPressed,
-        child: Text(
+        child: TTText(
           widget.text, 
-          style: TextStyle(
-            color: widget.textColor,
-            ),
+          color: widget.textColor,
           ),
         ),
       );
+  }
+}
+
+/// Creates basic text element
+class TTText extends StatefulWidget {
+
+  final String text;
+  final Color color;
+  final double size;
+  final TextAlign align;
+
+  const TTText(
+    this.text,
+    {super.key,
+    this.color = textColor, 
+    this.size = 16,
+    this.align = TextAlign.center
+    });
+
+  @override
+  TTTextState createState() => TTTextState();
+}
+
+class TTTextState extends State<TTText> {
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      widget.text,
+      textAlign: widget.align,
+      style: GoogleFonts.getFont(
+        'Poppins',
+        color: widget.color,
+        fontWeight: FontWeight.w400,
+        fontSize: widget.size
+      ),
+    );
   }
 }
 

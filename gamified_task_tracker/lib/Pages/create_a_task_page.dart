@@ -53,7 +53,7 @@ class _CreateATaskPageState extends State<CreateATaskPage> {
           TTFormElement(
             child: Column(
               children: [
-                const Text('Points'),
+                const TTText('Points'),
                 NumberPicker(
                   value: _currentIntValue,
                   minValue: 0,

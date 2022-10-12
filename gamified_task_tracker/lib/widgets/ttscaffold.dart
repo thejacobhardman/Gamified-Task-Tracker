@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import '../Views/style.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 // You can use this widget to set up your scaffolding automatically
 
 class TTScaffold extends StatelessWidget {
 
   final String title;
-  Widget body;
-  bool hasAppBar;
-  Color bgColor;
-  bool scrollable;
+  final Widget body;
+  final bool hasAppBar;
+  final Color bgColor;
+  final bool scrollable;
 
-  TTScaffold({super.key, required this.title, required this.body, this.hasAppBar = true, this.bgColor = backgroundColor, this.scrollable = true});
+  const TTScaffold({super.key, required this.title, required this.body, this.hasAppBar = true, this.bgColor = backgroundColor, this.scrollable = true});
   
   @override
   Widget build(BuildContext context) {
@@ -19,13 +20,16 @@ class TTScaffold extends StatelessWidget {
         backgroundColor: bgColor,
         appBar: hasAppBar ? AppBar(
           title: Text(
-              title,
-              style: TextStyle(
-                color: textColorAgainstPrimary,
-              )
+            title,
+            style: GoogleFonts.getFont(
+              'Poppins',
+              color: Colors.white,
+              fontWeight: FontWeight.w600,
+              fontSize: 30,
+            ),
           ),
           centerTitle: true,
-          leading: BackButton(color: backgroundColor),
+          leading: const BackButton(color: backgroundColor),
           backgroundColor: primaryColor,
         ) : null,
         body: scrollable ? SingleChildScrollView(
