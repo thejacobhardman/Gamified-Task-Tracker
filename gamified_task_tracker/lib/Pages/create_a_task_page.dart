@@ -10,6 +10,9 @@ import '../Models/users.dart';
 import '../Views/RemoteAccess.dart';
 import '../Views/style.dart';
 
+import '../widgets/ttscaffold.dart';
+import '../widgets/ttform.dart';
+
 class CreateATaskPage extends StatefulWidget {
   const CreateATaskPage(this.user, {super.key});
   final Users user;
@@ -27,6 +30,8 @@ class _CreateATaskPageState extends State<CreateATaskPage> {
   final DateFormat formatter = DateFormat('yyyy-MM-dd');
   int _currentIntValue = 0;
 
+  bool showTimingFields = false;
+
   @override
   void initState() {
     super.initState();
@@ -36,63 +41,53 @@ class _CreateATaskPageState extends State<CreateATaskPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: scaffoldKey,
-      appBar: AppBar(
-        backgroundColor: primaryColor,
-        automaticallyImplyLeading: true,
-        title: Text(
-          'Task App',
-          style: GoogleFonts.getFont(
-            'Poppins',
-            color: Colors.white,
-            fontWeight: FontWeight.w600,
-            fontSize: 30,
-          ),
-        ),
-        actions: [],
-        centerTitle: true,
-        elevation: 4,
-      ),
-      backgroundColor: Color(0xFFF1F4F8),
-      body: SafeArea(
-        child: GestureDetector(
-          onTap: () => FocusScope.of(context).unfocus(),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              TextFormField(
-                controller: textController1,
-                decoration: InputDecoration(hintText: "Task Name"),
-              ),
-              TextFormField(
-                controller: textController2,
-                decoration: InputDecoration(hintText: "Task Details"),
-              ),
-              SizedBox(height: 16),
-              Text('Points', style: Theme.of(context).textTheme.headline6),
-              NumberPicker(
-                value: _currentIntValue,
-                minValue: 0,
-                maxValue: 1000,
-                step: 10,
-                haptics: true,
-                onChanged: (value) => setState(() => _currentIntValue = value),
-              ),
-              ElevatedButton(
-                  style: TextButton.styleFrom(
-                    backgroundColor: primaryColor,
+    return TTScaffold(
+      title: 'Create a Task',
+      body: TTForm(
+        children: <Widget>[  
+
+          const TTTextField(labelText: "Task Name"),
+
+          const TTTextField(labelText: "Description", maxLines: 5),
+          
+          TTFormElement(
+            child: Column(
+              children: [
+                const Text('Points'),
+                NumberPicker(
+                  value: _currentIntValue,
+                  minValue: 0,
+                  maxValue: 1000,
+                  step: 10,
+                  haptics: true,
+                  onChanged: (value) => setState(() => _currentIntValue = value),
                   ),
-                  onPressed: pickDate, child: const Text("Due Date")),
-              ElevatedButton(
-                  style: TextButton.styleFrom(
-                    backgroundColor: primaryColor,
-                  ),
-                  onPressed: _postTask, child: const Text("Post Test Task"))
-            ],
-          ),
-        ),
-      ),
+                ],
+              )
+            ),
+          
+          TTCheckbox(
+            text: 'Timed?',
+            onChanged: (bool? value) {
+                setState(() {
+                  showTimingFields = value!;
+                });
+              },
+            value: showTimingFields
+            ),
+          
+          showTimingFields ? TTButton(
+            text: "Select Date",
+            onPressed: pickDate,
+            ) : Container(),
+
+          TTButton(
+            text: 'Add',
+            onPressed: _postTask,
+            )
+
+        ],  
+      )
     );
   }
 

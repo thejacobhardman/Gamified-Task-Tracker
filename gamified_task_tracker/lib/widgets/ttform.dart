@@ -97,6 +97,47 @@ class TTTextFieldState extends State<TTTextField> {
   }
 }
 
+/// Checkbox with a label
+class TTCheckbox extends StatefulWidget {
+
+  final bool value;
+  final bool visible;
+  final void Function(bool?) onChanged;
+  final String text;
+
+  const TTCheckbox({
+    super.key, 
+    this.text = "", 
+    this.visible = true, 
+    required this.onChanged,
+    required this.value,
+    });
+
+  @override
+  TTCheckboxState createState() => TTCheckboxState();
+}
+
+class TTCheckboxState extends State<TTCheckbox> {
+
+  @override
+  Widget build(BuildContext context) {
+    return TTFormElement(
+      visible: widget.visible,
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          Text(widget.text),
+          Checkbox(
+            checkColor: Colors.white,
+            value: widget.value,
+            onChanged: widget.onChanged,
+            ),
+          ],
+        ),
+      );
+  }
+}
+
 /// Button to be used as a child of a TTForm instance
 class TTButton extends StatefulWidget {
 
