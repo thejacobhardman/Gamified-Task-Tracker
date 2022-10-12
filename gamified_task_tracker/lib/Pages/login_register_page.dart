@@ -81,16 +81,16 @@ class _LoginPageState extends State<LoginPage> {
       body: TTForm(
           children: <Widget>[
 
-            Image.asset("assets/images/logo.png"),
+            TTFormElement(
+              child: Image.asset("assets/images/logo.png"),
+            ),
             
             const TTFormElement(
               verticalPaddingOnly: true,
-              child: Text(
+              child: TTText(
                 'Gamified Task Tracker',
-                style: TextStyle(
-                  color: textColor, 
-                  fontSize: 30
-                  ),
+                color: textColor, 
+                size: 30,
                 ),
               ),
 
