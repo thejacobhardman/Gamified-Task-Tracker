@@ -76,7 +76,7 @@ class _HopePageState extends State<HomePage> {
   Future<dynamic> _deleteTeam(context) async {
     var user = Users(
       id: currentUser?.id,
-      team: currentUser?.team,
+      team: null,
       userName: currentUser?.userName,
       firstName: currentUser?.firstName,
       lastName: currentUser?.lastName,
@@ -88,20 +88,21 @@ class _HopePageState extends State<HomePage> {
     var response = await access.delete("/teamid?team_id=${currentUser!.team}");
     if (response == null) {
       response = await access
-          .put("/user?username=${currentUser?.userName}", user)
+          .put("/user?username=${currentUser!.userName}", user)
           .catchError((err) {});
       return;
     }
     debugPrint("Successful deletion");
     response = await access
-        .put("/user?username=${currentUser?.userName}", user)
+        .put("/user?username=${currentUser!.userName}", user)
         .catchError((err) {});
     if (response == null) {
       print("null");
       return;
     }
-    debugPrint("Successful");
+    debugPrint("Successful admin update");
     currentUser?.admin = false;
+    userAdmin = false;
   }
 
   Widget _createTeam(BuildContext context) {
