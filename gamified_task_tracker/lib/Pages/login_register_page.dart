@@ -81,6 +81,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),),
         );
+        return;
       }
       await Auth().createUserWithEmailAndPassword(
         email: _controllerEmail.text,
