@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gamified_task_tracker/Pages/create_a_task_page.dart';
 import 'package:gamified_task_tracker/Pages/tasks_page.dart';
 import 'package:gamified_task_tracker/Pages/view_user_page.dart';
+import 'package:gamified_task_tracker/widgets/ttform.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../Models/teams.dart';
@@ -11,6 +12,7 @@ import '../Models/users.dart';
 import '../Views/RemoteAccess.dart';
 import '../Views/auth.dart';
 import '../Views/style.dart';
+import '../widgets/ttscaffold.dart';
 import 'create_a_team_page.dart';
 import 'join_a_team_page.dart';
 import 'leaderboard_page.dart';
@@ -69,20 +71,6 @@ class _HopePageState extends State<HomePage> {
     return currentUser;
   }
 
-  Widget _createTask(BuildContext context) {
-    return Visibility(
-        visible: onTeam,
-        child: ElevatedButton(
-        style: TextButton.styleFrom(
-          backgroundColor: primaryColor,
-        ),
-        onPressed: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => CreateATaskPage(currentUser!))),
-        child: Text('Make New Task', style: GoogleFonts.getFont('Poppins'))));
-  }
-
   Future openTasks() async {
     return TasksPage(currentUser!);
   }
@@ -127,29 +115,6 @@ class _HopePageState extends State<HomePage> {
     });
   }
 
-  Widget _createTeam(BuildContext context) {
-    return Visibility(
-        visible: !userAdmin,
-        child: ElevatedButton(
-            style: TextButton.styleFrom(
-              backgroundColor: primaryColor,
-            ),
-            onPressed: () => updateUser(),
-            child:
-                Text('Create a Team', style: GoogleFonts.getFont('Poppins'))));
-  }
-
-  Widget _deleteTeamButton(BuildContext context) {
-    return Visibility(
-        visible: userAdmin,
-        child: ElevatedButton(
-            style: TextButton.styleFrom(
-              backgroundColor: primaryColor,
-            ),
-            onPressed: () => openDeleteAlert(context),
-            child: Text("Delete Team", style: GoogleFonts.getFont('Poppins'))));
-  }
-
   openDeleteAlert(BuildContext context) {
     Widget confirmButton = TextButton(
       child: Text("Confirm"),
@@ -183,94 +148,6 @@ class _HopePageState extends State<HomePage> {
     );
   }
 
-  Widget _adminOnlyTasks(BuildContext context) {
-    return Visibility(
-        visible: userAdmin,
-        child: ElevatedButton(
-        style: TextButton.styleFrom(
-          backgroundColor: primaryColor,
-        ),
-        onPressed: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => AdminOnlyTasksPage(currentUser!))),
-        child: Text('Only For Admin', style: GoogleFonts.getFont('Poppins'))));
-  }
-
-  Widget _userUid() {
-    return Text(user?.email ?? 'User email');
-  }
-
-  Widget _openTasks(BuildContext context) {
-    return Visibility(
-      visible: onTeam,
-      child: ElevatedButton(
-        style: TextButton.styleFrom(
-          backgroundColor: primaryColor,
-        ),
-        onPressed: () => Navigator.push(context,
-            MaterialPageRoute(builder: (context) => TasksPage(currentUser!))),
-        child: Text('Open Tasks', style: GoogleFonts.getFont('Poppins'))));
-  }
-
-  Widget _joinTeam(BuildContext context) {
-    return Visibility(
-        visible: !userAdmin,
-        child: ElevatedButton(
-            style: TextButton.styleFrom(
-              backgroundColor: primaryColor,
-            ),
-            onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => JoinTeamPage(currentUser!))),
-            child: Text('Join a Team', style: GoogleFonts.getFont('Poppins'))));
-  }
-
-  Widget _signOutButton() {
-    return ElevatedButton(
-      style: TextButton.styleFrom(
-        backgroundColor: primaryColor,
-      ),
-      onPressed: signOut,
-      child: Text('Sign Out', style: GoogleFonts.getFont('Poppins')),
-    );
-  }
-
-  Widget _refresh() {
-    return SizedBox(
-        width: 200,
-        height: 40,
-        child: ElevatedButton(
-          onPressed: () async => {
-            retrieveUser()
-                .then((model) => {setState(() => model = currentUser)})
-          },
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text("Refresh Screen", style: GoogleFonts.getFont('Poppins')),
-              SizedBox(width: 5),
-              Icon(Icons.refresh),
-            ],
-          ),
-          style: TextButton.styleFrom(
-            backgroundColor: primaryColor,
-          ),
-        ));
-  }
-
-  _viewLeaderboard() {
-    return Visibility(
-        visible: onTeam,
-        child: ElevatedButton(
-            style: TextButton.styleFrom(
-              backgroundColor: primaryColor,
-            ),
-            onPressed: () => routeToLeaderBoard(context),
-            child: Text('Leaderboard', style: GoogleFonts.getFont('Poppins'))));
-  }
 
   @override
   void initState() {
@@ -284,122 +161,175 @@ class _HopePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     isLoaded = true;
-    return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            "Task Tracker $firstname",
-            style: GoogleFonts.getFont(
-              'Poppins',
-              color: Colors.white,
-              fontWeight: FontWeight.w600,
-              fontSize: 30,
-            ),
+    return TTScaffold(
+      title: 'Task Tracker',
+      leading: IconButton(
+          icon: const Icon(
+            Icons.logout,
+            color: textColorAgainstPrimary,
           ),
-          automaticallyImplyLeading: true,
-          elevation: 4,
-          centerTitle: true,
-          leading: GestureDetector(
-              child: const Icon(
-                Icons.arrow_back,
-                color: textColorAgainstPrimary,
-              ),
-              onTap: signOut),
-          actions: [
-            IconButton(
-              icon: Icon(
-                Icons.person,
-                color: textColorAgainstPrimary,
-              ),
-              onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => UserPage(currentUser!))),
-            ),
-          ],
-          backgroundColor: primaryColor,
+          onPressed: signOut
+          ),
+      actions: [
+        IconButton(
+          icon: const Icon(
+            Icons.person,
+            color: textColorAgainstPrimary,
+          ),
+          onPressed: isLoaded ? () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => UserPage(currentUser!))) : null,
         ),
-        body: isLoaded
-            ? RefreshIndicator(
-                child: Visibility(
-                  visible: isLoaded,
-                  child: Container(
-                      height: double.infinity,
-                      width: double.infinity,
-                      padding: const EdgeInsets.all(20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Row>[
-                          Row( 
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget> [
-                              _userUid(),
-                             _signOutButton(),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                Image.asset(
-                                    'assets/images/TaskBird.png',
-                                    width: 200,
-                                    height: 200,
-                                  ),
-                                ],
-                          ),
+      ],
+      body:  
+        RefreshIndicator (
+          child: Visibility(
+            visible: true,
+            child: TTForm(
+              children: [
 
-                          Row(
-                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                               children: <Widget>[
-                                _openTasks(context),
-                                _createTask(context),
-                               ],),
+                TTText(
+                  currentUser?.userName != null ? "Welcome, ${currentUser?.userName}!" : "",
+                  size: 20,
+                  thiccness: FontWeight.w600,
+                  ),
 
-                          Row(
-                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                               children: <Widget>[
-                                _createTeam(context),
-                                 _joinTeam(context),
-                               ],),
-
-                          Row(
-                               mainAxisAlignment: MainAxisAlignment.center,
-                               children: <Widget>[
-                                _viewLeaderboard(),
-                               ],),
-
-                             Row(
-                               mainAxisAlignment: MainAxisAlignment.center,
-                               children: <Widget>[
-                                _adminOnlyTasks(context),
-                               ],),
-
-                            Row(
-                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                               children: <Widget>[
-                                 _deleteTeamButton(context),
-                                 _refresh(),
-                               ],),
-                        
-                        ],
-                       
-                      )),
-                ),
-                onRefresh: () async {
-                  retrieveUser()
-                      .then((model) => {setState(() => model = currentUser)});
-                })
-            : Center(
-                child: Column(children: <Widget>[
-                  Image.asset(
+                TTFormElement(
+                  child: Image.asset(
                     'assets/images/TaskBird.png',
                     width: 200,
                     height: 200,
                   ),
-                  _signOutButton(),
-                  _refresh(),
-                  const RefreshProgressIndicator()
-                ]),
-              ));
+                ),
+
+                TTFormElement(
+                  edgeInsets: const EdgeInsets.all(10),
+                  child:Column()
+                  ),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    TTButton(
+                      edgeInsets: EdgeInsets.zero,
+                      text: 'My Tasks',
+                      width: 140,
+                      height: 60,
+                      onPressed: isLoaded ? () => Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => TasksPage(currentUser!))) : null
+                    ),
+                    TTButton(
+                      edgeInsets: EdgeInsets.zero,
+                      text: 'Create Task',
+                      width: 140,
+                      height: 60,
+                      onPressed: isLoaded ? () => Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => CreateATaskPage(currentUser!))) : null
+                    ),
+                  ],
+                  ),
+
+                TTFormElement(
+                  edgeInsets: const EdgeInsets.all(10),
+                  child:Column()
+                  ),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    TTButton(
+                      edgeInsets: EdgeInsets.zero,
+                      text: 'Create Team',
+                      width: 140,
+                      height: 60,
+                      onPressed: isLoaded ? () => Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => CreateTeam(currentUser!))) : null
+                    ),
+                    TTButton(
+                      edgeInsets: EdgeInsets.zero,
+                      text: 'Join Team',
+                      width: 140,
+                      height: 60,
+                      onPressed: isLoaded ? () => Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => JoinTeamPage(currentUser!))) : null
+                    ),
+                  ],
+                  ),
+
+                TTFormElement(
+                  edgeInsets: const EdgeInsets.all(10),
+                  child:Column()
+                  ),
+
+                TTButton(
+                  edgeInsets: EdgeInsets.zero,
+                  text: 'Leaderboard',
+                  width: 140,
+                  height: 60,
+                  onPressed: isLoaded ? () => Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => LeaderboardPage(currentUser!))) : null
+                ),
+
+                TTFormElement(
+                  edgeInsets: const EdgeInsets.all(20),
+                  child:Column()
+                  ),
+
+                TTButton(
+                  visible: userAdmin,
+                  edgeInsets: EdgeInsets.zero,
+                  text: 'Completed Tasks',
+                  width: 180,
+                  height: 50,
+                  onPressed: isLoaded ? () => Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => AdminOnlyTasksPage(currentUser!))) : null
+                ),
+
+                TTFormElement(
+                  visible: userAdmin,
+                  edgeInsets: const EdgeInsets.all(10),
+                  child:Column()
+                  ),
+
+                TTButton(
+                  edgeInsets: EdgeInsets.zero,
+                  text: 'Delete Team',
+                  visible: userAdmin,
+                  width: 180,
+                  height: 50,
+                  onPressed: isLoaded ? () => () => openDeleteAlert(context) : null,
+                  ),
+
+                TTFormElement(
+                  visible: userAdmin,
+                  edgeInsets: const EdgeInsets.all(10),
+                  child:Column()
+                  ),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TTButton(
+                      text: 'Refresh',
+                      width: 100,
+                      height: 50,
+                      onPressed: () async => {
+                        retrieveUser()
+                          .then((model) => {setState(() => model = currentUser)})
+                      },
+                    ),]
+                )
+
+              ],
+              )
+            ),
+          onRefresh: () async {
+            retrieveUser()
+              .then((model) => {setState(() => model = currentUser)});
+          }
+          )
+
+    );
   }
 }

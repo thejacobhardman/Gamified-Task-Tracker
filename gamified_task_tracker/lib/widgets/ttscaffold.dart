@@ -12,6 +12,8 @@ class TTScaffold extends StatelessWidget {
   final Color bgColor;
   final bool scrollable;
   final FloatingActionButton? floatingActionButton;
+  final List<Widget>? actions;
+  final Widget? leading;
 
   const TTScaffold({
     super.key, 
@@ -21,6 +23,8 @@ class TTScaffold extends StatelessWidget {
     this.bgColor = backgroundColor, 
     this.scrollable = true,
     this.floatingActionButton,
+    this.actions,
+    this.leading,
     });
   
   @override
@@ -39,6 +43,8 @@ class TTScaffold extends StatelessWidget {
           ),
           centerTitle: true,
           backgroundColor: primaryColor,
+          actions: actions,
+          leading: leading,
         ) : null,
         body: Center(
           child: scrollable ? SingleChildScrollView(
