@@ -34,6 +34,7 @@ class _AdminOnlyTasksPage extends State<AdminOnlyTasksPage> {
   }
 
   updateAdminTask(int index) async {
+    try {
     tasksOnTeam![index] = await Navigator.push(
         context,
         MaterialPageRoute(
@@ -45,7 +46,9 @@ class _AdminOnlyTasksPage extends State<AdminOnlyTasksPage> {
       _retrieveTasksOnTeam()
           .then((model) => {setState(() => model = tasksOnTeam)});
       isLoaded = true;
-  });}
+    });
+    } catch (e) {}
+  }
 
   Future _retrieveTasksOnTeam() async {
     tasksOnTeam = await access.getTeamTasks(widget.user.team);

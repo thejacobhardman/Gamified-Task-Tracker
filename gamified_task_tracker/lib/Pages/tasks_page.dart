@@ -35,17 +35,19 @@ class _TasksPageState extends State<TasksPage> {
   }
   
   updateTask(int index) async {
-    tasksOnTeam![index] = await Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => TaskDetailPage(
-                tasksOnTeam![index], widget.user)));
-    setState(() {
-      isLoaded = false;
-      _retrieveTasksOnTeam()
-          .then((model) => {setState(() => model = tasksOnTeam)});
-      isLoaded = true;
-    });
+    try {
+      tasksOnTeam![index] = await Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => TaskDetailPage(
+                  tasksOnTeam![index], widget.user)));
+      setState(() {
+        isLoaded = false;
+        _retrieveTasksOnTeam()
+            .then((model) => {setState(() => model = tasksOnTeam)});
+        isLoaded = true;
+      });
+    } catch (e) {}
   }
 
   Future _retrieveTasksOnTeam() async {
