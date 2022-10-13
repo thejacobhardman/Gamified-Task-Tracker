@@ -66,6 +66,7 @@ class TTTextFieldState extends State<TTTextField> {
     return TTFormElement(
       visible: widget.visible,
       child: TextFormField(
+        keyboardType: TextInputType.text,
         controller: widget.controller,
         initialValue: widget.initialValue,
         obscureText: widget.obscureText,
