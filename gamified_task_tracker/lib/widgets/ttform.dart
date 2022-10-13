@@ -190,13 +190,17 @@ class TTText extends StatefulWidget {
   final Color color;
   final double size;
   final TextAlign align;
+  final FontWeight thiccness;
+  final TextDecoration textDecoration;
 
   const TTText(
     this.text,
     {super.key,
     this.color = textColor, 
     this.size = 16,
-    this.align = TextAlign.center
+    this.align = TextAlign.center,
+    this.thiccness = FontWeight.w400,
+    this.textDecoration = TextDecoration.none
     });
 
   @override
@@ -213,8 +217,9 @@ class TTTextState extends State<TTText> {
       style: GoogleFonts.getFont(
         'Poppins',
         color: widget.color,
-        fontWeight: FontWeight.w400,
-        fontSize: widget.size
+        fontWeight: widget.thiccness,
+        fontSize: widget.size,
+        decoration: widget.textDecoration,
       ),
     );
   }
