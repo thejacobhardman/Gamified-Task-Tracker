@@ -32,7 +32,7 @@ class _HopePageState extends State<HomePage> {
   String lastname = "";
   bool userAdmin = false;
   bool isLoaded = false;
-
+  bool onTeam = false;
   Future<void> signOut() async {
     await Auth().signOut();
   }
@@ -44,6 +44,9 @@ class _HopePageState extends State<HomePage> {
             builder: (context) => CreateTeam(currentUser!)));
     setState(() {
       userAdmin = currentUser!.admin!;
+      if (currentUser!.team != null) {
+        onTeam = true;
+      }
     });
   }
 
@@ -60,11 +63,16 @@ class _HopePageState extends State<HomePage> {
     if (currentUser?.admin != null) {
       userAdmin = currentUser!.admin!;
     }
+    if (currentUser!.team != null) {
+      onTeam = true;
+    }
     return currentUser;
   }
 
   Widget _createTask(BuildContext context) {
-    return ElevatedButton(
+    return Visibility(
+        visible: onTeam,
+        child: ElevatedButton(
         style: TextButton.styleFrom(
           backgroundColor: primaryColor,
         ),
@@ -72,7 +80,7 @@ class _HopePageState extends State<HomePage> {
             context,
             MaterialPageRoute(
                 builder: (context) => CreateATaskPage(currentUser!))),
-        child: Text('Make New Task', style: GoogleFonts.getFont('Poppins')));
+        child: Text('Make New Task', style: GoogleFonts.getFont('Poppins'))));
   }
 
   Future openTasks() async {
@@ -115,6 +123,7 @@ class _HopePageState extends State<HomePage> {
     currentUser?.admin = false;
     setState(() {
       userAdmin = false;
+      onTeam = false;
     });
   }
 
@@ -174,16 +183,6 @@ class _HopePageState extends State<HomePage> {
     );
   }
 
-  Widget _getTeamTasks(BuildContext context) {
-    return ElevatedButton(
-        style: TextButton.styleFrom(
-          backgroundColor: primaryColor,
-        ),
-        onPressed: () => Navigator.push(context,
-            MaterialPageRoute(builder: (context) => CreateTeam(currentUser!))),
-        child: Text('Get Team Tasks', style: GoogleFonts.getFont('Poppins')));
-  }
-
   Widget _adminOnlyTasks(BuildContext context) {
     return Visibility(
         visible: userAdmin,
@@ -203,13 +202,15 @@ class _HopePageState extends State<HomePage> {
   }
 
   Widget _openTasks(BuildContext context) {
-    return ElevatedButton(
+    return Visibility(
+      visible: onTeam,
+      child: ElevatedButton(
         style: TextButton.styleFrom(
           backgroundColor: primaryColor,
         ),
         onPressed: () => Navigator.push(context,
             MaterialPageRoute(builder: (context) => TasksPage(currentUser!))),
-        child: Text('Open Tasks', style: GoogleFonts.getFont('Poppins')));
+        child: Text('Open Tasks', style: GoogleFonts.getFont('Poppins'))));
   }
 
   Widget _joinTeam(BuildContext context) {
@@ -262,7 +263,7 @@ class _HopePageState extends State<HomePage> {
 
   _viewLeaderboard() {
     return Visibility(
-        visible: true,
+        visible: onTeam,
         child: ElevatedButton(
             style: TextButton.styleFrom(
               backgroundColor: primaryColor,
