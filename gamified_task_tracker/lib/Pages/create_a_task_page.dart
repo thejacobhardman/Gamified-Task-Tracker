@@ -26,7 +26,7 @@ class _CreateATaskPageState extends State<CreateATaskPage> {
   TextEditingController? textController2;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   RemoteAccess access = RemoteAccess();
-  DateTime selectedDate = DateTime.utc(9999);
+  DateTime selectedDate = DateTime(3000);
   final DateFormat formatter = DateFormat('yyyy-MM-dd');
 
   int _currentIntValue = 0;
@@ -100,6 +100,7 @@ class _CreateATaskPageState extends State<CreateATaskPage> {
   }
 
   Future _postTask() async {
+
     var newTask = Task(
       taskName: textController1?.text ?? "",
       description: textController2?.text ?? "",
