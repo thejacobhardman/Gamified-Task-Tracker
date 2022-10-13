@@ -140,6 +140,7 @@ class _CompletedTaskDetailPage extends State<CompletedTaskDetailPage> {
       debugPrint("Successfully deleted task");
       Navigator.pop(context, widget.task);
       Navigator.pop(context, widget.task);
+      Navigator.pop(context);
     }
   }
 
