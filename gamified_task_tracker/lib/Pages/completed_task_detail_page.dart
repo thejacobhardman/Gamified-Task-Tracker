@@ -23,69 +23,65 @@ class _CompletedTaskDetailPage extends State<CompletedTaskDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return TTScaffold(
       title: widget.task.taskName,
       body: TTForm(
         children: [
           const TTText(
-            'Description', 
+            'Description',
             thiccness: FontWeight.w800,
             size: 20,
-            ),
+          ),
           TTText(widget.task.taskName),
-
-          TTFormElement(child:Container()),
-
+          TTFormElement(child: Container()),
           const TTText(
-            'Points', 
+            'Points',
             thiccness: FontWeight.w800,
             size: 20,
-            ),
+          ),
           TTText(widget.task.points.toString()),
-
-          TTFormElement(child:Container()),
-
+          TTFormElement(child: Container()),
           const TTText(
-            'Due', 
+            'Due',
             thiccness: FontWeight.w800,
             size: 20,
-            ),
+          ),
           TTText(widget.task.dueDate),
-
-          TTFormElement(child:Container()),
-
+          TTFormElement(child: Container()),
+          const TTText(
+            'Completed By',
+            thiccness: FontWeight.w800,
+            size: 20,
+          ),
+          TTText(widget.task.completedby.toString()),
+          TTFormElement(child: Container()),
           TTFormElement(
             child: Row(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-
                 TTButton(
                   text: 'Approve',
                   edgeInsets: const EdgeInsets.all(0),
                   onPressed: () async => {
                     _approveTask(),
                   },
-                  ),
-
+                ),
                 TTButton(
                   text: 'Deny',
                   edgeInsets: const EdgeInsets.all(0),
                   onPressed: () async => {
                     _denyTask(),
                   },
-                  ),
-
+                ),
                 TTButton(
                   text: 'Delete',
                   edgeInsets: const EdgeInsets.all(0),
                   onPressed: () async => {
                     openDeleteAlert(context),
                   },
-                  )
-
-            ],
+                )
+              ],
             ),
           )
         ],
