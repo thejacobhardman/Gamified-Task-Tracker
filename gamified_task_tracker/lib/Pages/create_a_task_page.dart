@@ -26,8 +26,9 @@ class _CreateATaskPageState extends State<CreateATaskPage> {
   TextEditingController? textController2;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   RemoteAccess access = RemoteAccess();
-  DateTime selectedDate = DateTime.now();
+  DateTime selectedDate = DateTime.utc(9999);
   final DateFormat formatter = DateFormat('yyyy-MM-dd');
+
   int _currentIntValue = 0;
 
   bool showTimingFields = false;
@@ -41,6 +42,7 @@ class _CreateATaskPageState extends State<CreateATaskPage> {
 
   @override
   Widget build(BuildContext context) {
+    print(formatter.format(selectedDate));
     return TTScaffold(
       title: 'Create a Task',
       body: TTForm(
