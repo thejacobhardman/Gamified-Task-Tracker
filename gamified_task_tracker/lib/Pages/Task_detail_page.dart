@@ -68,5 +68,9 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
       return;
     }
     debugPrint("Successful");
+    widget.task.completed = true;
+    widget.task.completedby = widget.user.email;
+    widget.task.valid = false;
+    Navigator.pop(context, widget.task);
   }
 }

@@ -41,21 +41,18 @@ class _CompletedTaskDetailPage extends State<CompletedTaskDetailPage> {
               child: Text("Approve"),
               onPressed: () async => {
                 _approveTask(),
-                Navigator.of(context).pop(),
               },
             ),
             TextButton(
               child: Text("Deny"),
               onPressed: () async => {
                 _denyTask(),
-                Navigator.of(context).pop(),
               },
             ),
             TextButton(
               child: Text("Delete"),
               onPressed: () async => {
-                _deleteTask(context),
-                Navigator.of(context).pop(),
+                openDeleteAlert(context),
               },
             )
           ],
@@ -99,8 +96,12 @@ class _CompletedTaskDetailPage extends State<CompletedTaskDetailPage> {
     if (response == null) {
       print("null");
       return;
+    } else {
+      debugPrint("Successful");
+      widget.task.valid = true;
+      widget.task.completed = true;
+      Navigator.pop(context, widget.task);
     }
-    debugPrint("Successful");
   }
 
   Future<dynamic> _denyTask() async {
@@ -122,8 +123,12 @@ class _CompletedTaskDetailPage extends State<CompletedTaskDetailPage> {
     if (response == null) {
       print("null");
       return;
+    } else {
+      debugPrint("Successful");
+      widget.task.valid = false;
+      widget.task.completed = false;
+      Navigator.pop(context, widget.task);
     }
-    debugPrint("Successful");
   }
 
   Future<dynamic> _deleteTask(context) async {
@@ -131,8 +136,11 @@ class _CompletedTaskDetailPage extends State<CompletedTaskDetailPage> {
     if (response == null) {
       print("null");
       return;
+    } else {
+      debugPrint("Successfully deleted task");
+      Navigator.pop(context, widget.task);
+      Navigator.pop(context, widget.task);
     }
-    debugPrint("Successfully deleted task");
   }
 
   openDeleteAlert(BuildContext context) {
@@ -140,7 +148,6 @@ class _CompletedTaskDetailPage extends State<CompletedTaskDetailPage> {
       child: Text("Confirm"),
       onPressed: () async => {
         _deleteTask(context),
-        Navigator.of(context).pop(),
       },
     );
     Widget cancelButton = TextButton(

@@ -109,6 +109,7 @@ class _CreateATaskPageState extends State<CreateATaskPage> {
       return;
     }
     debugPrint("Successful");
+    Navigator.pop(context);
   }
 
   void pickDate() async {

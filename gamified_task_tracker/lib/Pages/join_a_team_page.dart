@@ -66,6 +66,7 @@ class _JoinTeamPageState extends State<JoinTeamPage> {
     }
     debugPrint("Successful");
     widget.user.team = teamid;
+    Navigator.pop(context);
   }
   
   void showErrorSnackBar() {

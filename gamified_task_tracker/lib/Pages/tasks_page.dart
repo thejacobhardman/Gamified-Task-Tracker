@@ -31,6 +31,20 @@ class _TasksPageState extends State<TasksPage> {
   Future<void> signOut() async {
     await Auth().signOut();
   }
+  
+  updateTask(int index) async {
+    tasksOnTeam![index] = await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => TaskDetailPage(
+                tasksOnTeam![index], widget.user)));
+    setState(() {
+      isLoaded = false;
+      _retrieveTasksOnTeam()
+          .then((model) => {setState(() => model = tasksOnTeam)});
+      isLoaded = true;
+    });
+  }
 
   Future _retrieveTasksOnTeam() async {
     tasksOnTeam = await access.getTeamTasks(widget.user.team);
@@ -82,11 +96,7 @@ class _TasksPageState extends State<TasksPage> {
                           subtitle: Text(
                               "Description: ${tasksOnTeam![index].description}"),
                           onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => TaskDetailPage(
-                                        tasksOnTeam![index], widget.user)));
+                            updateTask(index);
                           });
                     },
                   ),

@@ -31,6 +31,20 @@ class _AdminOnlyTasksPage extends State<AdminOnlyTasksPage> {
     await Auth().signOut();
   }
 
+  updateAdminTask(int index) async {
+    tasksOnTeam![index] = await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                CompletedTaskDetailPage(
+                    tasksOnTeam![index], widget.user)));
+    setState(() {
+      isLoaded = false;
+      _retrieveTasksOnTeam()
+          .then((model) => {setState(() => model = tasksOnTeam)});
+      isLoaded = true;
+  });}
+
   Future _retrieveTasksOnTeam() async {
     tasksOnTeam = await access.getTeamTasks(widget.user.team);
     if (tasksOnTeam != null) {
@@ -81,12 +95,7 @@ class _AdminOnlyTasksPage extends State<AdminOnlyTasksPage> {
                           subtitle: Text(
                               "Description: ${tasksOnTeam![index].description}"),
                           onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        CompletedTaskDetailPage(
-                                            tasksOnTeam![index], widget.user)));
+                            updateAdminTask(index);
                           });
                     },
                   ),
