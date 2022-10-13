@@ -41,6 +41,24 @@ class _UserPageState extends State<UserPage> {
         children: [
 
           const TTText(
+            'First Name', 
+            thiccness: FontWeight.w800,
+            size: 20,
+            ),
+          TTText(widget.user.firstName!),
+
+          TTFormElement(child:Container()),
+
+          const TTText(
+            'Last Name', 
+            thiccness: FontWeight.w800,
+            size: 20,
+            ),
+          TTText(widget.user.lastName!),
+
+          TTFormElement(child:Container()),
+
+          const TTText(
             'Username', 
             thiccness: FontWeight.w800,
             size: 20,
