@@ -46,9 +46,6 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
           title: const Text('Points Leaderboard'),
           backgroundColor: primaryColor,
           actions: <Widget>[
-            IconButton(
-                onPressed: () => Navigator.pop(context),
-                icon: const Icon(Icons.arrow_back)),
             IconButton(onPressed: signOut, icon: const Text('Sign Out')),
           ],
         ),

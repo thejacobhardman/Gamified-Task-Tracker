@@ -6,6 +6,8 @@ import '../Models/teamTasks.dart';
 import '../Models/users.dart';
 import '../Views/RemoteAccess.dart';
 import '../Views/style.dart';
+import '../widgets/ttform.dart';
+import '../widgets/ttscaffold.dart';
 
 
 class TaskDetailPage extends StatefulWidget {
@@ -18,10 +20,52 @@ class TaskDetailPage extends StatefulWidget {
 }
 
 class _TaskDetailPageState extends State<TaskDetailPage> {
+
   RemoteAccess access = new RemoteAccess();
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+
+    return TTScaffold(
+      title: widget.task.taskName,
+      body: TTForm(
+        children: [
+          const TTText(
+            'Description', 
+            thiccness: FontWeight.w800,
+            size: 20,
+            ),
+          TTText(widget.task.taskName),
+
+          TTFormElement(child:Container()),
+
+          const TTText(
+            'Points', 
+            thiccness: FontWeight.w800,
+            size: 20,
+            ),
+          TTText(widget.task.points.toString()),
+
+          TTFormElement(child:Container()),
+
+          const TTText(
+            'Due', 
+            thiccness: FontWeight.w800,
+            size: 20,
+            ),
+          TTText(widget.task.dueDate),
+
+          TTFormElement(child:Container()),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+          onPressed: completeTask,
+          backgroundColor: Colors.orange,
+          child: Icon(Icons.check_circle),
+        ),
+    );
+
+    /*return Scaffold(
         appBar: AppBar(
           title: Text(widget.task.taskName),
           backgroundColor: primaryColor,
@@ -44,7 +88,7 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
           onPressed: completeTask,
           backgroundColor: Colors.orange,
           child: Icon(Icons.check_circle),
-        ));
+        ));*/
   }
 
   Future<dynamic> completeTask() async {

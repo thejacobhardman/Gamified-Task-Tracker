@@ -78,9 +78,6 @@ class _TasksPageState extends State<TasksPage> {
           title: const Text('Tasks'),
           backgroundColor: primaryColor,
           actions: <Widget>[
-            IconButton(
-                onPressed: () => Navigator.pop(context),
-                icon: const Icon(Icons.arrow_back)),
             IconButton(onPressed: signOut, icon: const Text('Sign Out')),
           ],
         ),
