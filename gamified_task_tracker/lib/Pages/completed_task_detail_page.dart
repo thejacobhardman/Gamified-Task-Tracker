@@ -55,37 +55,39 @@ class _CompletedTaskDetailPage extends State<CompletedTaskDetailPage> {
 
           TTFormElement(child:Container()),
 
-          Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
+          TTFormElement(
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
 
-              TTButton(
-                text: 'Approve',
-                edgeInsets: const EdgeInsets.all(0),
-                onPressed: () async => {
-                  _approveTask(),
-                },
-                ),
+                TTButton(
+                  text: 'Approve',
+                  edgeInsets: const EdgeInsets.all(0),
+                  onPressed: () async => {
+                    _approveTask(),
+                  },
+                  ),
 
-              TTButton(
-                text: 'Deny',
-                edgeInsets: const EdgeInsets.all(0),
-                onPressed: () async => {
-                  _denyTask(),
-                },
-                ),
+                TTButton(
+                  text: 'Deny',
+                  edgeInsets: const EdgeInsets.all(0),
+                  onPressed: () async => {
+                    _denyTask(),
+                  },
+                  ),
 
-              TTButton(
-                text: 'Delete',
-                edgeInsets: const EdgeInsets.all(0),
-                onPressed: () async => {
-                  openDeleteAlert(context),
-                },
-                )
+                TTButton(
+                  text: 'Delete',
+                  edgeInsets: const EdgeInsets.all(0),
+                  onPressed: () async => {
+                    openDeleteAlert(context),
+                  },
+                  )
 
-          ],
-          ),
+            ],
+            ),
+          )
         ],
       ),
     );

@@ -5,6 +5,8 @@ import '../Models/users.dart';
 import '../Views/RemoteAccess.dart';
 import '../Views/auth.dart';
 import '../Views/style.dart';
+import '../widgets/ttform.dart';
+import '../widgets/ttscaffold.dart';
 
 class LeaderboardPage extends StatefulWidget {
   LeaderboardPage(this.user, {super.key});
@@ -41,35 +43,21 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text('Points Leaderboard'),
-          backgroundColor: primaryColor,
-          actions: <Widget>[
-            IconButton(onPressed: signOut, icon: const Text('Sign Out')),
-          ],
-        ),
-        body: isLoaded
-            ? RefreshIndicator(
-            child: Visibility(
-              visible: isLoaded,
-              child: ListView.builder(
-                itemCount: usersOnTeam?.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                      title: Text(usersOnTeam![index].userName),
-                      subtitle: Text("Task Points: ${usersOnTeam![index].points}"),
-                      );
-                },
-              ),
-            ),
-            onRefresh: () async {
-             _retrieveUsersOnTeam()
-                 .then((model) => {setState(() => model = usersOnTeam)});
-            })
-            : Center(
-          child: CircularProgressIndicator(),
-        ));
+    return TTLoadListScaffold(
+      title: 'Points Leaderboard',
+      isLoaded: isLoaded,
+      list: usersOnTeam,
+      itemBuilder: (context, index) {
+        return ListTile(
+            title: TTText(usersOnTeam![index].userName),
+            subtitle: TTText("Task Points: ${usersOnTeam![index].points}"),
+            );
+      },
+      onRefresh: () async {
+        _retrieveUsersOnTeam()
+          .then((model) => {setState(() => model = usersOnTeam)});
+      }
+    );
   }
 }
 

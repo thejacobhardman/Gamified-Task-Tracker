@@ -7,6 +7,8 @@ import '../Views/RemoteAccess.dart';
 import '../Views/auth.dart';
 import '../Views/style.dart';
 
+import '../widgets/ttform.dart';
+import '../widgets/ttscaffold.dart';
 import 'Task_detail_page.dart';
 import 'create_a_task_page.dart';
 
@@ -73,37 +75,23 @@ class _TasksPageState extends State<TasksPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text('Tasks'),
-          backgroundColor: primaryColor,
-          actions: <Widget>[
-            IconButton(onPressed: signOut, icon: const Text('Sign Out')),
-          ],
-        ),
-        body: isLoaded
-            ? RefreshIndicator(
-                child: Visibility(
-                  visible: isLoaded,
-                  child: ListView.builder(
-                    itemCount: tasksOnTeam?.length,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                          title: Text("Task: ${tasksOnTeam![index].taskName}"),
-                          subtitle: Text(
-                              "Description: ${tasksOnTeam![index].description}"),
-                          onTap: () {
-                            updateTask(index);
-                          });
-                    },
-                  ),
-                ),
-                onRefresh: () async {
-                  _retrieveTasksOnTeam()
-                      .then((model) => {setState(() => model = tasksOnTeam)});
-                })
-            : Center(
-                child: CircularProgressIndicator(),
-              ));
+    return TTLoadListScaffold(
+      title: 'Tasks',
+      isLoaded: isLoaded,
+      list: tasksOnTeam,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: TTText("Task: ${tasksOnTeam![index].taskName}"),
+          subtitle: TTText(
+            "Description: ${tasksOnTeam![index].description}"),
+          onTap: () {
+            updateTask(index);
+          });
+      },
+      onRefresh: () async {
+        _retrieveTasksOnTeam()
+          .then((model) => {setState(() => model = tasksOnTeam)});
+      }
+    );
   }
 }

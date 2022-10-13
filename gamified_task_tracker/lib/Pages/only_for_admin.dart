@@ -12,6 +12,8 @@ import 'create_a_task_page.dart';
 
 import '../Models/teamTasks.dart';
 import '../Models/users.dart';
+import '../widgets/ttform.dart';
+import '../widgets/ttscaffold.dart';
 
 class AdminOnlyTasksPage extends StatefulWidget {
   /*DataFromAPI({Key? key}) : super(key: key);*/
@@ -72,40 +74,23 @@ class _AdminOnlyTasksPage extends State<AdminOnlyTasksPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text('Marked Completed'),
-          backgroundColor: primaryColor,
-          actions: <Widget>[
-            IconButton(
-                onPressed: () => Navigator.pop(context),
-                icon: const Icon(Icons.arrow_back)),
-            IconButton(onPressed: signOut, icon: const Text('Sign Out')),
-          ],
-        ),
-        body: isLoaded
-            ? RefreshIndicator(
-                child: Visibility(
-                  visible: isLoaded,
-                  child: ListView.builder(
-                    itemCount: tasksOnTeam?.length,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                          title: Text("Task: ${tasksOnTeam![index].taskName}"),
-                          subtitle: Text(
-                              "Description: ${tasksOnTeam![index].description}"),
-                          onTap: () {
-                            updateAdminTask(index);
-                          });
-                    },
-                  ),
-                ),
-                onRefresh: () async {
-                  _retrieveTasksOnTeam()
-                      .then((model) => {setState(() => model = tasksOnTeam)});
-                })
-            : Center(
-                child: CircularProgressIndicator(),
-              ));
+    return TTLoadListScaffold(
+      title: 'Marked Completed',
+      isLoaded: isLoaded,
+      list: tasksOnTeam,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: TTText("Task: ${tasksOnTeam![index].taskName}"),
+          subtitle: TTText(
+            "Description: ${tasksOnTeam![index].description}"),
+          onTap: () {
+            updateAdminTask(index);
+          });
+      },
+      onRefresh: () async {
+        _retrieveTasksOnTeam()
+          .then((model) => {setState(() => model = tasksOnTeam)});
+      }
+    );
   }
 }

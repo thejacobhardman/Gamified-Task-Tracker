@@ -38,7 +38,6 @@ class TTScaffold extends StatelessWidget {
             ),
           ),
           centerTitle: true,
-          leading: const BackButton(color: backgroundColor),
           backgroundColor: primaryColor,
         ) : null,
         body: Center(
@@ -56,5 +55,60 @@ class TTScaffold extends StatelessWidget {
         ),
         floatingActionButton: floatingActionButton,
       );
+  }  
+}  
+
+
+class TTLoadListScaffold extends StatelessWidget {
+
+  final String title;
+  final bool isLoaded;
+  final List<Object>? list;
+  final Widget Function(BuildContext, int) itemBuilder;
+  final Future<void> Function() onRefresh;
+  final Color bgColor;
+  
+  const TTLoadListScaffold({
+    super.key, 
+    required this.title,
+    required this.isLoaded,
+    required this.list,
+    required this.itemBuilder,
+    required this.onRefresh,
+    this.bgColor = backgroundColor
+    });
+  
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        backgroundColor: bgColor,
+        appBar: AppBar(
+          title: Text(
+            title,
+            style: GoogleFonts.getFont(
+              'Poppins',
+              color: Colors.white,
+              fontWeight: FontWeight.w600,
+              fontSize: 30,
+            ),
+          ),
+          centerTitle: true,
+          backgroundColor: primaryColor,
+        ),
+        body: isLoaded
+          ? RefreshIndicator(
+              onRefresh: onRefresh,
+              child: Visibility(
+                visible: isLoaded,
+                child: ListView.builder(
+                  itemCount: list?.length,
+                  itemBuilder: itemBuilder
+                ),
+              ),
+              )
+          : const Center(
+              child: CircularProgressIndicator(),
+            )
+          );
   }  
 }  
