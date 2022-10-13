@@ -185,7 +185,9 @@ class _HopePageState extends State<HomePage> {
   }
 
   Widget _adminOnlyTasks(BuildContext context) {
-    return ElevatedButton(
+    return Visibility(
+        visible: userAdmin,
+        child: ElevatedButton(
         style: TextButton.styleFrom(
           backgroundColor: primaryColor,
         ),
@@ -193,7 +195,7 @@ class _HopePageState extends State<HomePage> {
             context,
             MaterialPageRoute(
                 builder: (context) => AdminOnlyTasksPage(currentUser!))),
-        child: Text('Only For Admin', style: GoogleFonts.getFont('Poppins')));
+        child: Text('Only For Admin', style: GoogleFonts.getFont('Poppins'))));
   }
 
   Widget _userUid() {
@@ -256,6 +258,17 @@ class _HopePageState extends State<HomePage> {
             backgroundColor: primaryColor,
           ),
         ));
+  }
+
+  _viewLeaderboard() {
+    return Visibility(
+        visible: true,
+        child: ElevatedButton(
+            style: TextButton.styleFrom(
+              backgroundColor: primaryColor,
+            ),
+            onPressed: () => routeToLeaderBoard(context),
+            child: Text('Leaderboard', style: GoogleFonts.getFont('Poppins'))));
   }
 
   @override
@@ -363,9 +376,7 @@ class _HopePageState extends State<HomePage> {
                             Row(
                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                children: <Widget>[
-                                 Visibility(
-                                     visible: userAdmin,
-                                     child: _deleteTeamButton(context)),
+                                 _deleteTeamButton(context),
                                  _refresh(),
                                ],),
                         
@@ -389,31 +400,5 @@ class _HopePageState extends State<HomePage> {
                   const RefreshProgressIndicator()
                 ]),
               ));
-  }
-
-  _viewLeaderboard() {
-    return Visibility(
-        visible: true,
-        child: ElevatedButton(
-            style: TextButton.styleFrom(
-              backgroundColor: primaryColor,
-            ),
-            onPressed: () => routeToLeaderBoard(context),
-            child: Text('Leaderboard', style: GoogleFonts.getFont('Poppins'))));
-  }
-
-  _viewUserProfile() {
-    return Visibility(
-        visible: isLoaded,
-        child: ElevatedButton(
-            style: TextButton.styleFrom(
-              backgroundColor: primaryColor,
-            ),
-            onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => UserPage(userData![0]))),
-            child:
-                Text('User profile', style: GoogleFonts.getFont('Poppins'))));
   }
 }
