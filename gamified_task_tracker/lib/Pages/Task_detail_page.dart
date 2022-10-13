@@ -60,7 +60,7 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
       ),
       floatingActionButton: FloatingActionButton(
           onPressed: completeTask,
-          backgroundColor: Colors.orange,
+          backgroundColor: createColor,
           child: Icon(Icons.check_circle),
         ),
     );

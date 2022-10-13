@@ -6,6 +6,7 @@ import 'package:gamified_task_tracker/widgets/ttscaffold.dart';
 import '../Models/teams.dart';
 import '../Models/users.dart';
 import '../Views/RemoteAccess.dart';
+import '../Views/style.dart';
 import '../widgets/ttform.dart';
 
 class JoinTeamPage extends StatefulWidget {
@@ -90,6 +91,7 @@ class _JoinTeamPageState extends State<JoinTeamPage> {
 
             TTButton(
               text: 'Join Team',
+              backgroundColor: successColor,
               onPressed: _checkTeam
               ),
 

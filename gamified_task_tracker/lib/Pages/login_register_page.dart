@@ -159,6 +159,7 @@ class _LoginPageState extends State<LoginPage> {
 
             TTButton(
               text: isLogin ? 'Register Instead' : 'Login Instead',
+              backgroundColor: secondaryColor,
               width: 180,
               onPressed: () {
                   setState(() {

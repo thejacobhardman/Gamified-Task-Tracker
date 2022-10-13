@@ -38,6 +38,7 @@ Widget build(BuildContext context) => TTScaffold(
 
         TTButton(
           text: 'Create',
+          backgroundColor: createColor,
           onPressed: () {
               var teams =
                   Teams(teamName: controllerName.text, teamCode: code);

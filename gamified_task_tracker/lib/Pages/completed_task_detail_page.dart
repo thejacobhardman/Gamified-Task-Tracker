@@ -57,6 +57,7 @@ class _CompletedTaskDetailPage extends State<CompletedTaskDetailPage> {
           TTFormElement(child: Container()),
           TTButton(
             text: 'Approve',
+            backgroundColor: successColor,
             edgeInsets: const EdgeInsets.all(10),
             onPressed: () async => {
               _approveTask(),
@@ -64,6 +65,7 @@ class _CompletedTaskDetailPage extends State<CompletedTaskDetailPage> {
           ),
           TTButton(
             text: 'Deny',
+            backgroundColor: secondaryColor,
             edgeInsets: const EdgeInsets.all(10),
             onPressed: () async => {
               _denyTask(),
@@ -71,6 +73,7 @@ class _CompletedTaskDetailPage extends State<CompletedTaskDetailPage> {
           ),
           TTButton(
             text: 'Delete',
+            backgroundColor: dangerColor,
             edgeInsets: const EdgeInsets.all(10),
             onPressed: () async => {
               openDeleteAlert(context),

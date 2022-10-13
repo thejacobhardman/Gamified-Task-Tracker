@@ -91,6 +91,7 @@ class _CreateATaskPageState extends State<CreateATaskPage> {
 
           TTButton(
             text: 'Add',
+            backgroundColor: createColor,
             onPressed: _postTask,
             )
 

@@ -222,6 +222,7 @@ class _HopePageState extends State<HomePage> {
                     TTButton(
                       edgeInsets: EdgeInsets.zero,
                       text: 'Create Task',
+                      backgroundColor: createColor,
                       width: 140,
                       height: 60,
                       onPressed: isLoaded ? () => Navigator.push(context,
@@ -238,15 +239,7 @@ class _HopePageState extends State<HomePage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    TTButton(
-                      edgeInsets: EdgeInsets.zero,
-                      text: 'Create Team',
-                      width: 140,
-                      height: 60,
-                      onPressed: isLoaded ? () => Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => CreateTeam(currentUser!))) : null
-                    ),
-                    TTButton(
+                     TTButton(
                       edgeInsets: EdgeInsets.zero,
                       text: 'Join Team',
                       width: 140,
@@ -254,6 +247,15 @@ class _HopePageState extends State<HomePage> {
                       onPressed: isLoaded ? () => Navigator.push(context,
                         MaterialPageRoute(builder: (context) => JoinTeamPage(currentUser!))) : null
                     ),
+                    TTButton(
+                      edgeInsets: EdgeInsets.zero,
+                      text: 'Create Team',
+                      backgroundColor: createColor,
+                      width: 140,
+                      height: 60,
+                      onPressed: isLoaded ? () => Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => CreateTeam(currentUser!))) : null
+                    ), 
                   ],
                   ),
 
@@ -295,6 +297,7 @@ class _HopePageState extends State<HomePage> {
                 TTButton(
                   edgeInsets: EdgeInsets.zero,
                   text: 'Delete Team',
+                  backgroundColor: dangerColor,
                   visible: userAdmin,
                   width: 180,
                   height: 50,
