@@ -32,17 +32,19 @@ class TTScaffold extends StatelessWidget {
           leading: const BackButton(color: backgroundColor),
           backgroundColor: primaryColor,
         ) : null,
-        body: scrollable ? SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child:
-            Container(
-          padding: const EdgeInsets.all(edgeInsets),
-          child: body
-          )
-        ) : Container(
-          padding: const EdgeInsets.all(edgeInsets),
-          child: body
-          )
+        body: Center(
+          child: scrollable ? SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child:
+              Container(
+            padding: const EdgeInsets.all(edgeInsets),
+            child: body
+            )
+          ) : Container(
+            padding: const EdgeInsets.all(edgeInsets),
+            child: body
+            )
+        )
       );
   }  
 }  

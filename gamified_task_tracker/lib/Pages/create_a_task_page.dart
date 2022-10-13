@@ -66,20 +66,26 @@ class _CreateATaskPageState extends State<CreateATaskPage> {
               )
             ),
           
-          TTCheckbox(
-            text: 'Timed?',
-            onChanged: (bool? value) {
-                setState(() {
-                  showTimingFields = value!;
-                });
-              },
-            value: showTimingFields
+          Row(
+            children: [
+
+              TTCheckbox(
+                text: 'Timed?',
+                onChanged: (bool? value) {
+                    setState(() {
+                      showTimingFields = value!;
+                    });
+                  },
+                value: showTimingFields
+                ),
+
+              showTimingFields ? TTButton(
+                text: "Select Date",
+                onPressed: pickDate,
+                ) : TTFormElement(child: Container()),
+                
+            ],
             ),
-          
-          showTimingFields ? TTButton(
-            text: "Select Date",
-            onPressed: pickDate,
-            ) : Container(),
 
           TTButton(
             text: 'Add',
