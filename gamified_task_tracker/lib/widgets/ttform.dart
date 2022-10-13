@@ -148,6 +148,7 @@ class TTButton extends StatefulWidget {
   final Color backgroundColor;
   final Color textColor;
   final void Function()? onPressed;
+  final EdgeInsetsGeometry edgeInsets;
 
   const TTButton({
     super.key, 
@@ -156,6 +157,7 @@ class TTButton extends StatefulWidget {
     this.backgroundColor = primaryColor, 
     this.textColor = textColorAgainstPrimary, 
     required this.onPressed,
+    this.edgeInsets = const EdgeInsets.all(itemSpacing)
     });
 
   @override
@@ -168,6 +170,7 @@ class TTButtonState extends State<TTButton> {
   Widget build(BuildContext context) {
     return TTFormElement(
       visible: widget.visible,
+      edgeInsets: widget.edgeInsets,
       child: TextButton(
         style: TextButton.styleFrom(
           backgroundColor: widget.backgroundColor,
@@ -233,12 +236,14 @@ class TTFormElement extends StatelessWidget {
   final bool verticalPaddingOnly;
   final bool visible;
   final Widget child;
+  final EdgeInsetsGeometry edgeInsets;
 
   const TTFormElement({
     super.key, 
     this.visible = true,
     this.verticalPaddingOnly = false,
     required this.child,
+    this.edgeInsets = const EdgeInsets.all(itemSpacing),
     });
 
   @override
@@ -247,7 +252,7 @@ class TTFormElement extends StatelessWidget {
       child: Visibility(
         visible: visible,
         child: Padding(
-          padding: verticalPaddingOnly ? const EdgeInsets.only(top: itemSpacing, bottom: itemSpacing) : const EdgeInsets.all(itemSpacing),
+          padding: edgeInsets,
           child: child,
           )
         )

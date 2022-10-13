@@ -64,31 +64,6 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
           child: Icon(Icons.check_circle),
         ),
     );
-
-    /*return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.task.taskName),
-          backgroundColor: primaryColor,
-        ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(height: 16),
-              Text('Description', style: Theme.of(context).textTheme.headline6),
-              Text(widget.task.description),
-              SizedBox(height: 12),
-              Text('Due', style: Theme.of(context).textTheme.headline6),
-              Text(widget.task.dueDate),
-            ],
-          ),
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: completeTask,
-          backgroundColor: Colors.orange,
-          child: Icon(Icons.check_circle),
-        ));*/
   }
 
   Future<dynamic> completeTask() async {

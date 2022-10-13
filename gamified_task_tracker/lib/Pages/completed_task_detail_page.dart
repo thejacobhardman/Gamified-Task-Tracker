@@ -6,6 +6,8 @@ import '../Models/teamTasks.dart';
 import '../Models/users.dart';
 import '../Views/RemoteAccess.dart';
 import '../Views/style.dart';
+import '../widgets/ttform.dart';
+import '../widgets/ttscaffold.dart';
 
 class CompletedTaskDetailPage extends StatefulWidget {
   CompletedTaskDetailPage(this.task, this.user, {super.key});
@@ -21,42 +23,70 @@ class _CompletedTaskDetailPage extends State<CompletedTaskDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.task.taskName),
-        backgroundColor: primaryColor,
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(height: 16),
-            Text('Description', style: Theme.of(context).textTheme.headline6),
-            Text(widget.task.description),
-            SizedBox(height: 12),
-            Text('Due', style: Theme.of(context).textTheme.headline6),
-            Text(widget.task.dueDate),
-            TextButton(
-              child: Text("Approve"),
-              onPressed: () async => {
-                _approveTask(),
-              },
+
+    return TTScaffold(
+      title: widget.task.taskName,
+      body: TTForm(
+        children: [
+          const TTText(
+            'Description', 
+            thiccness: FontWeight.w800,
+            size: 20,
             ),
-            TextButton(
-              child: Text("Deny"),
-              onPressed: () async => {
-                _denyTask(),
-              },
+          TTText(widget.task.taskName),
+
+          TTFormElement(child:Container()),
+
+          const TTText(
+            'Points', 
+            thiccness: FontWeight.w800,
+            size: 20,
             ),
-            TextButton(
-              child: Text("Delete"),
-              onPressed: () async => {
-                openDeleteAlert(context),
-              },
-            )
+          TTText(widget.task.points.toString()),
+
+          TTFormElement(child:Container()),
+
+          const TTText(
+            'Due', 
+            thiccness: FontWeight.w800,
+            size: 20,
+            ),
+          TTText(widget.task.dueDate),
+
+          TTFormElement(child:Container()),
+
+          Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+
+              TTButton(
+                text: 'Approve',
+                edgeInsets: const EdgeInsets.all(0),
+                onPressed: () async => {
+                  _approveTask(),
+                },
+                ),
+
+              TTButton(
+                text: 'Deny',
+                edgeInsets: const EdgeInsets.all(0),
+                onPressed: () async => {
+                  _denyTask(),
+                },
+                ),
+
+              TTButton(
+                text: 'Delete',
+                edgeInsets: const EdgeInsets.all(0),
+                onPressed: () async => {
+                  openDeleteAlert(context),
+                },
+                )
+
           ],
-        ),
+          ),
+        ],
       ),
     );
   }
