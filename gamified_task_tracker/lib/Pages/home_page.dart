@@ -305,12 +305,12 @@ class _HopePageState extends State<HomePage> {
               ),
               onTap: signOut),
           actions: [
-            GestureDetector(
-              child: const Icon(
+            IconButton(
+              icon: Icon(
                 Icons.person,
                 color: textColorAgainstPrimary,
               ),
-              onTap: () => Navigator.push(
+              onPressed: () => Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) => UserPage(currentUser!))),
