@@ -2,6 +2,8 @@ import 'dart:math';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:gamified_task_tracker/widgets/ttscaffold.dart';
+import 'package:gamified_task_tracker/widgets/ttform.dart';
 import '../Models/teams.dart';
 import '../Models/users.dart';
 
@@ -23,27 +25,31 @@ class _CreateTeamState extends State<CreateTeam> {
   final controllerName = TextEditingController();
   String code = "";
 
-  @override
-  Widget build(BuildContext context) => Scaffold(
-      appBar: AppBar(
-        title: Text('Create Team'),
-        backgroundColor: primaryColor,
-      ),
-      body: ListView(padding: EdgeInsets.all(16), children: <Widget>[
-        TextField(
-            controller: controllerName, decoration: decoration('Team Name')),
-        const SizedBox(height: 32),
-        ElevatedButton(
-            child: Text('Create'),
-            onPressed: () {
+@override
+Widget build(BuildContext context) => TTScaffold(
+    title: 'Create Team',
+    body: TTForm(
+      children: [
+
+        TTTextField(
+          labelText: 'Team Name',
+          controller: controllerName
+          ),
+
+        TTButton(
+          text: 'Create',
+          onPressed: () {
               var teams =
                   Teams(teamName: controllerName.text, teamCode: code);
               print("sent name ${teams.teamName}");
               print(" sent code ${teams.teamCode}");
               createTeam(teams);
               Navigator.pop(context);
-            })
-      ]));
+            }
+          )
+
+      ]
+    ));
 
   InputDecoration decoration(String label) => InputDecoration(
         labelText: label,
