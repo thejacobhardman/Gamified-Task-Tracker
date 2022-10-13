@@ -25,13 +25,14 @@ class TTFormState extends State<TTForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(  
+    return Center(child:Form(  
       key: _formKey,  
-      child: Column(  
-        crossAxisAlignment: CrossAxisAlignment.start,  
+      child: Center(child: Column(  
+        crossAxisAlignment: CrossAxisAlignment.stretch,  
+        mainAxisSize: MainAxisSize.max,
         children: widget.children,
-      ),  
-    );  
+      )),  
+    ));  
   }
 }
 

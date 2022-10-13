@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import '../Views/RemoteAccess.dart';
 import '../Views/style.dart';
 
+import '../widgets/ttscaffold.dart';
+import '../widgets/ttform.dart';
+
 class UserPage extends StatefulWidget {
   const UserPage(this.user, {super.key});
   final Users user;
@@ -24,14 +27,6 @@ class _UserPageState extends State<UserPage> {
     return teamData;
   }
 
-  Widget _teamCode() {
-    if (teamData != null) {
-      return Text('Team Code: ' + teamData[0].teamCode);
-    } else {
-      return Text('Team Code: No Code');
-    }
-  }
-
   @override
   void initState() {
     super.initState();
@@ -39,27 +34,35 @@ class _UserPageState extends State<UserPage> {
   }
 
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title:
-              Text('Profile Page - ${widget.user.userName!}' ?? "Profile Page"),
-          backgroundColor: primaryColor,
-          actions: <Widget>[
-            IconButton(
-                onPressed: () => Navigator.pop(context),
-                icon: const Icon(Icons.arrow_back)),
-            //IconButton(onPressed: signOut, icon: const Text('Sign Out')),
-          ],
-        ),
-        body: Column(
-          children: [
-            Text(widget.user.firstName! ?? "no first name"),
-            Text(widget.user.lastName! ?? "no last name"),
-            Text(widget.user.email! ?? "no email"),
-            Text(
-                widget.user.points!.toString() ?? "no points - do some tasks!"),
-            _teamCode()
-          ],
-        ));
+
+    return TTScaffold(
+      title: 'Profile Page - ${widget.user.userName!}',
+      body: TTForm(
+        children: [
+
+          const TTText('Username'),
+          TTText(widget.user.userName!),
+
+          TTFormElement(child:Container()),
+
+          const TTText('Email'),
+          TTText(widget.user.email!),
+
+          TTFormElement(child:Container()),
+
+          const TTText('Points'),
+          TTText(widget.user.points!.toString()),
+
+          TTFormElement(child:Container()),
+
+          const TTText('Team Code'),
+          teamData != null ? 
+            TTText(teamData[0].teamCode) : 
+            const TTText('-'),
+
+        ],
+        )
+
+    );
   }
 }
