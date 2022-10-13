@@ -11,7 +11,7 @@ import '../Models/users.dart';
 
 class RemoteAccess {
   Client client = http.Client();
-  String api = "http://10.0.2.2:8000";
+  String api = "http://ec2-54-213-164-187.us-west-2.compute.amazonaws.com";
 
   Future<dynamic> post(String branch, dynamic object) async {
     var uri = Uri.parse(api + branch);
