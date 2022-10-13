@@ -40,22 +40,38 @@ class _UserPageState extends State<UserPage> {
       body: TTForm(
         children: [
 
-          const TTText('Username'),
+          const TTText(
+            'Username', 
+            thiccness: FontWeight.w800,
+            size: 20,
+            ),
           TTText(widget.user.userName!),
 
           TTFormElement(child:Container()),
 
-          const TTText('Email'),
+          const TTText(
+            'Email', 
+            thiccness: FontWeight.w800,
+            size: 20,
+            ),
           TTText(widget.user.email!),
 
           TTFormElement(child:Container()),
 
-          const TTText('Points'),
+          const TTText(
+            'Points', 
+            thiccness: FontWeight.w800,
+            size: 20,
+            ),
           TTText(widget.user.points!.toString()),
 
           TTFormElement(child:Container()),
 
-          const TTText('Team Code'),
+          const TTText(
+            'Team Code', 
+            thiccness: FontWeight.w800,
+            size: 20,
+            ),
           teamData != null ? 
             TTText(teamData[0].teamCode) : 
             const TTText('-'),
