@@ -46,9 +46,9 @@ class _CreateATaskPageState extends State<CreateATaskPage> {
       body: TTForm(
         children: <Widget>[  
 
-          const TTTextField(labelText: "Task Name"),
+          TTTextField(controller: textController1, labelText: "Task Name"),
 
-          const TTTextField(labelText: "Description", maxLines: 5),
+          TTTextField(controller: textController2, labelText: "Description", maxLines: 5),
           
           TTFormElement(
             child: Column(

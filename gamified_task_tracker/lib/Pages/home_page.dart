@@ -31,10 +31,14 @@ class _HopePageState extends State<HomePage> {
   String firstname = "";
   String lastname = "";
   bool userAdmin = false;
-  bool userNull = false;
+  bool isLoaded = false;
 
   Future<void> signOut() async {
     await Auth().signOut();
+  }
+
+  updateUser(Users updateInformation) {
+    setState(() => currentUser = updateInformation);
   }
 
   Future retrieveUser() async {
@@ -42,7 +46,7 @@ class _HopePageState extends State<HomePage> {
     userData = await access.getUsers(user?.email);
     if (userData!.length == 0) {
       print("NULL user");
-      userNull = true;
+      isLoaded = false;
       return;
     }
     currentUser = userData![0];
@@ -102,7 +106,9 @@ class _HopePageState extends State<HomePage> {
     }
     debugPrint("Successful admin update");
     currentUser?.admin = false;
-    userAdmin = false;
+    setState(() {
+      userAdmin = false;
+    });
   }
 
   Widget _createTeam(BuildContext context) {
@@ -290,10 +296,10 @@ class _HopePageState extends State<HomePage> {
           ],
           backgroundColor: primaryColor,
         ),
-        body: !userNull
+        body: isLoaded
             ? RefreshIndicator(
                 child: Visibility(
-                  visible: !userNull,
+                  visible: isLoaded,
                   child: Container(
                       height: double.infinity,
                       width: double.infinity,
@@ -347,9 +353,12 @@ class _HopePageState extends State<HomePage> {
                                ],),
 
                             Row(
-                               mainAxisAlignment: MainAxisAlignment.end,
+                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                children: <Widget>[
-                                _refresh(),
+                                 Visibility(
+                                     visible: userAdmin,
+                                     child: _deleteTeamButton(context)),
+                                 _refresh(),
                                ],),
                         
                         ],
@@ -387,7 +396,7 @@ class _HopePageState extends State<HomePage> {
 
   _viewUserProfile() {
     return Visibility(
-        visible: userNull,
+        visible: isLoaded,
         child: ElevatedButton(
             style: TextButton.styleFrom(
               backgroundColor: primaryColor,
