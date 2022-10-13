@@ -44,7 +44,6 @@ Widget build(BuildContext context) => TTScaffold(
               print("sent name ${teams.teamName}");
               print(" sent code ${teams.teamCode}");
               createTeam(teams);
-              Navigator.pop(context);
             }
           )
 
@@ -99,6 +98,7 @@ Widget build(BuildContext context) => TTScaffold(
       debugPrint("Successful update");
       widget.user.team = id;
       widget.user.admin = true;
+      Navigator.pop(context, widget.user);
     }
   }
 

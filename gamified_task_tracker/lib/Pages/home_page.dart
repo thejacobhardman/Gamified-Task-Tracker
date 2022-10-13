@@ -37,9 +37,16 @@ class _HopePageState extends State<HomePage> {
     await Auth().signOut();
   }
 
-  updateUser(Users updateInformation) {
-    setState(() => currentUser = updateInformation);
+  updateUser() async {
+    currentUser = await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => CreateTeam(currentUser!)));
+    setState(() {
+      userAdmin = currentUser!.admin!;
+    });
   }
+
 
   Future retrieveUser() async {
     user = Auth().currentUser;
@@ -118,10 +125,7 @@ class _HopePageState extends State<HomePage> {
             style: TextButton.styleFrom(
               backgroundColor: primaryColor,
             ),
-            onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => CreateTeam(currentUser!))),
+            onPressed: () => updateUser(),
             child:
                 Text('Create a Team', style: GoogleFonts.getFont('Poppins'))));
   }
@@ -256,12 +260,16 @@ class _HopePageState extends State<HomePage> {
 
   @override
   void initState() {
-    super.initState();
     retrieveUser().then((model) => {setState(() => model = currentUser)});
+    if (currentUser != null) {
+      isLoaded = true;
+    }
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    isLoaded = true;
     return Scaffold(
         appBar: AppBar(
           title: Text(
