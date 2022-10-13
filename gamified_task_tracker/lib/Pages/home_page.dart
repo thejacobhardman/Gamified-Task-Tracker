@@ -192,7 +192,7 @@ class _HopePageState extends State<HomePage> {
                 TTText(
                   currentUser?.userName != null ? "Welcome, ${currentUser?.userName}!" : "",
                   size: 20,
-                  thiccness: FontWeight.w600,
+                  thickness: FontWeight.w600,
                   ),
 
                 TTFormElement(
@@ -312,6 +312,7 @@ class _HopePageState extends State<HomePage> {
                   children: [
                     TTButton(
                       text: 'Refresh',
+                      backgroundColor: secondaryColor,
                       width: 100,
                       height: 50,
                       onPressed: () async => {

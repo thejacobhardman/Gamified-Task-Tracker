@@ -32,7 +32,7 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
         children: [
           const TTText(
             'Description', 
-            thiccness: FontWeight.w800,
+            thickness: FontWeight.w800,
             size: 20,
             ),
           TTText(widget.task.taskName),
@@ -41,7 +41,7 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
 
           const TTText(
             'Points', 
-            thiccness: FontWeight.w800,
+            thickness: FontWeight.w800,
             size: 20,
             ),
           TTText(widget.task.points.toString()),
@@ -50,7 +50,7 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
 
           const TTText(
             'Due', 
-            thiccness: FontWeight.w800,
+            thickness: FontWeight.w800,
             size: 20,
             ),
           TTText(widget.task.dueDate),

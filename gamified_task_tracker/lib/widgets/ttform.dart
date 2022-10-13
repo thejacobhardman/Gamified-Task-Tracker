@@ -188,7 +188,7 @@ class TTButtonState extends State<TTButton> {
             widget.text, 
             color: widget.textColor,
             size: 18,
-            thiccness: FontWeight.w600,
+            thickness: FontWeight.w600,
             ),
           ),
         )
@@ -203,7 +203,7 @@ class TTText extends StatefulWidget {
   final Color color;
   final double size;
   final TextAlign align;
-  final FontWeight thiccness;
+  final FontWeight thickness;
   final TextDecoration textDecoration;
 
   const TTText(
@@ -212,7 +212,7 @@ class TTText extends StatefulWidget {
     this.color = textColor, 
     this.size = 16,
     this.align = TextAlign.center,
-    this.thiccness = FontWeight.w400,
+    this.thickness = FontWeight.w400,
     this.textDecoration = TextDecoration.none
     });
 
@@ -230,7 +230,7 @@ class TTTextState extends State<TTText> {
       style: GoogleFonts.getFont(
         'Poppins',
         color: widget.color,
-        fontWeight: widget.thiccness,
+        fontWeight: widget.thickness,
         fontSize: widget.size,
         decoration: widget.textDecoration,
       ),

@@ -42,7 +42,7 @@ class _UserPageState extends State<UserPage> {
 
           const TTText(
             'First Name', 
-            thiccness: FontWeight.w800,
+            thickness: FontWeight.w800,
             size: 20,
             ),
           TTText(widget.user.firstName!),
@@ -51,7 +51,7 @@ class _UserPageState extends State<UserPage> {
 
           const TTText(
             'Last Name', 
-            thiccness: FontWeight.w800,
+            thickness: FontWeight.w800,
             size: 20,
             ),
           TTText(widget.user.lastName!),
@@ -60,7 +60,7 @@ class _UserPageState extends State<UserPage> {
 
           const TTText(
             'Username', 
-            thiccness: FontWeight.w800,
+            thickness: FontWeight.w800,
             size: 20,
             ),
           TTText(widget.user.userName!),
@@ -69,7 +69,7 @@ class _UserPageState extends State<UserPage> {
 
           const TTText(
             'Email', 
-            thiccness: FontWeight.w800,
+            thickness: FontWeight.w800,
             size: 20,
             ),
           TTText(widget.user.email!),
@@ -78,7 +78,7 @@ class _UserPageState extends State<UserPage> {
 
           const TTText(
             'Points', 
-            thiccness: FontWeight.w800,
+            thickness: FontWeight.w800,
             size: 20,
             ),
           TTText(widget.user.points!.toString()),
@@ -87,7 +87,7 @@ class _UserPageState extends State<UserPage> {
 
           const TTText(
             'Team Code', 
-            thiccness: FontWeight.w800,
+            thickness: FontWeight.w800,
             size: 20,
             ),
           teamData != null ? 

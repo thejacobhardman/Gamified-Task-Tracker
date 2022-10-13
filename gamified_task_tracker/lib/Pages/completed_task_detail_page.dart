@@ -29,28 +29,28 @@ class _CompletedTaskDetailPage extends State<CompletedTaskDetailPage> {
         children: [
           const TTText(
             'Description',
-            thiccness: FontWeight.w800,
+            thickness: FontWeight.w800,
             size: 20,
           ),
           TTText(widget.task.taskName),
           TTFormElement(child: Container()),
           const TTText(
             'Points',
-            thiccness: FontWeight.w800,
+            thickness: FontWeight.w800,
             size: 20,
           ),
           TTText(widget.task.points.toString()),
           TTFormElement(child: Container()),
           const TTText(
             'Due',
-            thiccness: FontWeight.w800,
+            thickness: FontWeight.w800,
             size: 20,
           ),
           TTText(widget.task.dueDate),
           TTFormElement(child: Container()),
           const TTText(
             'Completed By',
-            thiccness: FontWeight.w800,
+            thickness: FontWeight.w800,
             size: 20,
           ),
           TTText(widget.task.completedby.toString()),
