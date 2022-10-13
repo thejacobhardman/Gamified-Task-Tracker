@@ -123,7 +123,7 @@ class _CreateATaskPageState extends State<CreateATaskPage> {
   void pickDate() async {
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: selectedDate,
+      initialDate: DateTime.now(),
       firstDate: DateTime(2000),
       lastDate: DateTime(2025),
       builder: (context, child) {
