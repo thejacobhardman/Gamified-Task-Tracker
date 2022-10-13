@@ -11,8 +11,17 @@ class TTScaffold extends StatelessWidget {
   final bool hasAppBar;
   final Color bgColor;
   final bool scrollable;
+  final FloatingActionButton? floatingActionButton;
 
-  const TTScaffold({super.key, required this.title, required this.body, this.hasAppBar = true, this.bgColor = backgroundColor, this.scrollable = true});
+  const TTScaffold({
+    super.key, 
+    required this.title, 
+    required this.body, 
+    this.hasAppBar = true, 
+    this.bgColor = backgroundColor, 
+    this.scrollable = true,
+    this.floatingActionButton,
+    });
   
   @override
   Widget build(BuildContext context) {
@@ -44,7 +53,8 @@ class TTScaffold extends StatelessWidget {
             padding: const EdgeInsets.all(edgeInsets),
             child: body
             )
-        )
+        ),
+        floatingActionButton: floatingActionButton,
       );
   }  
 }  
