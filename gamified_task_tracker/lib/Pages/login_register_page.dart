@@ -25,12 +25,15 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _controllerEmail = TextEditingController();
   final TextEditingController _controllerPassword = TextEditingController();
   final TextEditingController _controllerUsername = TextEditingController();
+  final TextEditingController _controllerFirstname = TextEditingController();
+  final TextEditingController _controllerLastname = TextEditingController();
+
 
   void _createUser() async {
     var user = Users(
         userName: _controllerUsername.text,
-        firstName: "TestFirstName",
-        lastName: "TestLastName",
+        firstName: _controllerFirstname.text,
+        lastName: _controllerLastname.text,
         password: _controllerPassword.text,
         email: _controllerEmail.text.toLowerCase(),
         team: null,
@@ -39,8 +42,9 @@ class _LoginPageState extends State<LoginPage> {
     var response = await access.post("/user", user).catchError((err) {});
     if (response == null) {
       return;
+    } else {
+      debugPrint("Successful");
     }
-    debugPrint("Successful");
   }
 
   Future<void> signInWithEmailAndPassword() async {
@@ -60,6 +64,24 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> createUserWithEmailAndPassword() async {
     try {
+      if (_controllerFirstname.text == "" || _controllerLastname.text == "") {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(behavior: SnackBarBehavior.floating,
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              content: Container(
+                padding: const EdgeInsets.all(16),
+                height: 90,
+                decoration: const BoxDecoration(
+                  color: primaryColor,
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                ),
+                child: const Text(
+                    "First Name/Last Name fields not used, please try login again!"
+                ),
+              ),),
+        );
+      }
       await Auth().createUserWithEmailAndPassword(
         email: _controllerEmail.text,
         password: _controllerPassword.text,
@@ -99,6 +121,18 @@ class _LoginPageState extends State<LoginPage> {
               controller: _controllerUsername,
               labelText: 'Username'
               ),
+
+            TTTextField(
+                visible: !isLogin,
+                controller: _controllerFirstname,
+                labelText: 'First Name'
+            ),
+
+            TTTextField(
+                visible: !isLogin,
+                controller: _controllerLastname,
+                labelText: 'Last Name'
+            ),
 
             TTTextField(
               controller: _controllerEmail,
