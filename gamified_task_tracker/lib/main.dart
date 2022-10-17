@@ -1,14 +1,20 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:gamified_task_tracker/Views/widget_tree.dart';
 import 'package:firebase_core/firebase_core.dart';
-
-import 'firebase_options.dart';
+import 'package:gamified_task_tracker/firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-      name: 'gamified task tracker',
-      options: DefaultFirebaseOptions.currentPlatform);
+  if (Platform.isIOS) {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  }
+  else {
+    await Firebase.initializeApp();
+  }
   runApp(const MyApp());
 }
 
