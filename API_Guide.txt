@@ -1,0 +1,127 @@
+
+=====================================
+Introduction
+=====================================
+In the database there are three models: User, Team, and Task. Each has their own
+fields, which can store data about the model (for example, the User model has a
+"first_name" field, which stores the first name of a user). In order to manipulate
+data in the database, you make HTTP requests, and in these request, you include the
+address of the server hosting the API (for example, http://localhost:8000), the
+endpoint that you are attempting to connect to (for example, there is a "/users"
+endpoint which returns a JSON payload of every user in the database, but we will
+talk about that later), as well as a parameter you may need to pass to the API,
+which must be preceded by a question mark, and then a variable name set to a text
+value (for example, passing a parameter to the "/user" endpoint would look like
+"/user?username=HarryJenkins19", where "username" is a parameter that the API can
+determine to have a value of "HarryJenkins19", which allows the API to query the
+database for that user). Now that we've got the introduction out of the way, lets
+get down to the meat and potatoes of how to utilize HTTP requests to the API!
+
+
+            [PUT] "http://localhost:8000/user?username=etc"
+            ^^^^^
+         Request Type
+
+
+            [PUT] "http://localhost:8000/user?username=etc"
+                   ^^^^^^^^^^^^^^^^^^^^^^
+                    IP Address of Server
+
+
+            [PUT] "http://localhost:8000/user?username=etc"
+                                         ^^^^
+                                     API Endpoint
+
+
+            [PUT] "http://localhost:8000/user?username=etc"
+                                             ^^^^^^^^^^^^^
+                            Parameter with name "username" and text data "etc"
+
+
+=====================================
+API Endpoints, Inputs, and Outputs
+=====================================
+(The server IP address will change when we deploy to production,
+so assume the variable BASE_DIR to be the IP for the server, which
+would be "http://localhost:8000" during development.)
+
+User Endpoints:
+    - BASE_DIR/user 
+        -[GET]: Request requires "email" URL parameter, returns User who has that email in
+                JSON payload.
+        -[POST]: Request requires no URL parameters, but requires a JSON payload containing
+                valid User fields (these include "user_name" and "password" at the minimum).
+                The created User object is returned in JSON.
+        -[PUT]: Request requires "username" parameter, as well as a JSON payload containing
+                valid User fields (these include "user_name", "first_name", "last_name",
+                "email", "team", "points", although not all fields are required). The modified
+                User is returned in JSON.
+        -[DELETE]: Request requires "username" parameter, deletes the user with that username,
+                and then returns a JSON document with a single field: "message", which contains
+                a string that states how the deletion went.
+
+    - BASE_DIR/teamusers
+        -[GET]: Request requires "teamid" URL parameter, returns
+                a JSON list of all Users registered to that Team.
+
+
+Team (by Team Code) Endpoints:
+    - BASE_DIR/team 
+        -[GET]: Request requires "team_code" URL parameter, returns Team with that code in
+                JSON payload.
+        -[POST]: Request requires no URL parameters, but requires a JSON payload containing
+                valid Team fields (this includes just the "team_name" field).
+                The created Team object is returned in JSON.
+        -[PUT]: Request requires "team_code" URL parameter, and requires a JSON payload containing
+                valid Team fields (this includes just the "team_name" field).
+                The updated/modified Team object is returned in JSON.
+        -[DELETE]: Request requires "task_code" parameter, deletes the Task with that code,
+                and then returns a JSON document with a single field: "message", which contains
+                a string that states how the deletion went.
+
+
+Team (by ID) Endpoints:
+    - BASE_DIR/teamid
+        -[GET]: Request requires "team_id" URL parameter, returns that Team in
+                JSON payload.
+        -[POST]: Request requires no URL parameters, but requires a JSON payload containing
+                valid Team fields (this includes just the "team_name" field).
+                The created Team object is returned in JSON.
+        -[PUT]: Request requires "team_id" URL parameter, and requires a JSON payload containing
+                valid Team fields (this includes just the "team_name" field).
+                The updated/modified Team object is returned in JSON.
+        -[DELETE]: Request requires "task_id" parameter, deletes the Task with that code,
+                and then returns a JSON document with a single field: "message", which contains
+                a string that states how the deletion went.
+
+    
+Task Endpoints:
+    - BASE_DIR/task 
+        -[GET]: Request requires "task_id" URL parameter, returns Task with that id in JSON
+                payload.
+        -[POST]: Request requires no URL parameters, but requires a JSON payload containing
+                valid Task fields (these include "user_name", "first_name", "last_name",
+                "email", "team", "points", although not all fields are required).
+                The created Task object is returned in JSON.
+        -[PUT]: Request requires "task_id" URL parameter, and requires a JSON payload containing
+                valid Task fields (these include "user_name", "first_name", "last_name",
+                "email", "team", "points", although not all fields are required).
+                The updated/modified Task object is returned in JSON.
+        -[DELETE]: Request requires "team_code" parameter, deletes the Team with that code,
+                and then returns a JSON document with a single field: "message", which contains
+                a string that states how the deletion went.
+
+    - BASE_DIR/teamtasks
+        -[GET]: Request requires "team_id" URL parameter, returns a JSON payload including
+                all the Task objects associated with than Team.
+
+
+Debugging and Development Endpoints (not meant for production)
+    - BASE_DIR/users 
+        -[GET]: No URL parameters required, returns JSON payload with list of all users in database.
+
+    - BASE_DIR/teams
+        -[GET]: No URL parameters required, returns JSON payload with list of all teams in database.
+
+    - BASE_DIR/tasks
+        -[GET]: No URL parameters required, returns JSON payload with list of all tasks in database.
