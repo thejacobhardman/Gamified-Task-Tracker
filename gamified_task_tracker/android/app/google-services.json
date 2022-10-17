@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "453337624888",
+    "firebase_url": "https://cs350gamifiedtaskapp-default-rtdb.firebaseio.com",
+    "project_id": "cs350gamifiedtaskapp",
+    "storage_bucket": "cs350gamifiedtaskapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:453337624888:android:878a3cf54d776d9ba111cd",
+        "android_client_info": {
+          "package_name": "com.example.gamified_task_tracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "453337624888-hpps1mmme2j687i51njtv32ljti0uddk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDc0H_X0e0SMUgM6BO41mM01y9QVfkbL0M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "453337624888-hpps1mmme2j687i51njtv32ljti0uddk.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "453337624888-n24jcfuea4i1stbts1pupadj6rsmv0eg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.gamifiedTaskTracker"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
